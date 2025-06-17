@@ -36,12 +36,12 @@ export default function RootLayout({
 		<html lang='en'>
 			<body
 				suppressHydrationWarning={true}
-				className={`${ibmPlexSans.variable} ${ibmPlexSerif.variable} ${ibmPlexMono.variable} font-sans antialiased bg-sail-900`}>
+				className={`${ibmPlexSans.variable} ${ibmPlexSerif.variable} ${ibmPlexMono.variable} font-sans antialiased bg-white`}>
 				<main className='flex flex-col items-center justify-center w-full mx-auto min-h-screen'>
 					<header className='sticky top-0 z-50 w-full bg-background/80 backdrop-blur-sm'>
 						<NavigationBar />
 					</header>
-					<section className='flex flex-col items-center justify-center w-full max-w-7xl flex-grow'>{children}</section>
+					<section className='flex flex-col items-center justify-start w-full max-w-7xl flex-grow'>{children}</section>
 					<Footer />
 				</main>
 			</body>

@@ -6,27 +6,27 @@ import Image from 'next/image';
 
 const images = [
 	{
-		src: '/assets/1.svg',
+		src: '/assets/1.png',
 		alt: 'Okinawa 1',
 	},
 	{
-		src: '/assets/2.svg',
+		src: '/assets/2.png',
 		alt: 'Okinawa 2',
 	},
 	{
-		src: '/assets/3.svg',
+		src: '/assets/3.png',
 		alt: 'Okinawa 3',
 	},
 	{
-		src: '/assets/4.svg',
+		src: '/assets/4.png',
 		alt: 'Okinawa 4',
 	},
 	{
-		src: '/assets/5.svg',
+		src: '/assets/5.png',
 		alt: 'Okinawa 5',
 	},
 	{
-		src: '/assets/6.svg',
+		src: '/assets/6.png',
 		alt: 'Okinawa 6',
 	},
 ];

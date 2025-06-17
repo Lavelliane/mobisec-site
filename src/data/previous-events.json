@@ -1,0 +1,91 @@
+{
+	"conferences": [
+		{
+			"year": "2025",
+			"dates": "December 16-18, 2025",
+			"location": "Okinawa, Japan",
+			"status": "upcoming",
+			"image": "/assets/previous-events/okinawa-25.png"
+		},
+		{
+			"year": "2024",
+			"dates": "December 17-19, 2024",
+			"location": "Hotel Emisia Sapporo, Sapporo, Japan",
+			"status": "recent",
+			"image": "/assets/previous-events/sapporo-24.png"
+		},
+		{
+			"year": "2023",
+			"dates": "December 19-21, 2023",
+			"location": "Novotel Okinawa Naha, Okinawa, Japan",
+			"status": "past",
+			"image": "/assets/previous-events/okinawa-23.png"
+		},
+		{
+			"year": "2022",
+			"dates": "December 15-17, 2022",
+			"location": "Jeju Island, Republic of Korea",
+			"status": "past",
+			"image": "/assets/previous-events/jeju-22.png"
+		},
+		{
+			"year": "2021",
+			"dates": "October 7-9, 2021",
+			"location": "Jeju Island, Republic of Korea",
+			"status": "past",
+			"image": "/assets/previous-events/jeju-21.png"
+		},
+		{
+			"year": "2019",
+			"dates": "October 17-19, 2019",
+			"location": "Hotel National, Taichung, Taiwan",
+			"status": "past",
+			"image": "/assets/previous-events/taiwan-19.png"
+		},
+		{
+			"year": "2018",
+			"dates": "August 29-September 1, 2018",
+			"location": "Cebu, Philippines",
+			"status": "past",
+			"image": "/assets/previous-events/cebu-18.png"
+		},
+		{
+			"year": "2017",
+			"dates": "October 19-22, 2017",
+			"location": "Jeju Island, South Korea",
+			"status": "past",
+			"image": "/assets/previous-events/jeju-17.png"
+		},
+		{
+			"year": "2016",
+			"dates": "July 13-16, 2016",
+			"location": "Taichung, Taiwan",
+			"status": "past",
+			"image": "/assets/previous-events/taiwan-16.png"
+		}
+	],
+	"statistics": {
+		"yearsActive": 9,
+		"countries": 4,
+		"nextEvent": "2025",
+		"description": "MobiSec brings together researchers, academics, and industry professionals to advance mobile security and privacy across the Asia-Pacific region."
+	},
+	"regionalDistribution": [
+		{
+			"country": "🇯🇵 Japan",
+			"events": 3
+		},
+		{
+			"country": "🇰🇷 South Korea",
+			"events": 3
+		},
+		{
+			"country": "🇹🇼 Taiwan",
+			"events": 2
+		},
+		{
+			"country": "🇵🇭 Philippines",
+			"events": 1
+		}
+	]
+}

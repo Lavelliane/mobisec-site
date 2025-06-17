@@ -38,11 +38,23 @@
 	--color-popover: var(--popover);
 	--color-card-foreground: var(--card-foreground);
 	--color-card: var(--card);
+	--color-sail-50: var(--color-sail-50);
+	--color-sail-100: var(--color-sail-100);
+	--color-sail-200: var(--color-sail-200);
+	--color-sail-300: var(--color-sail-300);
+	--color-sail-400: var(--color-sail-400);
+	--color-sail-500: var(--color-sail-500);
+	--color-sail-600: var(--color-sail-600);
+	--color-sail-700: var(--color-sail-700);
+	--color-sail-800: var(--color-sail-800);
+	--color-sail-900: var(--color-sail-900);
+	--color-sail-950: var(--color-sail-950);
 	--radius-sm: calc(var(--radius) - 4px);
 	--radius-md: calc(var(--radius) - 2px);
 	--radius-lg: var(--radius);
 	--radius-xl: calc(var(--radius) + 4px);
 }
+
 :root {
 	--radius: 0rem;
 	/* Sail theme - Light mode */
@@ -123,6 +135,10 @@
 	--sidebar-accent-foreground: var(--color-sail-100); /* Sail 100 */
 	--sidebar-border: var(--color-sail-800); /* Sail 800 */
 	--sidebar-ring: var(--color-sail-500); /* Sail 500 */
+}
+
+button {
+	cursor: pointer;
 }
 
 @layer base {

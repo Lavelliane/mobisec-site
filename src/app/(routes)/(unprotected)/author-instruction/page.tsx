@@ -88,8 +88,8 @@ const page = () => {
 										✓
 									</span>
 									<span>
-										During submission, authors need to select <strong>"MobiSec 2025 - Main Track"</strong> for their
-										paper.
+										During submission, authors need to select <strong>&quot;MobiSec 2025 - Main Track&quot;</strong> for
+										their paper.
 									</span>
 								</div>
 							</div>
@@ -151,9 +151,9 @@ const page = () => {
 									<h4 className='font-medium text-foreground mb-2'>Specifications:</h4>
 									<ul className='space-y-2 text-foreground'>
 										<li>
-											• Poster size should be <strong>32×40 inches</strong>
+											• Poster size should be <strong>32&times;40 inches</strong>
 										</li>
-										<li>• Can be scaled down to "letter" paper size for submission</li>
+										<li>• Can be scaled down to &quot;letter&quot; paper size for submission</li>
 									</ul>
 								</div>
 							</div>
@@ -173,7 +173,7 @@ const page = () => {
 									✓
 								</span>
 								<span className='text-foreground'>
-									During submission, please select <strong>"MobiSec 2025 - Poster Track"</strong>
+									During submission, please select <strong>&quot;MobiSec 2025 - Poster Track&quot;</strong>
 								</span>
 							</div>
 						</div>
@@ -188,7 +188,7 @@ const page = () => {
 								<ul className='text-sm text-muted-foreground space-y-1'>
 									<li>• Minimum 5 pages (Easychair style)</li>
 									<li>• PDF/PS format</li>
-									<li>• Select "Main Track" during submission</li>
+									<li>• Select &quot;Main Track&quot; during submission</li>
 									<li>• Must be original work</li>
 								</ul>
 							</div>
@@ -196,8 +196,8 @@ const page = () => {
 								<h3 className='font-medium text-foreground mb-2'>Poster Papers</h3>
 								<ul className='text-sm text-muted-foreground space-y-1'>
 									<li>• Abstract: max 2 pages</li>
-									<li>• Include poster draft (32×40 inches)</li>
-									<li>• Select "Poster Track" during submission</li>
+									<li>• Include poster draft (32&times;40 inches)</li>
+									<li>• Select &quot;Poster Track&quot; during submission</li>
 									<li>• Not anonymized</li>
 								</ul>
 							</div>

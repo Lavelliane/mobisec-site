@@ -11,16 +11,24 @@
 	"dependencies": {
 		"@radix-ui/react-navigation-menu": "^1.2.13",
 		"@radix-ui/react-slot": "^1.2.3",
+		"@tanstack/react-query": "^5.80.7",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
+		"dayjs": "^1.11.13",
+		"dotenv": "^16.5.0",
+		"drizzle-orm": "^0.44.2",
 		"embla-carousel-autoplay": "^8.6.0",
 		"embla-carousel-react": "^8.6.0",
 		"lucide-react": "^0.515.0",
 		"next": "15.3.3",
 		"next-intl": "^4.1.0",
+		"pg": "^8.16.0",
+		"postgres": "^3.4.7",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
-		"tailwind-merge": "^3.3.1"
+		"tailwind-merge": "^3.3.1",
+		"zod": "^3.25.67",
+		"zustand": "^5.0.5"
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3",

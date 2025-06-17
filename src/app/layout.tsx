@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { IBM_Plex_Sans, IBM_Plex_Serif, IBM_Plex_Mono } from 'next/font/google';
 import './globals.css';
-import NavigationBar from '@/_components/NavigationBar';
+import NavigationBar from '@/components/NavigationBar';
+import Footer from '@/components/Footer';
+
 const ibmPlexSans = IBM_Plex_Sans({
 	variable: '--font-ibm-plex-sans',
 	subsets: ['latin'],
@@ -21,8 +23,8 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-	title: 'Xylvir Assets Management',
-	description: 'An AI-powered asset manager for your UI and diagrams',
+	title: 'MobiSec 2025',
+	description: 'MobiSec Conference 2025',
 };
 
 export default function RootLayout({
@@ -34,12 +36,13 @@ export default function RootLayout({
 		<html lang='en'>
 			<body
 				suppressHydrationWarning={true}
-				className={`${ibmPlexSans.variable} ${ibmPlexSerif.variable} ${ibmPlexMono.variable} font-sans antialiased`}>
-				<main className='flex flex-col items-center justify-center max-w-6xl w-full mx-auto'>
-					<header className='sticky top-0 z-50 w-full'>
+				className={`${ibmPlexSans.variable} ${ibmPlexSerif.variable} ${ibmPlexMono.variable} font-sans antialiased bg-sail-900`}>
+				<main className='flex flex-col items-center justify-center w-full mx-auto min-h-screen'>
+					<header className='sticky top-0 z-50 w-full bg-background/80 backdrop-blur-sm'>
 						<NavigationBar />
 					</header>
-					<section className='flex flex-col items-center justify-center w-full'>{children}</section>
+					<section className='flex flex-col items-center justify-center w-full max-w-7xl flex-grow'>{children}</section>
+					<Footer />
 				</main>
 			</body>
 		</html>

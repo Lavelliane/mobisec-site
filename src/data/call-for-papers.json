@@ -1,0 +1,68 @@
+{
+	"title": "Call for Papers",
+	"description": "We invite researchers, practitioners, and students to submit original research papers, case studies, and position papers that advance the field of mobile security.",
+	"topics": [
+		"Mobile application security and vulnerability analysis",
+		"Android and iOS platform security",
+		"Mobile malware detection and analysis",
+		"Privacy-preserving mobile technologies",
+		"Mobile device forensics and incident response",
+		"IoT and embedded systems security",
+		"Mobile network security and 5G",
+		"Mobile authentication and biometrics"
+	],
+	"importantDates": [
+		{
+			"title": "Paper Submission Deadline",
+			"date": "March 15, 2024",
+			"color": "green"
+		},
+		{
+			"title": "Notification of Acceptance",
+			"date": "May 1, 2024",
+			"color": "yellow"
+		},
+		{
+			"title": "Camera-Ready Submission",
+			"date": "June 15, 2024",
+			"color": "blue"
+		},
+		{
+			"title": "Conference Date",
+			"date": "August 20-22, 2024",
+			"color": "purple"
+		}
+	],
+	"submissionGuidelines": {
+		"paperCategories": [
+			"Full Research Papers (12-15 pages)",
+			"Short Papers (6-8 pages)",
+			"Position Papers (4-6 pages)",
+			"Industry Track Papers (8-10 pages)"
+		],
+		"requirements": [
+			"IEEE Conference format required",
+			"Double-blind peer review process",
+			"Original, unpublished work only",
+			"Submit via EasyChair platform"
+		]
+	},
+	"callToAction": {
+		"title": "Ready to Submit?",
+		"description": "Join leading researchers and practitioners in advancing mobile security research.",
+		"buttons": [
+			{
+				"text": "Submit Your Paper",
+				"type": "primary"
+			},
+			{
+				"text": "Download CFP (PDF)",
+				"type": "secondary"
+			}
+		]
+	},
+	"contact": {
+		"email": "cyberchair.mobisec@gmail.com",
+		"message": "Questions about submissions? Contact us at"
+	}
+}

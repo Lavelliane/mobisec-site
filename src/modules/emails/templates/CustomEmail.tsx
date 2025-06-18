@@ -6,7 +6,7 @@ import {
 	Heading,
 	Hr,
 	Html,
-	Img,
+	// Img,
 	Preview,
 	Section,
 	Tailwind,

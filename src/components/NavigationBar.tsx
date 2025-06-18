@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import {
 	NavigationMenu,
@@ -11,6 +11,7 @@ import {
 	navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 import Image from 'next/image';
+import { Button } from '@/components/ui/button';
 
 const navigationCategories = [
 	{
@@ -95,27 +96,103 @@ function ListItem({
 	);
 }
 
+function MobileNavItem({
+	title,
+	href,
+	disabled,
+	onClick,
+}: {
+	title: string;
+	href: string;
+	disabled?: boolean;
+	onClick: () => void;
+}) {
+	return (
+		<Link
+			href={disabled ? '#' : href}
+			onClick={onClick}
+			className={`block px-4 py-3 text-sm font-medium border-b border-gray-200 hover:bg-gray-50 transition-colors ${
+				disabled ? 'opacity-50 cursor-not-allowed text-gray-400' : 'text-gray-700'
+			}`}>
+			{title}
+		</Link>
+	);
+}
+
 const NavigationBar = () => {
+	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+	const toggleMobileMenu = () => {
+		setIsMobileMenuOpen(!isMobileMenuOpen);
+	};
+
+	const closeMobileMenu = () => {
+		setIsMobileMenuOpen(false);
+	};
+
 	return (
 		<div className='flex flex-col justify-between w-full'>
-			<div className='h-fit w-full flex items-center justify-between gap-4 max-w-7xl mx-auto p-4'>
-				<div className='flex items-center gap-2'>
+			{/* Header Section */}
+			<div className='h-fit w-full flex items-center justify-between md:gap-4 gap-0 max-w-7xl mx-auto md:py-4 py-2 px-4'>
+				<div className='flex flex-row items-center gap-2'>
 					<Image
-						src='/assets/mobisec-logo.png'
+						src='/assets/logo/mobisec-logo-v2-nobg.png'
 						alt='MobiSec Logo'
-						width={100}
-						height={100}
-						className='h-12 w-fit'
+						width={150}
+						height={150}
+						className='h-12 md:h-16 w-fit'
 					/>
-					<h2 className='text-5xl font-bold'>MobiSec 2025</h2>
+					<h2 className='text-xl md:text-5xl font-bold'>MobiSec 2025</h2>
 				</div>
-				<h4 className='text-lg font-semibold text-end'>
-					The 9th IFIP WG 8.4/KIISC International Conference
-					<br />
-					on Mobile Internet Security
+				<div className='hidden md:block'>
+					<h4 className='text-sm md:text-lg font-semibold text-end'>
+						The 9th International Conference
+						<br />
+						on Mobile Internet Security
+					</h4>
+				</div>
+
+				{/* Mobile Menu Button */}
+				<Button
+					variant='ghost'
+					size='sm'
+					className='md:hidden'
+					onClick={toggleMobileMenu}
+					aria-label='Toggle mobile menu'>
+					<svg
+						className='w-6 h-6'
+						fill='none'
+						stroke='currentColor'
+						viewBox='0 0 24 24'
+						xmlns='http://www.w3.org/2000/svg'>
+						{isMobileMenuOpen ? (
+							<path
+								strokeLinecap='round'
+								strokeLinejoin='round'
+								strokeWidth={2}
+								d='M6 18L18 6M6 6l12 12'
+							/>
+						) : (
+							<path
+								strokeLinecap='round'
+								strokeLinejoin='round'
+								strokeWidth={2}
+								d='M4 6h16M4 12h16M4 18h16'
+							/>
+						)}
+					</svg>
+				</Button>
+			</div>
+
+			{/* Mobile Conference Title */}
+			<div className='md:hidden px-4 pb-2'>
+				<h4 className='text-xs font-semibold text-center text-gray-600'>
+					The 9th International Conference on Mobile Internet Security
 				</h4>
 			</div>
-			<div className='w-full border-y-1 border-primary/20 bg-secondary-foreground text-secondary-background'>
+
+			{/* Desktop Navigation */}
+			<div className='hidden md:block w-full border-y-1 border-primary/20 bg-secondary-foreground text-secondary-background'>
 				<div className='max-w-7xl mx-auto'>
 					<NavigationMenu>
 						<NavigationMenuList>
@@ -155,6 +232,43 @@ const NavigationBar = () => {
 					</NavigationMenu>
 				</div>
 			</div>
+
+			{/* Mobile Navigation Menu */}
+			{isMobileMenuOpen && (
+				<div className='md:hidden bg-white border-t border-gray-200 shadow-lg'>
+					<div className='max-h-96 overflow-y-auto'>
+						{navigationCategories.map((category) => {
+							if (category.isStandalone) {
+								return (
+									<MobileNavItem
+										key={category.label}
+										title={category.label}
+										href={category.href!}
+										onClick={closeMobileMenu}
+									/>
+								);
+							}
+
+							return (
+								<div key={category.label}>
+									<div className='px-4 py-3 bg-gray-50 border-b border-gray-200'>
+										<h3 className='text-sm font-semibold text-gray-900'>{category.label}</h3>
+									</div>
+									{category.items?.map((item) => (
+										<MobileNavItem
+											key={item.label}
+											title={item.label}
+											href={item.href}
+											disabled={item.disabled}
+											onClick={closeMobileMenu}
+										/>
+									))}
+								</div>
+							);
+						})}
+					</div>
+				</div>
+			)}
 		</div>
 	);
 };

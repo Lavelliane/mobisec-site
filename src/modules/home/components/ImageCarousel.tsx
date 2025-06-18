@@ -3,6 +3,7 @@ import React from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
+import Autoplay from 'embla-carousel-autoplay';
 
 const images = [
 	{
@@ -35,6 +36,7 @@ const ImageCarousel = () => {
 	return (
 		<Carousel
 			className='w-full shadow-md'
+			plugins={[Autoplay({ delay: 4000 })]}
 			opts={{
 				align: 'center',
 				loop: true,

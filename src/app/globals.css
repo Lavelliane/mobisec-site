@@ -67,7 +67,7 @@
 	--secondary: var(--color-sail-100); /* Sail 100 */
 	--secondary-foreground: var(--color-sail-900); /* Sail 900 */
 	--muted: var(--color-sail-100); /* Sail 100 */
-	--muted-foreground: var(--color-sail-700); /* Sail 700 */
+	--muted-foreground: var(--color-gray-600); /* Sail 700 */
 	--accent: var(--color-sail-200); /* Sail 200 */
 	--accent-foreground: var(--color-sail-900); /* Sail 900 */
 	--destructive: oklch(0.577 0.245 27.325); /* Red 60 (#da1e28) */

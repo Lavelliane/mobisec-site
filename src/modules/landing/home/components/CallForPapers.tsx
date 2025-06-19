@@ -1,5 +1,5 @@
 import React from 'react';
-import callForPapersData from '../../../data/call-for-papers.json';
+import callForPapersData from '../../../../data/call-for-papers.json';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 

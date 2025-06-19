@@ -1,5 +1,5 @@
 import React from 'react';
-import CommitteesPage from '@/modules/committees/components/CommitteesPage';
+import CommitteesPage from '@/modules/landing/committees/components/CommitteesPage';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

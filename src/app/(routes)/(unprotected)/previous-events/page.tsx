@@ -1,5 +1,5 @@
 import React from 'react';
-import PreviousEventsPage from '@/modules/previous-events/components/PreviousEventsPage';
+import PreviousEventsPage from '@/modules/landing/previous-events/components/PreviousEventsPage';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

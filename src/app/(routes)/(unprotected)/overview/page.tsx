@@ -1,5 +1,5 @@
 import React from 'react';
-import OverviewPage from '@/modules/overview/components/OverviewPage';
+import OverviewPage from '@/modules/landing/overview/components/OverviewPage';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

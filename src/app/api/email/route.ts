@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { MobiSecNewsletter } from '@/modules/emails/templates/MobiSecNewsletter';
-import { CustomEmail } from '@/modules/emails/templates/CustomEmail';
+import { MobiSecNewsletter } from '@/modules/landing/emails/templates/MobiSecNewsletter';
+import { CustomEmail } from '@/modules/landing/emails/templates/CustomEmail';
 import { Resend } from 'resend';
 import * as cron from 'node-cron';
 import { EmailScheduleData, ScheduledEmail } from '@/types/EmailTypes';

@@ -193,7 +193,7 @@ const NavigationBar = () => {
 
 			{/* Desktop Navigation */}
 			<div className='hidden md:block w-full border-y-1 border-primary/20 bg-secondary-foreground text-secondary-background'>
-				<div className='max-w-7xl mx-auto'>
+				<div className='max-w-7xl mx-auto flex flex-row items-center justify-between gap-4'>
 					<NavigationMenu>
 						<NavigationMenuList>
 							{navigationCategories.map((category) => {
@@ -230,6 +230,9 @@ const NavigationBar = () => {
 							})}
 						</NavigationMenuList>
 					</NavigationMenu>
+					<Button className='self-end'>
+						<Link href='/sign-in'>Sign In</Link>
+					</Button>
 				</div>
 			</div>
 

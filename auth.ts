@@ -1,7 +1,7 @@
+import NextAuth from 'next-auth';
+import Google from 'next-auth/providers/google';
+import Kakao from 'next-auth/providers/kakao';
 
-import NextAuth from "next-auth"
-import Google from "next-auth/providers/google"
- 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [Google],
-})
+	providers: [Google, Kakao],
+});

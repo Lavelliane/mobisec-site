@@ -35,7 +35,7 @@ const images = [
 const ImageCarousel = () => {
 	return (
 		<Carousel
-			className='w-full shadow-md'
+			className='w-full shadow-xl'
 			plugins={[Autoplay({ delay: 4000 })]}
 			opts={{
 				align: 'center',

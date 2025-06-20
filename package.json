@@ -7,7 +7,9 @@
 		"email": "email dev --port 3002",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint"
+		"lint": "next lint",
+		"db:migrate": "npx drizzle-kit migrate",
+		"db:generate": "npx drizzle-kit generate"
 	},
 	"dependencies": {
 		"@carbon/icons-react": "^11.61.0",
@@ -53,6 +55,7 @@
 		"@types/node": "^20",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
+		"drizzle-kit": "^0.31.1",
 		"eslint": "^9",
 		"eslint-config-next": "15.3.3",
 		"react-email": "4.0.16",

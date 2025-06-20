@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(response, { status: 201 });
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
     const registrationRepository = RegistrationApi();
     const response = await findAllRegistrations(registrationRepository);
     return NextResponse.json(response, { status: 200 });

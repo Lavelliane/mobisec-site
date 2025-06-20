@@ -1,7 +1,10 @@
 import React from "react";
 import { signOut } from "../../../../../auth";
+import { auth } from "../../../../../auth";
 
-const Dashboard = () => {
+const Dashboard = async () => {
+  const session = await auth();
+  console.log(session);
   return (
     <div>
       <form

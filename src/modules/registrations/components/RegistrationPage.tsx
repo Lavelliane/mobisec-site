@@ -52,7 +52,7 @@ const RegistrationPage = () => {
 	}, [existingRegData]);
 
 	// Handle registration submission for new registrations
-	const handleRegistrationSubmit = (data: RegistrationFormData) => {
+	const handleRegistrationSubmit = (data: RegistrationFormData, eventId?: string) => {
 		const registrationData = {
 			...data,
 			title: data.title || null,
@@ -61,6 +61,7 @@ const RegistrationPage = () => {
 			accessibilityNeeds: data.accessibilityNeeds || null,
 			notes: data.notes || null,
 			registrationStatus: 'pending' as const,
+			eventId: eventId || null,
 		};
 
 		createRegistrationMutation.mutate(

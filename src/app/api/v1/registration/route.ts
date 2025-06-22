@@ -34,6 +34,7 @@ export async function POST(request: NextRequest) {
 
 		// Map form fields to database schema
 		const registration: Omit<Registration, 'id' | 'createdAt' | 'updatedAt'> = {
+			eventId: registrationData.eventId || null,
 			title: registrationData.title || null,
 			firstName: registrationData.firstName,
 			lastName: registrationData.lastName,

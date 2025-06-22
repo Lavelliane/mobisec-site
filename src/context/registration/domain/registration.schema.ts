@@ -1,4 +1,5 @@
 import { pgTable, text, timestamp, boolean, pgEnum, uuid } from 'drizzle-orm/pg-core';
+import { events } from '@/context/event/domain/event.schema';
 
 // Enums for registration status and attendee types
 export const registrationStatusEnum = pgEnum('registration_status', ['pending', 'confirmed', 'cancelled']);
@@ -10,6 +11,9 @@ export const conferenceRegistrations = pgTable('conference_registrations', {
 	id: uuid('id').defaultRandom().primaryKey(),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
 	updatedAt: timestamp('updated_at').defaultNow().notNull(),
+
+	// Event reference
+	eventId: uuid('event_id').references(() => events.id),
 
 	// Personal information
 	title: text('title'), // Mr., Mrs., Dr., Prof., etc.

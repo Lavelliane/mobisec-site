@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { useCreateProfile, useGetProfiles, useUpdateProfile } from '@/modules/profile/hooks';
 import { useGetRegistrations } from '@/modules/registrations/hooks';
+import { useGetEvents } from '@/modules/events/hooks';
 import { Profile } from '@/context/profile/domain/profile.schema';
 import { Registration } from '@/context/registration/domain/registration.schema';
 import { useSession } from 'next-auth/react';
@@ -13,6 +14,7 @@ import ProfileCard from './ProfileCard';
 import CreateProfileForm from './CreateProfileForm';
 import EditProfileDialog from './EditProfileDialog';
 import EditRegistrationCard from './EditRegistrationCard';
+import JoinedEventsHistoryCard from './JoinedEventsHistoryCard';
 import SkeletonProfilePage from './SkeletonProfilePage';
 
 const ProfilePage = () => {
@@ -24,11 +26,13 @@ const ProfilePage = () => {
 	// Hooks for API operations
 	const { data: profilesData, isLoading, error } = useGetProfiles();
 	const { data: registrationsData, isLoading: registrationsLoading } = useGetRegistrations();
+	const { data: eventsData, isLoading: eventsLoading } = useGetEvents();
 	const createProfileMutation = useCreateProfile();
 	const updateProfileMutation = useUpdateProfile();
 
 	const profiles = useMemo(() => profilesData?.profiles || [], [profilesData]);
 	const registrations = useMemo(() => registrationsData?.registrations || [], [registrationsData]);
+	const events = useMemo(() => eventsData?.events || [], [eventsData]);
 
 	// Find current user's profile and registration
 	useEffect(() => {
@@ -43,6 +47,12 @@ const ProfilePage = () => {
 			const currentUserRegistration = registrations.find((r) => r.email === session.user?.email);
 			setUserRegistration(currentUserRegistration || null);
 		}
+	}, [session?.user?.email, registrations]);
+
+	// Get user's registrations for events history
+	const userRegistrations = useMemo(() => {
+		if (!session?.user?.email) return [];
+		return registrations.filter((r) => r.email === session.user?.email);
 	}, [session?.user?.email, registrations]);
 
 	// Handle creating new profile
@@ -121,28 +131,35 @@ const ProfilePage = () => {
 		);
 	}
 
-	if (isLoading || registrationsLoading) {
+	if (isLoading || registrationsLoading || eventsLoading) {
 		return <SkeletonProfilePage />;
 	}
 
 	return (
-		<div className='max-w-6xl w-full h-full py-12 px-4'>
-			{/* Two-column layout: Profile (left) and Registration (right) */}
+		<div className='max-w-7xl w-full h-full py-12 px-4'>
 			{userProfile ? (
-				<div className='flex flex-row gap-8 h-full w-full'>
-					{/* Left Column - Registration Information */}
+				<div className='space-y-8'>
+					{/* Two-column layout: Registration (left) and Profile (right) */}
+					<div className='flex flex-row gap-8 h-full w-full'>
+						{/* Left Column - Registration Information */}
+						<EditRegistrationCard
+							registration={userRegistration}
+							onRegistrationUpdate={setUserRegistration}
+						/>
 
-					<EditRegistrationCard
-						registration={userRegistration}
-						onRegistrationUpdate={setUserRegistration}
-					/>
-
-					{/* Right Column - Profile */}
-
-					<ProfileCard
-						userProfile={userProfile}
-						onEdit={handleEditProfile}
-					/>
+						<div className='max-w-sm w-full flex flex-col gap-8'>
+							{/* Right Column - Profile */}
+							<ProfileCard
+								userProfile={userProfile}
+								onEdit={handleEditProfile}
+							/>
+							{/* Full-width Joined Events History */}
+							<JoinedEventsHistoryCard
+								userRegistrations={userRegistrations}
+								events={events}
+							/>
+						</div>
+					</div>
 				</div>
 			) : (
 				<div className='max-w-2xl mx-auto'>

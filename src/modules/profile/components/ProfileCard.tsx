@@ -16,7 +16,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userProfile, onEdit }) => {
 	const { data: session } = useSession();
 
 	return (
-		<Card className='max-w-sm w-full h-full'>
+		<Card className='max-w-sm w-full h-fit'>
 			<CardHeader>
 				<div className='flex flex-col gap-2 items-start'>
 					<div className='flex items-center gap-3'>

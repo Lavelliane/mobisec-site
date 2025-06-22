@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -17,8 +17,10 @@ import {
 	titleOptions,
 	attendeeTypeOptions,
 } from '@/modules/registrations/types';
-import { AlertTriangle, Edit, X, Check } from 'lucide-react';
+import { AlertTriangle, Edit, X, Check, Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { useGetEvents } from '@/modules/events/hooks';
+import { EventDetailsCard } from '@/modules/registrations/components';
 
 interface EditRegistrationCardProps {
 	registration: Registration | null;
@@ -29,6 +31,29 @@ const EditRegistrationCard: React.FC<EditRegistrationCardProps> = ({ registratio
 	const [isEditing, setIsEditing] = useState(false);
 	const [showRestrictedAlert, setShowRestrictedAlert] = useState(false);
 	const updateRegistrationMutation = useUpdateRegistration();
+
+	// Get events to show event details
+	const { data: eventsData, isLoading: eventsLoading } = useGetEvents();
+
+	// Get the event associated with this registration
+	const registrationEvent = useMemo(() => {
+		if (!eventsData?.events || !registration?.eventId) return null;
+		return eventsData.events.find((event) => event.id === registration.eventId) || null;
+	}, [eventsData, registration]);
+
+	// Get the active event as fallback
+	const activeEvent = useMemo(() => {
+		if (!eventsData?.events) return null;
+
+		return (
+			eventsData.events
+				.filter((event) => event.isActiveEvent && event.isActiveRegistration)
+				.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0] || null
+		);
+	}, [eventsData]);
+
+	// Use registration's event or fallback to active event
+	const displayEvent = registrationEvent || activeEvent;
 
 	const registrationForm = useForm<RegistrationFormData>({
 		resolver: zodResolver(registrationSchema),
@@ -136,163 +161,298 @@ const EditRegistrationCard: React.FC<EditRegistrationCardProps> = ({ registratio
 		return option ? option.label : value;
 	};
 
-	if (!registration) {
+	// Show loading state if events are loading
+	if (eventsLoading) {
 		return (
 			<Card className='w-full h-fit'>
-				<CardHeader>
-					<h3 className='text-lg font-semibold'>Registration Information</h3>
-				</CardHeader>
-				<CardContent>
+				<CardContent className='py-12'>
 					<div className='text-center'>
-						<p className='text-muted-foreground'>No registration found</p>
-						<p className='text-sm text-muted-foreground mt-2'>You haven&apos;t registered for the conference yet.</p>
-					</div>
-					<div className='flex justify-center gap-4 mt-4'>
-						<Button
-							asChild
-							variant='secondary'>
-							<Link href='/author-instruction'>Author Instructions</Link>
-						</Button>
-						<Button asChild>
-							<Link href='/registration'>Register</Link>
-						</Button>
+						<Loader2 className='h-8 w-8 animate-spin mx-auto mb-4' />
+						<p className='text-muted-foreground'>Loading event information...</p>
 					</div>
 				</CardContent>
 			</Card>
 		);
 	}
 
-	return (
-		<Card className='w-full h-fit'>
-			<CardHeader>
-				<div className='flex justify-between items-center'>
-					<div>
+	if (!registration) {
+		return (
+			<div className='flex flex-col gap-4 w-full'>
+				{displayEvent && <EventDetailsCard event={displayEvent} />}
+				<Card className='w-full h-fit'>
+					<CardHeader>
 						<h3 className='text-lg font-semibold'>Registration Information</h3>
-						<p className='text-sm text-muted-foreground'>
-							{isEditing ? 'Edit your conference registration details' : 'View your conference registration details'}
-						</p>
+					</CardHeader>
+					<CardContent>
+						<div className='text-center'>
+							<p className='text-muted-foreground'>No registration found</p>
+							<p className='text-sm text-muted-foreground mt-2'>You haven&apos;t registered for the conference yet.</p>
+						</div>
+						<div className='flex justify-center gap-4 mt-4'>
+							<Button
+								asChild
+								variant='secondary'>
+								<Link href='/author-instruction'>Author Instructions</Link>
+							</Button>
+							<Button asChild>
+								<Link href='/registration'>Register</Link>
+							</Button>
+						</div>
+					</CardContent>
+				</Card>
+			</div>
+		);
+	}
+
+	return (
+		<div className='flex flex-col gap-4 w-full'>
+			{/* Event Details Section */}
+			{displayEvent && <EventDetailsCard event={displayEvent} />}
+
+			<Card className='w-full h-fit'>
+				<CardHeader>
+					<div className='flex justify-between items-center'>
+						<div>
+							<h3 className='text-lg font-semibold'>Registration Information</h3>
+							<p className='text-sm text-muted-foreground'>
+								{isEditing ? 'Edit your conference registration details' : 'View your conference registration details'}
+							</p>
+						</div>
+						{!isEditing && (
+							<Button
+								onClick={handleEditClick}
+								variant='secondary'
+								size='sm'>
+								<Edit className='w-4 h-4 mr-2' />
+								Update Registration
+							</Button>
+						)}
 					</div>
-					{!isEditing && (
-						<Button
-							onClick={handleEditClick}
-							variant='secondary'
-							size='sm'>
-							<Edit className='w-4 h-4 mr-2' />
-							Update Registration
-						</Button>
+				</CardHeader>
+				<CardContent>
+					{isEditing && showRestrictedAlert && (
+						<Alert
+							variant='warning'
+							className='mb-4'>
+							<AlertTriangle className='h-4 w-4' />
+							<AlertTitle>Field Restriction</AlertTitle>
+							<AlertDescription>
+								Name, email, and attendee type cannot be changed here. Please contact the administrator if you need to
+								modify these fields.
+							</AlertDescription>
+						</Alert>
 					)}
-				</div>
-			</CardHeader>
-			<CardContent>
-				{isEditing && showRestrictedAlert && (
-					<Alert
-						variant='warning'
-						className='mb-4'>
-						<AlertTriangle className='h-4 w-4' />
-						<AlertTitle>Field Restriction</AlertTitle>
-						<AlertDescription>
-							Name, email, and attendee type cannot be changed here. Please contact the administrator if you need to
-							modify these fields.
-						</AlertDescription>
-					</Alert>
-				)}
 
-				{!isEditing ? (
-					// Display Mode
-					<div className='space-y-6'>
-						{/* Personal Information Section */}
-						<div className='space-y-4'>
-							<h4 className='text-lg font-medium text-foreground border-b pb-2'>Personal Information</h4>
-
-							<div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-								<div>
-									<label className='text-sm font-medium text-muted-foreground'>Title</label>
-									<p className='text-sm mt-1'>{getTitleLabel(registration.title)}</p>
-								</div>
-								<div>
-									<label className='text-sm font-medium text-muted-foreground'>First Name</label>
-									<p className='text-sm mt-1'>{registration.firstName}</p>
-								</div>
-								<div>
-									<label className='text-sm font-medium text-muted-foreground'>Last Name</label>
-									<p className='text-sm mt-1'>{registration.lastName}</p>
-								</div>
-							</div>
-
-							<div>
-								<label className='text-sm font-medium text-muted-foreground'>Email Address</label>
-								<p className='text-sm mt-1'>{registration.email}</p>
-							</div>
-
-							<div>
-								<label className='text-sm font-medium text-muted-foreground'>Affiliation/Organization</label>
-								<p className='text-sm mt-1'>{registration.affiliation || 'Not specified'}</p>
-							</div>
-						</div>
-
-						{/* Registration Details Section */}
-						<div className='space-y-4'>
-							<h4 className='text-lg font-medium text-foreground border-b pb-2'>Registration Details</h4>
-							<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-								<div>
-									<label className='text-sm font-medium text-muted-foreground'>Attendee Type</label>
-									<p className='text-sm mt-1'>{getAttendeeTypeLabel(registration.attendeeType)}</p>
-								</div>
-
-								<div>
-									<label className='text-sm font-medium text-muted-foreground'>Presenting at Conference</label>
-									<p className='text-sm mt-1'>{registration.isPresenting ? 'Yes' : 'No'}</p>
-								</div>
-							</div>
-						</div>
-
-						{/* Additional Information Section */}
-						<div className='space-y-4'>
-							<h4 className='text-lg font-medium text-foreground border-b pb-2'>Additional Information</h4>
-
-							<div>
-								<label className='text-sm font-medium text-muted-foreground'>Dietary Requirements</label>
-								<p className='text-sm mt-1'>{registration.dietaryRequirements || 'None specified'}</p>
-							</div>
-
-							<div>
-								<label className='text-sm font-medium text-muted-foreground'>Accessibility Needs</label>
-								<p className='text-sm mt-1'>{registration.accessibilityNeeds || 'None specified'}</p>
-							</div>
-
-							<div>
-								<label className='text-sm font-medium text-muted-foreground'>Additional Notes</label>
-								<p className='text-sm mt-1'>{registration.notes || 'None specified'}</p>
-							</div>
-						</div>
-					</div>
-				) : (
-					// Edit Mode
-					<Form {...registrationForm}>
-						<form
-							onSubmit={registrationForm.handleSubmit(handleRegistrationUpdate)}
-							className='space-y-6'>
+					{!isEditing ? (
+						// Display Mode
+						<div className='space-y-6'>
 							{/* Personal Information Section */}
 							<div className='space-y-4'>
 								<h4 className='text-lg font-medium text-foreground border-b pb-2'>Personal Information</h4>
 
 								<div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+									<div>
+										<label className='text-sm font-medium text-muted-foreground'>Title</label>
+										<p className='text-sm mt-1'>{getTitleLabel(registration.title)}</p>
+									</div>
+									<div>
+										<label className='text-sm font-medium text-muted-foreground'>First Name</label>
+										<p className='text-sm mt-1'>{registration.firstName}</p>
+									</div>
+									<div>
+										<label className='text-sm font-medium text-muted-foreground'>Last Name</label>
+										<p className='text-sm mt-1'>{registration.lastName}</p>
+									</div>
+								</div>
+
+								<div>
+									<label className='text-sm font-medium text-muted-foreground'>Email Address</label>
+									<p className='text-sm mt-1'>{registration.email}</p>
+								</div>
+
+								<div>
+									<label className='text-sm font-medium text-muted-foreground'>Affiliation/Organization</label>
+									<p className='text-sm mt-1'>{registration.affiliation || 'Not specified'}</p>
+								</div>
+							</div>
+
+							{/* Registration Details Section */}
+							<div className='space-y-4'>
+								<h4 className='text-lg font-medium text-foreground border-b pb-2'>Registration Details</h4>
+								<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+									<div>
+										<label className='text-sm font-medium text-muted-foreground'>Attendee Type</label>
+										<p className='text-sm mt-1'>{getAttendeeTypeLabel(registration.attendeeType)}</p>
+									</div>
+
+									<div>
+										<label className='text-sm font-medium text-muted-foreground'>Presenting at Conference</label>
+										<p className='text-sm mt-1'>{registration.isPresenting ? 'Yes' : 'No'}</p>
+									</div>
+								</div>
+							</div>
+
+							{/* Additional Information Section */}
+							<div className='space-y-4'>
+								<h4 className='text-lg font-medium text-foreground border-b pb-2'>Additional Information</h4>
+
+								<div>
+									<label className='text-sm font-medium text-muted-foreground'>Dietary Requirements</label>
+									<p className='text-sm mt-1'>{registration.dietaryRequirements || 'None specified'}</p>
+								</div>
+
+								<div>
+									<label className='text-sm font-medium text-muted-foreground'>Accessibility Needs</label>
+									<p className='text-sm mt-1'>{registration.accessibilityNeeds || 'None specified'}</p>
+								</div>
+
+								<div>
+									<label className='text-sm font-medium text-muted-foreground'>Additional Notes</label>
+									<p className='text-sm mt-1'>{registration.notes || 'None specified'}</p>
+								</div>
+							</div>
+						</div>
+					) : (
+						// Edit Mode
+						<Form {...registrationForm}>
+							<form
+								onSubmit={registrationForm.handleSubmit(handleRegistrationUpdate)}
+								className='space-y-6'>
+								{/* Personal Information Section */}
+								<div className='space-y-4'>
+									<h4 className='text-lg font-medium text-foreground border-b pb-2'>Personal Information</h4>
+
+									<div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+										<FormField
+											control={registrationForm.control}
+											name='title'
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>Title</FormLabel>
+													<Select
+														onValueChange={field.onChange}
+														value={field.value}>
+														<FormControl>
+															<SelectTrigger>
+																<SelectValue placeholder='Select title' />
+															</SelectTrigger>
+														</FormControl>
+														<SelectContent>
+															{titleOptions.map((option) => (
+																<SelectItem
+																	key={option.value}
+																	value={option.value}>
+																	{option.label}
+																</SelectItem>
+															))}
+														</SelectContent>
+													</Select>
+												</FormItem>
+											)}
+										/>
+
+										<FormField
+											control={registrationForm.control}
+											name='firstName'
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>First Name *</FormLabel>
+													<FormControl>
+														<Input
+															{...field}
+															placeholder='First name'
+															disabled
+															className='bg-muted cursor-not-allowed'
+															onFocus={handleRestrictedFieldFocus}
+														/>
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+
+										<FormField
+											control={registrationForm.control}
+											name='lastName'
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>Last Name *</FormLabel>
+													<FormControl>
+														<Input
+															{...field}
+															placeholder='Last name'
+															disabled
+															className='bg-muted cursor-not-allowed'
+															onFocus={handleRestrictedFieldFocus}
+														/>
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+									</div>
+
 									<FormField
 										control={registrationForm.control}
-										name='title'
+										name='email'
 										render={({ field }) => (
 											<FormItem>
-												<FormLabel>Title</FormLabel>
+												<FormLabel>Email Address *</FormLabel>
+												<FormControl>
+													<Input
+														{...field}
+														type='email'
+														placeholder='your.email@example.com'
+														disabled
+														className='bg-muted cursor-not-allowed'
+														onFocus={handleRestrictedFieldFocus}
+													/>
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+
+									<FormField
+										control={registrationForm.control}
+										name='affiliation'
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Affiliation/Organization</FormLabel>
+												<FormControl>
+													<Input
+														{...field}
+														placeholder='Your affiliation or organization'
+													/>
+												</FormControl>
+											</FormItem>
+										)}
+									/>
+								</div>
+
+								{/* Registration Details Section */}
+								<div className='space-y-4'>
+									<h4 className='text-lg font-medium text-foreground border-b pb-2'>Registration Details</h4>
+
+									<FormField
+										control={registrationForm.control}
+										name='attendeeType'
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Attendee Type *</FormLabel>
 												<Select
 													onValueChange={field.onChange}
-													value={field.value}>
+													value={field.value}
+													disabled>
 													<FormControl>
-														<SelectTrigger>
-															<SelectValue placeholder='Select title' />
+														<SelectTrigger
+															className='bg-muted cursor-not-allowed'
+															onFocus={handleRestrictedFieldFocus}>
+															<SelectValue placeholder='Select attendee type' />
 														</SelectTrigger>
 													</FormControl>
 													<SelectContent>
-														{titleOptions.map((option) => (
+														{attendeeTypeOptions.map((option) => (
 															<SelectItem
 																key={option.value}
 																value={option.value}>
@@ -301,25 +461,6 @@ const EditRegistrationCard: React.FC<EditRegistrationCardProps> = ({ registratio
 														))}
 													</SelectContent>
 												</Select>
-											</FormItem>
-										)}
-									/>
-
-									<FormField
-										control={registrationForm.control}
-										name='firstName'
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>First Name *</FormLabel>
-												<FormControl>
-													<Input
-														{...field}
-														placeholder='First name'
-														disabled
-														className='bg-muted cursor-not-allowed'
-														onFocus={handleRestrictedFieldFocus}
-													/>
-												</FormControl>
 												<FormMessage />
 											</FormItem>
 										)}
@@ -327,194 +468,100 @@ const EditRegistrationCard: React.FC<EditRegistrationCardProps> = ({ registratio
 
 									<FormField
 										control={registrationForm.control}
-										name='lastName'
+										name='isPresenting'
 										render={({ field }) => (
-											<FormItem>
-												<FormLabel>Last Name *</FormLabel>
+											<FormItem className='flex flex-row items-center space-x-3 space-y-0'>
 												<FormControl>
-													<Input
-														{...field}
-														placeholder='Last name'
-														disabled
-														className='bg-muted cursor-not-allowed'
-														onFocus={handleRestrictedFieldFocus}
+													<input
+														type='checkbox'
+														checked={field.value}
+														onChange={field.onChange}
+														className='h-4 w-4 rounded border border-input bg-background text-primary focus:ring-2 focus:ring-ring'
 													/>
 												</FormControl>
-												<FormMessage />
+												<div className='space-y-1 leading-none'>
+													<FormLabel>I will be presenting at the conference</FormLabel>
+												</div>
 											</FormItem>
 										)}
 									/>
 								</div>
 
-								<FormField
-									control={registrationForm.control}
-									name='email'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>Email Address *</FormLabel>
-											<FormControl>
-												<Input
-													{...field}
-													type='email'
-													placeholder='your.email@example.com'
-													disabled
-													className='bg-muted cursor-not-allowed'
-													onFocus={handleRestrictedFieldFocus}
-												/>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
+								{/* Additional Information Section */}
+								<div className='space-y-4'>
+									<h4 className='text-lg font-medium text-foreground border-b pb-2'>Additional Information</h4>
 
-								<FormField
-									control={registrationForm.control}
-									name='affiliation'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>Affiliation/Organization</FormLabel>
-											<FormControl>
-												<Input
-													{...field}
-													placeholder='Your affiliation or organization'
-												/>
-											</FormControl>
-										</FormItem>
-									)}
-								/>
-							</div>
-
-							{/* Registration Details Section */}
-							<div className='space-y-4'>
-								<h4 className='text-lg font-medium text-foreground border-b pb-2'>Registration Details</h4>
-
-								<FormField
-									control={registrationForm.control}
-									name='attendeeType'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>Attendee Type *</FormLabel>
-											<Select
-												onValueChange={field.onChange}
-												value={field.value}
-												disabled>
+									<FormField
+										control={registrationForm.control}
+										name='dietaryRequirements'
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Dietary Requirements</FormLabel>
 												<FormControl>
-													<SelectTrigger
-														className='bg-muted cursor-not-allowed'
-														onFocus={handleRestrictedFieldFocus}>
-														<SelectValue placeholder='Select attendee type' />
-													</SelectTrigger>
+													<Input
+														{...field}
+														placeholder='Any special dietary needs'
+													/>
 												</FormControl>
-												<SelectContent>
-													{attendeeTypeOptions.map((option) => (
-														<SelectItem
-															key={option.value}
-															value={option.value}>
-															{option.label}
-														</SelectItem>
-													))}
-												</SelectContent>
-											</Select>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
+											</FormItem>
+										)}
+									/>
 
-								<FormField
-									control={registrationForm.control}
-									name='isPresenting'
-									render={({ field }) => (
-										<FormItem className='flex flex-row items-center space-x-3 space-y-0'>
-											<FormControl>
-												<input
-													type='checkbox'
-													checked={field.value}
-													onChange={field.onChange}
-													className='h-4 w-4 rounded border border-input bg-background text-primary focus:ring-2 focus:ring-ring'
-												/>
-											</FormControl>
-											<div className='space-y-1 leading-none'>
-												<FormLabel>I will be presenting at the conference</FormLabel>
-											</div>
-										</FormItem>
-									)}
-								/>
-							</div>
+									<FormField
+										control={registrationForm.control}
+										name='accessibilityNeeds'
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Accessibility Needs</FormLabel>
+												<FormControl>
+													<Input
+														{...field}
+														placeholder='Any accessibility accommodations needed'
+													/>
+												</FormControl>
+											</FormItem>
+										)}
+									/>
 
-							{/* Additional Information Section */}
-							<div className='space-y-4'>
-								<h4 className='text-lg font-medium text-foreground border-b pb-2'>Additional Information</h4>
+									<FormField
+										control={registrationForm.control}
+										name='notes'
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Additional Notes</FormLabel>
+												<FormControl>
+													<Input
+														{...field}
+														placeholder='Any additional information'
+													/>
+												</FormControl>
+											</FormItem>
+										)}
+									/>
+								</div>
 
-								<FormField
-									control={registrationForm.control}
-									name='dietaryRequirements'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>Dietary Requirements</FormLabel>
-											<FormControl>
-												<Input
-													{...field}
-													placeholder='Any special dietary needs'
-												/>
-											</FormControl>
-										</FormItem>
-									)}
-								/>
-
-								<FormField
-									control={registrationForm.control}
-									name='accessibilityNeeds'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>Accessibility Needs</FormLabel>
-											<FormControl>
-												<Input
-													{...field}
-													placeholder='Any accessibility accommodations needed'
-												/>
-											</FormControl>
-										</FormItem>
-									)}
-								/>
-
-								<FormField
-									control={registrationForm.control}
-									name='notes'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>Additional Notes</FormLabel>
-											<FormControl>
-												<Input
-													{...field}
-													placeholder='Any additional information'
-												/>
-											</FormControl>
-										</FormItem>
-									)}
-								/>
-							</div>
-
-							<div className='flex justify-end gap-3 pt-4'>
-								<Button
-									type='button'
-									variant='outline'
-									onClick={handleCancelClick}
-									disabled={updateRegistrationMutation.isPending}>
-									<X className='w-4 h-4' />
-									Cancel
-								</Button>
-								<Button
-									type='submit'
-									disabled={updateRegistrationMutation.isPending}>
-									<Check className='w-4 h-4' />
-									{updateRegistrationMutation.isPending ? 'Saving...' : 'Finish'}
-								</Button>
-							</div>
-						</form>
-					</Form>
-				)}
-			</CardContent>
-		</Card>
+								<div className='flex justify-end gap-3 pt-4'>
+									<Button
+										type='button'
+										variant='outline'
+										onClick={handleCancelClick}
+										disabled={updateRegistrationMutation.isPending}>
+										<X className='w-4 h-4' />
+										Cancel
+									</Button>
+									<Button
+										type='submit'
+										disabled={updateRegistrationMutation.isPending}>
+										<Check className='w-4 h-4' />
+										{updateRegistrationMutation.isPending ? 'Saving...' : 'Finish'}
+									</Button>
+								</div>
+							</form>
+						</Form>
+					)}
+				</CardContent>
+			</Card>
+		</div>
 	);
 };
 

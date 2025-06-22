@@ -1,0 +1,41 @@
+{
+	"version": "7",
+	"dialect": "postgresql",
+	"entries": [
+		{
+			"idx": 0,
+			"version": "7",
+			"when": 1750396749942,
+			"tag": "0000_cooing_nicolaos",
+			"breakpoints": true
+		},
+		{
+			"idx": 1,
+			"version": "7",
+			"when": 1750525333516,
+			"tag": "0001_supreme_lester",
+			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "7",
+			"when": 1750537274687,
+			"tag": "0002_red_hammerhead",
+			"breakpoints": true
+		},
+		{
+			"idx": 3,
+			"version": "7",
+			"when": 1750604627862,
+			"tag": "0003_ambitious_machine_man",
+			"breakpoints": true
+		},
+		{
+			"idx": 4,
+			"version": "7",
+			"when": 1750604700000,
+			"tag": "0004_add_event_id_to_registrations",
+			"breakpoints": true
+		}
+	]
+}

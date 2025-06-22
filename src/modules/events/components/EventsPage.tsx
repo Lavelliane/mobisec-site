@@ -9,7 +9,6 @@ import { EventFormData } from '@/modules/events/types';
 import EventForm from './EventForm';
 import EventCard from './EventCard';
 import { PlusIcon, Settings } from 'lucide-react';
-import { Event } from '@/context/event/domain/event.schema';
 import {
 	Dialog,
 	DialogContent,

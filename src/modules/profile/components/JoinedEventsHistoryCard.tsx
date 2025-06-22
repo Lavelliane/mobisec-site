@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, MapPin, Users, Clock, ChevronDown, ChevronRight } from 'lucide-react';
 import { Event } from '@/context/event/domain/event.schema';
@@ -45,19 +45,6 @@ const JoinedEventsHistoryCard: React.FC<JoinedEventsHistoryCardProps> = ({ userR
 		return joined;
 	}, [userRegistrations, events]);
 
-	const getStatusColor = (status: string) => {
-		switch (status) {
-			case 'confirmed':
-				return 'bg-green-100 text-green-800 border-green-200';
-			case 'pending':
-				return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-			case 'cancelled':
-				return 'bg-red-100 text-red-800 border-red-200';
-			default:
-				return 'bg-gray-100 text-gray-800 border-gray-200';
-		}
-	};
-
 	const formatEventDate = (startDate: Date, endDate: Date) => {
 		const start = format(startDate, 'MMM dd, yyyy');
 		const end = format(endDate, 'MMM dd, yyyy');
@@ -66,15 +53,6 @@ const JoinedEventsHistoryCard: React.FC<JoinedEventsHistoryCardProps> = ({ userR
 			return start;
 		}
 		return `${start} - ${end}`;
-	};
-
-	const isEventUpcoming = (startDate: Date) => {
-		return new Date(startDate) > new Date();
-	};
-
-	const isEventOngoing = (startDate: Date, endDate: Date) => {
-		const now = new Date();
-		return new Date(startDate) <= now && new Date(endDate) >= now;
 	};
 
 	// Toggle expanded state for an event
@@ -112,9 +90,7 @@ const JoinedEventsHistoryCard: React.FC<JoinedEventsHistoryCardProps> = ({ userR
 					</div>
 				) : (
 					<div className='space-y-4'>
-						{joinedEvents.map(({ event, registration, status, joinedDate }) => {
-							const upcoming = isEventUpcoming(event.startDate);
-							const ongoing = isEventOngoing(event.startDate, event.endDate);
+						{joinedEvents.map(({ event, registration, joinedDate }) => {
 							const isExpanded = expandedEvents.has(event.id);
 
 							return (

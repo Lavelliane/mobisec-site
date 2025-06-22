@@ -19,16 +19,9 @@ interface EventFormProps {
 	isLoading: boolean;
 	initialData?: Partial<EventFormData>;
 	title?: string;
-	description?: string;
 }
 
-const EventForm: React.FC<EventFormProps> = ({
-	onSubmit,
-	isLoading,
-	initialData,
-	title = 'Create New Event',
-	description = 'Fill in the details to create a new event',
-}) => {
+const EventForm: React.FC<EventFormProps> = ({ onSubmit, isLoading, initialData, title = 'Create New Event' }) => {
 	const {
 		register,
 		handleSubmit,

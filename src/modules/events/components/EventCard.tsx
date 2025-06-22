@@ -124,7 +124,6 @@ const EventCard: React.FC<EventCardProps> = ({ event, onEventUpdate, onEventDele
 										isActiveRegistration: event.isActiveRegistration,
 									}}
 									title='Update Event'
-									description='Modify the event details'
 								/>
 							</DialogContent>
 						</Dialog>

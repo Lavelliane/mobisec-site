@@ -54,7 +54,7 @@ const CommitteesPage = () => {
 	];
 
 	return (
-		<div className='container mx-auto py-12 px-4'>
+		<div className='py-12 px-4'>
 			<div className='max-w-4xl mx-auto'>
 				<div className='flex flex-col items-center justify-center gap-4 mb-12'>
 					<h1 className='text-4xl font-bold text-foreground text-center'>Committees</h1>

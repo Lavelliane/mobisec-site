@@ -1,5 +1,6 @@
 export interface EmailRecipient {
 	id: number;
+	title?: string | null;
 	name: string;
 	email: string;
 	nationality: string;
@@ -17,6 +18,11 @@ export interface EmailScheduleData {
 	recipients: number[];
 	totalRecipients: number;
 	recipientEmails: string[];
+	recipientDetails?: Array<{
+		email: string;
+		title?: string | null;
+		name: string;
+	}>;
 }
 
 export interface ScheduledEmail {

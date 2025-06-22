@@ -28,7 +28,7 @@ const footerLinks = {
 
 const Footer = () => {
 	return (
-		<footer className='w-full bg-secondary-foreground text-white border-t border-sail-800'>
+		<footer className='w-full border-t border-sail-800 bg-primary text-primary-foreground'>
 			<div className='max-w-7xl mx-auto px-4 py-12'>
 				{/* Main Footer Content */}
 				<div className='grid grid-cols-1 md:grid-cols-2 gap-8 mb-8'>
@@ -55,7 +55,7 @@ const Footer = () => {
 									<li key={link.label}>
 										<Link
 											href={link.href}
-											className='text-sm text-sail-300 hover:text-sail-200 transition-colors'>
+											className='text-sm text-sail-200 hover:text-sail-100 transition-colors'>
 											{link.label}
 										</Link>
 									</li>
@@ -71,7 +71,7 @@ const Footer = () => {
 									<li key={link.label}>
 										<Link
 											href={link.href}
-											className='text-sm text-sail-300 hover:text-sail-200 transition-colors'>
+											className='text-sm text-sail-200 hover:text-sail-100 transition-colors'>
 											{link.label}
 										</Link>
 									</li>
@@ -87,7 +87,7 @@ const Footer = () => {
 									<li key={link.label}>
 										<Link
 											href={link.href}
-											className='text-sm text-sail-300 hover:text-sail-200 transition-colors'>
+											className='text-sm text-sail-200 hover:text-sail-100 transition-colors'>
 											{link.label}
 										</Link>
 									</li>
@@ -96,7 +96,7 @@ const Footer = () => {
 									<li key={link.label}>
 										<Link
 											href={link.href}
-											className='text-sm text-sail-300 hover:text-sail-200 transition-colors'>
+											className='text-sm text-sail-300 hover:text-sail-100 transition-colors'>
 											{link.label}
 										</Link>
 									</li>
@@ -108,16 +108,16 @@ const Footer = () => {
 
 				{/* Bottom Footer */}
 				<div className='border-t border-sail-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4'>
-					<p className='text-sm text-sail-400'>© 2025 MobiSec Conference. All rights reserved.</p>
+					<p className='text-sm text-sail-200'>© 2025 MobiSec Conference. All rights reserved.</p>
 					<div className='flex items-center gap-6'>
 						<Link
 							href='/privacy'
-							className='text-sm text-sail-300 hover:text-sail-100 transition-colors'>
+							className='text-sm text-sail-200 hover:text-sail-100 transition-colors'>
 							Privacy Policy
 						</Link>
 						<Link
 							href='/terms'
-							className='text-sm text-sail-300 hover:text-sail-100 transition-colors'>
+							className='text-sm text-sail-200 hover:text-sail-100 transition-colors'>
 							Terms of Service
 						</Link>
 					</div>

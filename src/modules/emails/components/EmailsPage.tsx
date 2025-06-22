@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { ChevronUpIcon, ChevronDownIcon, PlusIcon, Mail } from 'lucide-react';
+import { ChevronUpIcon, ChevronDownIcon, Mail } from 'lucide-react';
+import { toast } from 'sonner';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,22 +19,70 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 } from '@/components/ui/pagination';
-import AddRecipientForm, { type RecipientFormData } from './AddRecipientForm';
+// import AddRecipientForm, { type RecipientFormData } from './AddRecipientForm';
 import EmailSchedulerForm, { type EmailSchedulerFormData } from './EmailSchedulerForm';
-import emailRecipientsData from '@/data/email-recipients.json';
 import { EmailRecipient } from '@/types/EmailTypes';
+import { useGetProfiles } from '@/modules/profile/hooks';
+import { useGetRegistrations } from '@/modules/registrations/hooks';
+import { Profile } from '@/context/profile/domain/profile.schema';
+import { Registration } from '@/context/registration/domain/registration.schema';
 
 type SortKey = keyof EmailRecipient;
 type SortOrder = 'asc' | 'desc';
 
 const EmailsPage = () => {
-	const [recipients, setRecipients] = useState<EmailRecipient[]>(emailRecipientsData.recipients as EmailRecipient[]);
+	// Fetch profiles and registrations from database
+	const { data: profilesData, isLoading: profilesLoading, error: profilesError } = useGetProfiles();
+	const { data: registrationsData, isLoading: registrationsLoading } = useGetRegistrations();
+
 	const [currentPage, setCurrentPage] = useState(1);
 	const [sortKey, setSortKey] = useState<SortKey>('name');
 	const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
-	const [isDialogOpen, setIsDialogOpen] = useState(false);
+	// const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [isEmailSchedulerOpen, setIsEmailSchedulerOpen] = useState(false);
 	const recipientsPerPage = 10;
+
+	// Transform profiles to EmailRecipient format
+	const recipients = useMemo(() => {
+		if (!profilesData?.profiles) return [];
+
+		const profiles = profilesData.profiles;
+		const registrations = registrationsData?.registrations || [];
+
+		return profiles.map((profile: Profile, index: number): EmailRecipient => {
+			// Find corresponding registration to determine role
+			const registration = registrations.find((reg: Registration) => reg.email === profile.email);
+
+			// Derive role from registration attendee type or use default
+			let role: 'Author' | 'Student' | 'Reviewer' = 'Author'; // Default
+			if (registration) {
+				switch (registration.attendeeType) {
+					case 'student':
+						role = 'Student';
+						break;
+					case 'academic':
+					case 'speaker':
+						role = 'Author';
+						break;
+					case 'industry':
+						role = 'Reviewer';
+						break;
+					default:
+						role = 'Author';
+				}
+			}
+
+			return {
+				id: index + 1, // Use index as ID since profile uses UUID
+				title: profile.title,
+				name: `${profile.firstName} ${profile.lastName}`,
+				email: profile.email,
+				nationality: profile.nationality || 'Unknown',
+				role,
+				receiveEmails: profile.receiveEmails ?? true,
+			};
+		});
+	}, [profilesData?.profiles, registrationsData?.registrations]);
 
 	// Sorting logic
 	const sortedRecipients = useMemo(() => {
@@ -45,6 +94,13 @@ const EmailsPage = () => {
 				return sortOrder === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
 			}
 
+			// Handle nullable strings (like title)
+			if ((typeof aValue === 'string' || aValue === null) && (typeof bValue === 'string' || bValue === null)) {
+				const aStr = aValue || '';
+				const bStr = bValue || '';
+				return sortOrder === 'asc' ? aStr.localeCompare(bStr) : bStr.localeCompare(aStr);
+			}
+
 			if (typeof aValue === 'boolean' && typeof bValue === 'boolean') {
 				if (sortOrder === 'asc') {
 					return aValue === bValue ? 0 : aValue ? 1 : -1;
@@ -53,9 +109,16 @@ const EmailsPage = () => {
 				}
 			}
 
-			// For numbers or other types
-			if (aValue < bValue) return sortOrder === 'asc' ? -1 : 1;
-			if (aValue > bValue) return sortOrder === 'asc' ? 1 : -1;
+			// For numbers or other types (with null checks)
+			if (aValue != null && bValue != null) {
+				if (aValue < bValue) return sortOrder === 'asc' ? -1 : 1;
+				if (aValue > bValue) return sortOrder === 'asc' ? 1 : -1;
+			}
+
+			// Handle null/undefined values
+			if (aValue == null && bValue != null) return sortOrder === 'asc' ? -1 : 1;
+			if (aValue != null && bValue == null) return sortOrder === 'asc' ? 1 : -1;
+
 			return 0;
 		});
 		return sorted;
@@ -91,60 +154,61 @@ const EmailsPage = () => {
 	};
 
 	const toggleEmailReceive = (id: number) => {
-		setRecipients((prev) =>
-			prev.map((recipient) =>
-				recipient.id === id ? { ...recipient, receiveEmails: !recipient.receiveEmails } : recipient
-			)
-		);
+		// Note: This is now read-only since we're using database data
+		// In a real implementation, you would update the profile in the database
+		console.log('Toggle email receive for recipient ID:', id);
+		// You could implement this by calling the update profile API
 	};
 
-	const handleEdit = (id: number) => {
-		// Placeholder for edit functionality
-		console.log('Edit recipient with ID:', id);
-		// In a real application, this would open an edit modal or navigate to an edit page
-	};
+	// const handleEdit = (id: number) => {
+	// 	// Placeholder for edit functionality
+	// 	console.log('Edit recipient with ID:', id);
+	// 	// In a real application, this would open an edit modal or navigate to an edit page
+	// };
 
-	const handleDelete = (id: number) => {
-		// Placeholder for delete functionality
-		console.log('Delete recipient with ID:', id);
-		// In a real application, this would show a confirmation dialog and then delete
-		setRecipients((prev) => prev.filter((recipient) => recipient.id !== id));
-	};
+	// const handleDelete = (id: number) => {
+	// 	// Placeholder for delete functionality
+	// 	console.log('Delete recipient with ID:', id);
+	// 	// In a real application, this would show a confirmation dialog and then delete
+	// };
 
-	const handleAddRecipient = (data: RecipientFormData) => {
-		const maxId = Math.max(...recipients.map((r) => r.id), 0);
-		const newRecipient: EmailRecipient = {
-			id: maxId + 1,
-			...data,
-		};
-
-		setRecipients((prev) => [...prev, newRecipient]);
-		setIsDialogOpen(false);
-	};
+	// const handleAddRecipient = (data: RecipientFormData) => {
+	// 	console.log('Add recipient:', data);
+	// 	// This would need to create a new profile in the database
+	// 	// For now, this is a placeholder
+	// };
 
 	const handleEmailScheduler = async (
 		data: EmailSchedulerFormData & { recipients: number[]; totalRecipients: number }
 	) => {
 		try {
-			// Get recipient emails from IDs
-			const recipientEmails = recipients.filter((r) => data.recipients.includes(r.id)).map((r) => r.email);
+			// Get recipient details from IDs
+			const selectedRecipientDetails = recipients.filter((r) => data.recipients.includes(r.id));
+			const recipientEmails = selectedRecipientDetails.map((r) => r.email);
 
-			// Prepare API payload
+			console.log('Selected recipient details:', selectedRecipientDetails);
+			const correctedDate =
+				data.scheduledDate && new Date(data.scheduledDate.getTime() + 3600 * 1000 * 24).toISOString().split('T')[0];
+
+			// Prepare API payload with recipient details
 			const apiPayload = {
 				templateType: data.templateType,
 				subject: data.subject,
 				body: data.body,
 				sendOption: data.sendOption,
-				scheduledDate: data.scheduledDate ? data.scheduledDate.toISOString().split('T')[0] : undefined,
+				scheduledDate: correctedDate,
 				scheduledTime: data.scheduledTime,
 				recipients: data.recipients,
 				totalRecipients: data.totalRecipients,
 				recipientEmails: recipientEmails,
+				recipientDetails: selectedRecipientDetails.map((r) => ({
+					email: r.email,
+					title: r.title,
+					name: r.name,
+				})),
 			};
 
-			console.log('Sending email request:', apiPayload);
-
-			const response = await fetch('/api/email', {
+			const response = await fetch('/api/v1/email', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -155,16 +219,16 @@ const EmailsPage = () => {
 			const result = await response.json();
 
 			if (response.ok) {
-				alert(
+				toast.success(
 					`Email ${data.sendOption === 'now' ? 'sent' : 'scheduled'} successfully to ${data.totalRecipients} recipients!`
 				);
 				setIsEmailSchedulerOpen(false);
 			} else {
-				alert(`Error: ${result.error || 'Failed to send/schedule email'}`);
+				toast.error(`Error: ${result.error || 'Failed to send/schedule email'}`);
 			}
 		} catch (error) {
 			console.error('Email scheduler error:', error);
-			alert('Failed to send/schedule email. Please try again.');
+			toast.error('Failed to send/schedule email. Please try again.');
 		}
 	};
 
@@ -181,9 +245,38 @@ const EmailsPage = () => {
 		}
 	};
 
+	// Loading state
+	if (profilesLoading || registrationsLoading) {
+		return (
+			<div className='py-12 px-4'>
+				<div className='max-w-7xl mx-auto'>
+					<div className='flex flex-col items-center justify-center gap-4 mb-12'>
+						<h1 className='text-4xl font-bold text-foreground text-center'>Email Recipients</h1>
+						<h2 className='text-xl text-muted-foreground text-center'>Loading recipient data...</h2>
+					</div>
+				</div>
+			</div>
+		);
+	}
+
+	// Error state
+	if (profilesError) {
+		return (
+			<div className='py-12 px-4'>
+				<div className='max-w-7xl mx-auto'>
+					<div className='flex flex-col items-center justify-center gap-4 mb-12'>
+						<h1 className='text-4xl font-bold text-foreground text-center'>Email Recipients</h1>
+						<h2 className='text-xl text-red-600 text-center'>Error loading recipient data</h2>
+						<p className='text-muted-foreground text-center'>{profilesError.message}</p>
+					</div>
+				</div>
+			</div>
+		);
+	}
+
 	return (
-		<div className='container mx-auto py-12 px-4'>
-			<div className='max-w-7xl mx-auto'>
+		<div className='py-12 px-4 w-full'>
+			<div className='w-full max-w-6xl mx-auto'>
 				<div className='flex flex-col items-center justify-center gap-4 mb-12'>
 					<h1 className='text-4xl font-bold text-foreground text-center'>Email Recipients</h1>
 					<h2 className='text-xl text-muted-foreground text-center'>Manage newsletter and communication recipients</h2>
@@ -246,30 +339,30 @@ const EmailsPage = () => {
 								<Button
 									variant='secondary'
 									className='px-6'>
-									<Mail className='w-4 h-4 mr-2' />
+									<Mail className='w-4 h-4' />
 									Send Email
 								</Button>
 							}
 						/>
 
 						{/* Add New Recipient Form */}
-						<AddRecipientForm
+						{/* <AddRecipientForm
 							isOpen={isDialogOpen}
 							onOpenChange={setIsDialogOpen}
 							onSubmit={handleAddRecipient}
 							trigger={
 								<Button className='px-6'>
-									<PlusIcon className='w-4 h-4 mr-2' />
+									<PlusIcon className='w-4 h-4' />
 									Add New Recipient
 								</Button>
 							}
-						/>
+						/> */}
 					</div>
 				</div>
 
 				{/* Recipients Table */}
 				<div className='bg-white rounded-lg shadow-sm border'>
-					<div className='p-6 border-b bg-secondary-foreground'>
+					<div className='p-6 border-b bg-secondary'>
 						<h3 className='text-lg font-semibold text-background'>Recipients List</h3>
 						<p className='text-sm text-muted'>Manage all email recipients and their preferences</p>
 					</div>
@@ -302,7 +395,7 @@ const EmailsPage = () => {
 									onClick={() => handleSort('receiveEmails')}>
 									<div className='flex items-center'>Email Status {getSortIcon('receiveEmails')}</div>
 								</TableHead>
-								<TableHead className='text-right'>Actions</TableHead>
+								{/* <TableHead className='text-right'>Actions</TableHead> */}
 							</TableRow>
 						</TableHeader>
 						<TableBody>
@@ -336,7 +429,7 @@ const EmailsPage = () => {
 											{recipient.receiveEmails ? 'Subscribed' : 'Unsubscribed'}
 										</button>
 									</TableCell>
-									<TableCell className='text-right'>
+									{/* <TableCell className='text-right'>
 										<div className='flex gap-2 justify-end'>
 											<Button
 												variant='outline'
@@ -351,7 +444,7 @@ const EmailsPage = () => {
 												Delete
 											</Button>
 										</div>
-									</TableCell>
+									</TableCell> */}
 								</TableRow>
 							))}
 						</TableBody>

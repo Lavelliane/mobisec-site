@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Link from 'next/link';
 import {
 	NavigationMenu,
@@ -12,6 +12,10 @@ import {
 } from '@/components/ui/navigation-menu';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import SignOut from '@/app/action/sign-out';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { useRouter } from 'next/navigation';
+import { Session } from 'next-auth';
 
 const navigationCategories = [
 	{
@@ -65,11 +69,16 @@ const navigationCategories = [
 		],
 	},
 	{
-		label: 'Attend',
-		items: [
-			{ label: 'Registration', href: '/registration', description: 'Register for the conference' },
-			{ label: 'Contact', href: '/contact', description: 'Get in touch with organizers' },
-		],
+		label: 'Registration',
+		href: '/registration',
+		disabled: true,
+		isStandalone: true,
+	},
+	{
+		label: 'Contact Us',
+		href: '/contact',
+		disabled: true,
+		isStandalone: true,
 	},
 ];
 
@@ -119,8 +128,10 @@ function MobileNavItem({
 	);
 }
 
-const NavigationBar = () => {
+const NavigationBar = ({ session }: { session: Session }) => {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+	const router = useRouter();
 
 	const toggleMobileMenu = () => {
 		setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -129,6 +140,48 @@ const NavigationBar = () => {
 	const closeMobileMenu = () => {
 		setIsMobileMenuOpen(false);
 	};
+
+	const handleSignIn = useCallback(() => {
+		return (
+			<>
+				{session?.user ? (
+					<div className='flex flex-row items-center gap-2'>
+						<Button
+							variant='ghost'
+							className='hover:bg-gray-600'
+							onClick={() => {
+								router.push('/profile');
+							}}>
+							<Avatar>
+								<AvatarImage
+									src={session.user?.image || ''}
+									alt={session.user?.name || ''}
+								/>
+								<AvatarFallback>{session.user?.name?.charAt(0)}</AvatarFallback>
+							</Avatar>
+							<p className='text-sm text-white'>{session.user?.name}</p>
+						</Button>
+
+						<Button
+							type='submit'
+							className='self-end'
+							variant='secondary'
+							onClick={() => {
+								SignOut();
+							}}>
+							Sign Out
+						</Button>
+					</div>
+				) : (
+					<Button
+						className='self-end'
+						variant='secondary'>
+						<Link href='/sign-in'>Sign In</Link>
+					</Button>
+				)}
+			</>
+		);
+	}, [session, router]);
 
 	return (
 		<div className='flex flex-col justify-between w-full'>
@@ -192,7 +245,7 @@ const NavigationBar = () => {
 			</div>
 
 			{/* Desktop Navigation */}
-			<div className='hidden md:block w-full border-y-1 border-primary/20 bg-secondary-foreground text-secondary-background'>
+			<div className='hidden md:block w-full py-2 border-primary/20 bg-primary text-primary-foreground'>
 				<div className='max-w-7xl mx-auto flex flex-row items-center justify-between gap-4'>
 					<NavigationMenu>
 						<NavigationMenuList>
@@ -230,9 +283,7 @@ const NavigationBar = () => {
 							})}
 						</NavigationMenuList>
 					</NavigationMenu>
-					<Button className='self-end'>
-						<Link href='/sign-in'>Sign In</Link>
-					</Button>
+					{handleSignIn()}
 				</div>
 			</div>
 

@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { format } from 'date-fns';
-import { Calendar as CalendarIcon, Clock, Send, CalendarDays, Mail, FileText } from 'lucide-react';
+import { Calendar as CalendarIcon, Send, CalendarDays, Mail, FileText, Loader2 } from 'lucide-react';
 import {
 	Dialog,
 	DialogContent,
@@ -20,6 +20,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
 import { EmailRecipient } from '@/types/EmailTypes';
 
@@ -46,6 +47,22 @@ const emailSchedulerSchema = z
 		{
 			message: 'Date and time are required when scheduling',
 			path: ['scheduledDate'],
+		}
+	)
+	.refine(
+		(data) => {
+			if (data.sendOption === 'schedule' && data.scheduledDate && data.scheduledTime) {
+				const correctedDate = new Date(data.scheduledDate.getTime() + 3600 * 1000 * 24).toISOString().split('T')[0];
+				const scheduledDateTime = new Date(`${correctedDate}T${data.scheduledTime}`);
+
+				const now = new Date();
+				return scheduledDateTime > now;
+			}
+			return true;
+		},
+		{
+			message: 'Scheduled time must be in the future',
+			path: ['scheduledTime'],
 		}
 	)
 	.refine(
@@ -78,7 +95,7 @@ type EmailSchedulerFormData = z.infer<typeof emailSchedulerSchema>;
 interface EmailSchedulerFormProps {
 	isOpen: boolean;
 	onOpenChange: (open: boolean) => void;
-	onSubmit: (data: EmailSchedulerFormData & { recipients: number[]; totalRecipients: number }) => void;
+	onSubmit: (data: EmailSchedulerFormData & { recipients: number[]; totalRecipients: number }) => Promise<void>;
 	trigger: React.ReactNode;
 	recipients: EmailRecipient[];
 }
@@ -91,6 +108,7 @@ const EmailSchedulerForm: React.FC<EmailSchedulerFormProps> = ({
 	recipients,
 }) => {
 	const [selectedRecipients, setSelectedRecipients] = useState<number[]>([]);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const form = useForm<EmailSchedulerFormData>({
 		resolver: zodResolver(emailSchedulerSchema),
@@ -108,52 +126,74 @@ const EmailSchedulerForm: React.FC<EmailSchedulerFormProps> = ({
 	const templateType = form.watch('templateType');
 	const subscribedRecipients = recipients.filter((r) => r.receiveEmails);
 
-	const handleSubmit = (data: EmailSchedulerFormData) => {
-		const emailData = {
-			...data,
-			recipients: selectedRecipients,
-			totalRecipients: selectedRecipients.length,
-		};
-		onSubmit(emailData);
-		form.reset({
-			templateType: 'custom',
-			subject: '',
-			body: '',
-			sendOption: 'now',
-			scheduledDate: undefined,
-			scheduledTime: '',
-		});
-		setSelectedRecipients([]);
+	const handleSubmit = async (data: EmailSchedulerFormData) => {
+		if (selectedRecipients.length === 0) {
+			return;
+		}
+
+		setIsLoading(true);
+
+		try {
+			const emailData = {
+				...data,
+				recipients: selectedRecipients,
+				totalRecipients: selectedRecipients.length,
+			};
+
+			await onSubmit(emailData);
+
+			// Reset form and close dialog on success
+			form.reset({
+				templateType: 'custom',
+				subject: '',
+				body: '',
+				sendOption: 'now',
+				scheduledDate: undefined,
+				scheduledTime: '',
+			});
+			setSelectedRecipients([]);
+			onOpenChange(false);
+		} catch (error) {
+			// Error handling is done by parent component
+			console.error('Email submission failed:', error);
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	const toggleRecipient = (recipientId: number) => {
+		if (isLoading) return;
 		setSelectedRecipients((prev) =>
 			prev.includes(recipientId) ? prev.filter((id) => id !== recipientId) : [...prev, recipientId]
 		);
 	};
 
 	const selectAllRecipients = () => {
+		if (isLoading) return;
 		setSelectedRecipients(subscribedRecipients.map((r) => r.id));
 	};
 
 	const clearAllRecipients = () => {
+		if (isLoading) return;
 		setSelectedRecipients([]);
 	};
 
 	return (
 		<Dialog
 			open={isOpen}
-			onOpenChange={onOpenChange}>
+			onOpenChange={(open) => !isLoading && onOpenChange(open)}>
 			<DialogTrigger asChild>{trigger}</DialogTrigger>
 			<DialogContent className='sm:max-w-[600px] max-h-[80vh] overflow-y-auto bg-white'>
 				<DialogHeader>
-					<DialogTitle>Schedule Email</DialogTitle>
+					<DialogTitle className='flex items-center gap-2'>
+						Schedule Email {isLoading && <Loader2 className='w-4 h-4 animate-spin' />}
+					</DialogTitle>
 					<DialogDescription>Compose and schedule your email to be sent to selected recipients.</DialogDescription>
 				</DialogHeader>
 				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit(handleSubmit)}
-						className='space-y-4'>
+						className={cn('space-y-4', isLoading && 'opacity-50 pointer-events-none')}>
 						{/* Template Type */}
 						<FormField
 							control={form.control}
@@ -170,6 +210,7 @@ const EmailSchedulerForm: React.FC<EmailSchedulerFormProps> = ({
 													checked={field.value === 'custom'}
 													onChange={(e) => field.onChange(e.target.value)}
 													className='w-4 h-4 text-primary'
+													disabled={isLoading}
 												/>
 												<Mail className='w-4 h-4' />
 												<div className='flex flex-col'>
@@ -184,6 +225,7 @@ const EmailSchedulerForm: React.FC<EmailSchedulerFormProps> = ({
 													checked={field.value === 'newsletter'}
 													onChange={(e) => field.onChange(e.target.value)}
 													className='w-4 h-4 text-primary'
+													disabled={isLoading}
 												/>
 												<FileText className='w-4 h-4' />
 												<div className='flex flex-col'>
@@ -193,7 +235,7 @@ const EmailSchedulerForm: React.FC<EmailSchedulerFormProps> = ({
 											</label>
 										</div>
 									</FormControl>
-									<FormMessage />
+									{!isLoading && <FormMessage />}
 								</FormItem>
 							)}
 						/>
@@ -217,10 +259,11 @@ const EmailSchedulerForm: React.FC<EmailSchedulerFormProps> = ({
 													? 'Leave empty to use default newsletter subject'
 													: 'Enter email subject'
 											}
+											disabled={isLoading}
 											{...field}
 										/>
 									</FormControl>
-									<FormMessage />
+									{!isLoading && <FormMessage />}
 								</FormItem>
 							)}
 						/>
@@ -237,26 +280,25 @@ const EmailSchedulerForm: React.FC<EmailSchedulerFormProps> = ({
 											<textarea
 												placeholder='Enter your email message...'
 												className='flex min-h-[100px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
+												disabled={isLoading}
 												{...field}
 											/>
 										</FormControl>
-										<FormMessage />
+										{!isLoading && <FormMessage />}
 									</FormItem>
 								)}
 							/>
 						)}
 
 						{templateType === 'newsletter' && (
-							<div className='bg-blue-50 border border-blue-200 rounded-md p-4'>
-								<div className='flex items-center gap-2 mb-2'>
-									<FileText className='w-4 h-4 text-blue-600' />
-									<span className='font-medium text-blue-800'>Newsletter Template Selected</span>
-								</div>
-								<p className='text-sm text-blue-700'>
+							<Alert>
+								<FileText className='h-4 w-4' />
+								<AlertTitle>Newsletter Template Selected</AlertTitle>
+								<AlertDescription>
 									The MobiSec 2025 conference newsletter template will be used with the default content about the
 									conference invitation, research topics, and call for papers.
-								</p>
-							</div>
+								</AlertDescription>
+							</Alert>
 						)}
 
 						{/* Send Option */}
@@ -275,6 +317,7 @@ const EmailSchedulerForm: React.FC<EmailSchedulerFormProps> = ({
 													checked={field.value === 'now'}
 													onChange={(e) => field.onChange(e.target.value)}
 													className='w-4 h-4 text-primary'
+													disabled={isLoading}
 												/>
 												<Send className='w-4 h-4' />
 												<span>Send Now</span>
@@ -286,77 +329,86 @@ const EmailSchedulerForm: React.FC<EmailSchedulerFormProps> = ({
 													checked={field.value === 'schedule'}
 													onChange={(e) => field.onChange(e.target.value)}
 													className='w-4 h-4 text-primary'
+													disabled={isLoading}
 												/>
 												<CalendarDays className='w-4 h-4' />
 												<span>Schedule</span>
 											</label>
 										</div>
 									</FormControl>
-									<FormMessage />
+									{!isLoading && <FormMessage />}
 								</FormItem>
 							)}
 						/>
 
 						{/* Schedule Date and Time */}
 						{sendOption === 'schedule' && (
-							<div className='grid grid-cols-2 gap-4'>
-								<FormField
-									control={form.control}
-									name='scheduledDate'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>Date</FormLabel>
-											<Popover>
-												<PopoverTrigger asChild>
-													<FormControl>
-														<Button
-															variant='outline'
-															className={cn(
-																'w-full pl-3 text-left font-normal',
-																!field.value && 'text-muted-foreground'
-															)}>
-															{field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
-															<CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
-														</Button>
-													</FormControl>
-												</PopoverTrigger>
-												<PopoverContent
-													className='w-auto p-0'
-													align='start'>
-													<Calendar
-														mode='single'
-														selected={field.value}
-														onSelect={field.onChange}
-														disabled={(date) => date < new Date() || date < new Date('1900-01-01')}
-														initialFocus
-													/>
-												</PopoverContent>
-											</Popover>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
+							<div className='space-y-4'>
+								<div className='grid grid-cols-2 gap-4 items-start'>
+									<FormField
+										control={form.control}
+										name='scheduledDate'
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Date</FormLabel>
+												<Popover>
+													<PopoverTrigger asChild>
+														<FormControl>
+															<Button
+																variant='outline'
+																disabled={isLoading}
+																className={cn(
+																	'w-full pl-3 text-left font-normal',
+																	!field.value && 'text-muted-foreground'
+																)}>
+																{field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
+																<CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+															</Button>
+														</FormControl>
+													</PopoverTrigger>
+													<PopoverContent
+														className='w-auto p-0'
+														align='start'>
+														<Calendar
+															mode='single'
+															selected={field.value}
+															onSelect={field.onChange}
+															disabled={(date) => {
+																const today = new Date();
+																today.setHours(0, 0, 0, 0);
+																return date < today || date < new Date('1900-01-01');
+															}}
+															initialFocus
+														/>
+													</PopoverContent>
+												</Popover>
+												{!isLoading && <FormMessage />}
+											</FormItem>
+										)}
+									/>
 
-								<FormField
-									control={form.control}
-									name='scheduledTime'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>Time</FormLabel>
-											<FormControl>
-												<div className='relative'>
-													<Input
-														type='time'
-														placeholder='Select time'
-														{...field}
-													/>
-													<Clock className='absolute right-3 top-2.5 h-4 w-4 opacity-50' />
-												</div>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
+									<FormField
+										control={form.control}
+										name='scheduledTime'
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Time</FormLabel>
+												<FormControl>
+													<div className='relative'>
+														<Input
+															type='time'
+															placeholder='Select time'
+															disabled={isLoading}
+															className='bg-background appearance-none'
+															{...field}
+														/>
+													</div>
+												</FormControl>
+												{!isLoading && <FormMessage />}
+											</FormItem>
+										)}
+									/>
+								</div>
 							</div>
 						)}
 
@@ -369,6 +421,7 @@ const EmailSchedulerForm: React.FC<EmailSchedulerFormProps> = ({
 										type='button'
 										variant='outline'
 										size='sm'
+										disabled={isLoading}
 										onClick={selectAllRecipients}>
 										Select All
 									</Button>
@@ -376,6 +429,7 @@ const EmailSchedulerForm: React.FC<EmailSchedulerFormProps> = ({
 										type='button'
 										variant='outline'
 										size='sm'
+										disabled={isLoading}
 										onClick={clearAllRecipients}>
 										Clear All
 									</Button>
@@ -385,12 +439,16 @@ const EmailSchedulerForm: React.FC<EmailSchedulerFormProps> = ({
 								{subscribedRecipients.map((recipient) => (
 									<label
 										key={recipient.id}
-										className='flex items-center gap-3 cursor-pointer hover:bg-gray-50 p-2 rounded'>
+										className={cn(
+											'flex items-center gap-3 cursor-pointer hover:bg-gray-50 p-2 rounded',
+											isLoading && 'cursor-not-allowed opacity-50'
+										)}>
 										<input
 											type='checkbox'
 											checked={selectedRecipients.includes(recipient.id)}
 											onChange={() => toggleRecipient(recipient.id)}
 											className='w-4 h-4 text-primary'
+											disabled={isLoading}
 										/>
 										<div className='flex-1'>
 											<div className='font-medium'>{recipient.name}</div>
@@ -400,52 +458,41 @@ const EmailSchedulerForm: React.FC<EmailSchedulerFormProps> = ({
 									</label>
 								))}
 							</div>
-							{selectedRecipients.length === 0 && (
+							{!isLoading && selectedRecipients.length === 0 && (
 								<p className='text-sm text-red-500'>Please select at least one recipient</p>
 							)}
 						</div>
-
-						{/* Preview */}
-						{selectedRecipients.length > 0 && (
-							<div className='bg-gray-50 p-4 rounded-md'>
-								<h4 className='font-medium mb-2'>Email Preview:</h4>
-								<div className='text-sm space-y-1'>
-									<p>
-										<strong>To:</strong> {selectedRecipients.length} recipients
-									</p>
-									<p>
-										<strong>Subject:</strong> {form.watch('subject') || 'No subject'}
-									</p>
-									{sendOption === 'schedule' && form.watch('scheduledDate') && (
-										<p>
-											<strong>Scheduled:</strong> {format(form.watch('scheduledDate')!, 'PPP')} at{' '}
-											{form.watch('scheduledTime')}
-										</p>
-									)}
-								</div>
-							</div>
-						)}
 
 						<DialogFooter>
 							<Button
 								type='button'
 								variant='outline'
+								disabled={isLoading}
 								onClick={() => onOpenChange(false)}>
 								Cancel
 							</Button>
 							<Button
 								type='submit'
-								disabled={selectedRecipients.length === 0}
+								disabled={selectedRecipients.length === 0 || isLoading}
 								className='flex items-center gap-2'>
-								{sendOption === 'now' ? (
+								{isLoading ? (
 									<>
-										<Send className='w-4 h-4' />
-										Send Now
+										<Loader2 className='w-4 h-4 animate-spin' />
+										{sendOption === 'now' ? 'Sending...' : 'Scheduling...'}
 									</>
 								) : (
 									<>
-										<CalendarDays className='w-4 h-4' />
-										Schedule Email
+										{sendOption === 'now' ? (
+											<>
+												<Send className='w-4 h-4' />
+												Send Now
+											</>
+										) : (
+											<>
+												<CalendarDays className='w-4 h-4' />
+												Schedule Email
+											</>
+										)}
 									</>
 								)}
 							</Button>

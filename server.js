@@ -18,7 +18,7 @@ app.prepare().then(async () => {
 	// Scheduler
 	const runScheduler = async () => {
 		try {
-			const response = await axios.post(`${process.env.BASE_URL}/api/email`, {
+			const response = await axios.post(`${process.env.BASE_URL}/api/v1/email`, {
 				headers: {
 					'Content-Type': 'application/json',
 				},

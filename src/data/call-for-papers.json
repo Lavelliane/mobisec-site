@@ -66,8 +66,14 @@
 		"description": "Join leading researchers and practitioners in advancing mobile security research.",
 		"buttons": [
 			{
+				"text": "Author Instructions",
+				"type": "outline",
+				"link": "/author-instruction"
+			},
+			{
 				"text": "Submit Your Paper",
-				"type": "outline"
+				"type": "secondary",
+				"link": "/registration"
 			}
 		]
 	},

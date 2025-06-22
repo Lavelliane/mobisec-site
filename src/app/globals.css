@@ -26,6 +26,9 @@
 	--color-input: var(--input);
 	--color-border: var(--border);
 	--color-destructive: var(--destructive);
+	--color-success: var(--success);
+	--color-warning: var(--warning);
+	--color-info: var(--info);
 	--color-accent-foreground: var(--accent-foreground);
 	--color-accent: var(--accent);
 	--color-muted-foreground: var(--muted-foreground);
@@ -49,6 +52,17 @@
 	--color-sail-800: var(--color-sail-800);
 	--color-sail-900: var(--color-sail-900);
 	--color-sail-950: var(--color-sail-950);
+	--color-neutral-50: var(--color-neutral-50);
+	--color-neutral-100: var(--color-neutral-100);
+	--color-neutral-200: var(--color-neutral-200);
+	--color-neutral-300: var(--color-neutral-300);
+	--color-neutral-400: var(--color-neutral-400);
+	--color-neutral-500: var(--color-neutral-500);
+	--color-neutral-600: var(--color-neutral-600);
+	--color-neutral-700: var(--color-neutral-700);
+	--color-neutral-800: var(--color-neutral-800);
+	--color-neutral-900: var(--color-neutral-900);
+	--color-neutral-950: var(--color-neutral-950);
 	--radius-sm: calc(var(--radius) - 4px);
 	--radius-md: calc(var(--radius) - 2px);
 	--radius-lg: var(--radius);
@@ -57,84 +71,106 @@
 
 :root {
 	--radius: 0rem;
-	/* Sail theme - Light mode */
-	--card: var(--color-sail-50); /* Sail 50 */
-	--card-foreground: var(--color-sail-950); /* Sail 950 */
-	--popover: var(--color-sail-50); /* Sail 50 */
-	--popover-foreground: var(--color-sail-950); /* Sail 950 */
-	--primary: var(--color-sail-600); /* Sail 600 */
-	--primary-foreground: var(--color-sail-50); /* Sail 50 */
-	--secondary: var(--color-sail-100); /* Sail 100 */
-	--secondary-foreground: var(--color-sail-900); /* Sail 900 */
-	--muted: var(--color-sail-100); /* Sail 100 */
-	--muted-foreground: var(--color-gray-600); /* Sail 700 */
-	--accent: var(--color-sail-200); /* Sail 200 */
-	--accent-foreground: var(--color-sail-900); /* Sail 900 */
-	--destructive: oklch(0.577 0.245 27.325); /* Red 60 (#da1e28) */
-	--border: var(--color-sail-200); /* Sail 200 */
-	--input: var(--color-sail-200); /* Sail 200 */
-	--ring: var(--color-sail-600); /* Sail 600 */
-	--chart-1: var(--color-sail-600); /* Sail 600 */
-	--chart-2: var(--color-sail-500); /* Sail 500 */
-	--chart-3: var(--color-sail-400); /* Sail 400 */
-	--chart-4: var(--color-sail-700); /* Sail 700 */
-	--chart-5: var(--color-sail-800); /* Sail 800 */
-	--sidebar: var(--color-sail-50); /* Sail 50 */
-	--sidebar-foreground: var(--color-sail-950); /* Sail 950 */
-	--sidebar-primary: var(--color-sail-600); /* Sail 600 */
-	--sidebar-primary-foreground: var(--color-sail-50); /* Sail 50 */
-	--sidebar-accent: var(--color-sail-100); /* Sail 100 */
-	--sidebar-accent-foreground: var(--color-sail-900); /* Sail 900 */
-	--sidebar-border: var(--color-sail-200); /* Sail 200 */
-	--sidebar-ring: var(--color-sail-600); /* Sail 600 */
-	--background: var(--color-sail-50);
-	--foreground: var(--color-sail-950);
-	--color-sail-50: #eff7ff;
-	--color-sail-100: #daedff;
-	--color-sail-200: #bee1ff;
-	--color-sail-300: #a3d7ff;
-	--color-sail-400: #5db4fd;
-	--color-sail-500: #3793fa;
+
+	/* Improved Sail color palette - OKLCH-based blue progression */
+	--color-sail-50: #eff6ff;
+	--color-sail-100: #dbeafe;
+	--color-sail-200: #bfdbfe;
+	--color-sail-300: #93c5fd;
+	--color-sail-400: #60a5fa;
+	--color-sail-500: #3b82f6;
 	--color-sail-600: #2175ef;
-	--color-sail-700: #195edc;
-	--color-sail-800: #1b4db2;
-	--color-sail-900: #1c438c;
-	--color-sail-950: #162a55;
+	--color-sail-700: #1d4ed8;
+	--color-sail-800: #1e40af;
+	--color-sail-900: #1e3a8a;
+	--color-sail-950: #172554;
+
+	/* Warm neutral palette - Modern 2024-2025 trend */
+	--color-neutral-50: #faf9f6;
+	--color-neutral-100: #f4f2ee;
+	--color-neutral-200: #e8e5e0;
+	--color-neutral-300: #d3cfc7;
+	--color-neutral-400: #a8a29e;
+	--color-neutral-500: #78716c;
+	--color-neutral-600: #5c5450;
+	--color-neutral-700: #44403c;
+	--color-neutral-800: #2d2824;
+	--color-neutral-900: #1c1917;
+	--color-neutral-950: #0f0e0d;
+
+	/* Light mode theme - Warm neutral base with sail primary */
+	--card: white;
+	--card-foreground: var(--color-neutral-900);
+	--popover: white;
+	--popover-foreground: var(--color-neutral-900);
+	--primary: var(--color-sail-600);
+	--primary-foreground: white;
+	--secondary: var(--color-neutral-900);
+	--secondary-foreground: var(--color-neutral-100);
+	--muted: var(--color-neutral-100);
+	--muted-foreground: var(--color-neutral-600);
+	--accent: var(--color-sail-100);
+	--accent-foreground: var(--color-sail-900);
+	--destructive: #dc2626;
+	--success: #059669;
+	--warning: #d97706;
+	--info: var(--color-sail-500);
+	--border: var(--color-neutral-200);
+	--input: var(--color-neutral-100);
+	--ring: var(--color-sail-600);
+	--chart-1: var(--color-sail-600);
+	--chart-2: var(--color-sail-500);
+	--chart-3: var(--color-sail-400);
+	--chart-4: #059669;
+	--chart-5: #d97706;
+	--sidebar: white;
+	--sidebar-foreground: var(--color-neutral-900);
+	--sidebar-primary: var(--color-sail-600);
+	--sidebar-primary-foreground: white;
+	--sidebar-accent: var(--color-neutral-100);
+	--sidebar-accent-foreground: var(--color-neutral-900);
+	--sidebar-border: var(--color-neutral-200);
+	--sidebar-ring: var(--color-sail-600);
+	--background: white;
+	--foreground: var(--color-neutral-900);
 }
 
 .dark {
-	/* Sail theme - Dark mode */
-	--background: var(--color-sail-950); /* Sail 950 */
-	--foreground: var(--color-sail-50); /* Sail 50 */
-	--card: var(--color-sail-900); /* Sail 900 */
-	--card-foreground: var(--color-sail-50); /* Sail 50 */
-	--popover: var(--color-sail-900); /* Sail 900 */
-	--popover-foreground: var(--color-sail-50); /* Sail 50 */
-	--primary: var(--color-sail-500); /* Sail 500 */
-	--primary-foreground: var(--color-sail-950); /* Sail 950 */
-	--secondary: var(--color-sail-800); /* Sail 800 */
-	--secondary-foreground: var(--color-sail-100); /* Sail 100 */
-	--muted: var(--color-sail-800); /* Sail 800 */
-	--muted-foreground: var(--color-sail-300); /* Sail 300 */
-	--accent: var(--color-sail-700); /* Sail 700 */
-	--accent-foreground: var(--color-sail-100); /* Sail 100 */
-	--destructive: oklch(0.704 0.191 22.216); /* Red 50 (#fa4d56) */
-	--border: var(--color-sail-800); /* Sail 800 */
-	--input: var(--color-sail-800); /* Sail 800 */
-	--ring: var(--color-sail-500); /* Sail 500 */
-	--chart-1: var(--color-sail-400); /* Sail 400 */
-	--chart-2: var(--color-sail-500); /* Sail 500 */
-	--chart-3: var(--color-sail-300); /* Sail 300 */
-	--chart-4: var(--color-sail-600); /* Sail 600 */
-	--chart-5: var(--color-sail-700); /* Sail 700 */
-	--sidebar: var(--color-sail-950); /* Sail 950 */
-	--sidebar-foreground: var(--color-sail-100); /* Sail 100 */
-	--sidebar-primary: var(--color-sail-400); /* Sail 400 */
-	--sidebar-primary-foreground: var(--color-sail-950); /* Sail 950 */
-	--sidebar-accent: var(--color-sail-800); /* Sail 800 */
-	--sidebar-accent-foreground: var(--color-sail-100); /* Sail 100 */
-	--sidebar-border: var(--color-sail-800); /* Sail 800 */
-	--sidebar-ring: var(--color-sail-500); /* Sail 500 */
+	/* Dark mode theme - Desaturated colors with proper contrast */
+	--background: var(--color-neutral-950);
+	--foreground: var(--color-neutral-100);
+	--card: var(--color-neutral-900);
+	--card-foreground: var(--color-neutral-100);
+	--popover: var(--color-neutral-900);
+	--popover-foreground: var(--color-neutral-100);
+	--primary: #4a8cf7;
+	--primary-foreground: var(--color-neutral-950);
+	--secondary: var(--color-neutral-800);
+	--secondary-foreground: var(--color-neutral-200);
+	--muted: var(--color-neutral-800);
+	--muted-foreground: var(--color-neutral-400);
+	--accent: var(--color-neutral-800);
+	--accent-foreground: var(--color-neutral-200);
+	--destructive: #ef4444;
+	--success: #10b981;
+	--warning: #f59e0b;
+	--info: #06b6d4;
+	--border: var(--color-neutral-800);
+	--input: var(--color-neutral-800);
+	--ring: #4a8cf7;
+	--chart-1: #4a8cf7;
+	--chart-2: #60a5fa;
+	--chart-3: #93c5fd;
+	--chart-4: #10b981;
+	--chart-5: #f59e0b;
+	--sidebar: var(--color-neutral-950);
+	--sidebar-foreground: var(--color-neutral-200);
+	--sidebar-primary: #4a8cf7;
+	--sidebar-primary-foreground: var(--color-neutral-950);
+	--sidebar-accent: var(--color-neutral-800);
+	--sidebar-accent-foreground: var(--color-neutral-200);
+	--sidebar-border: var(--color-neutral-800);
+	--sidebar-ring: #4a8cf7;
 }
 
 button {
@@ -148,4 +184,41 @@ button {
 	body {
 		@apply bg-background text-foreground;
 	}
+}
+
+/* Additional utility classes for improved color system */
+.text-success {
+	color: var(--success);
+}
+
+.text-warning {
+	color: var(--warning);
+}
+
+.text-info {
+	color: var(--info);
+}
+
+.bg-success {
+	background-color: var(--success);
+}
+
+.bg-warning {
+	background-color: var(--warning);
+}
+
+.bg-info {
+	background-color: var(--info);
+}
+
+.border-success {
+	border-color: var(--success);
+}
+
+.border-warning {
+	border-color: var(--warning);
+}
+
+.border-info {
+	border-color: var(--info);
 }

@@ -36,7 +36,7 @@ const CallForPapers = () => {
 							<div className='flex flex-col md:flex-row gap-8 flex-1'>
 								{/* Regular Papers */}
 								<div className='flex-1 flex flex-col gap-4'>
-									<h3 className='text-lg font-semibold text-foreground px-4 py-3 bg-secondary/50'>Regular Papers</h3>
+									<h3 className='text-lg font-semibold text-primary-foreground px-4 py-3 bg-primary'>Regular Papers</h3>
 									<div className='flex flex-col gap-8 flex-1'>
 										{callForPapersData.importantDates.regularPapers.map((dateItem, index) => (
 											<div
@@ -51,7 +51,7 @@ const CallForPapers = () => {
 
 								{/* Posters */}
 								<div className='flex-1 flex flex-col gap-4'>
-									<h3 className='text-lg font-semibold text-foreground px-4 py-3 bg-secondary/50'>Posters</h3>
+									<h3 className='text-lg font-semibold text-primary-foreground px-4 py-3 bg-primary'>Posters</h3>
 									<div className='flex flex-col gap-8 flex-1'>
 										{callForPapersData.importantDates.posters.map((dateItem, index) => (
 											<div
@@ -129,9 +129,10 @@ const CallForPapers = () => {
 							<div className='flex flex-col sm:flex-row gap-4 justify-center'>
 								{callForPapersData.callToAction.buttons.map((button, index) => (
 									<Button
+										asChild
 										key={index}
-										variant={button.type === 'outline' ? 'outline' : 'default'}>
-										{button.text}
+										variant={button.type as 'default' | 'secondary'}>
+										<Link href={button.link}>{button.text}</Link>
 									</Button>
 								))}
 							</div>
@@ -139,7 +140,7 @@ const CallForPapers = () => {
 					</div>
 
 					{/* Contact Information */}
-					<div className='bg-secondary/30 rounded-lg p-6 text-center'>
+					<div className='bg-accent rounded-lg p-6 text-center'>
 						<p className='text-foreground'>
 							{callForPapersData.contact.message}{' '}
 							<Link

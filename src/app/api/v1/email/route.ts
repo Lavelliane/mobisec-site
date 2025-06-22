@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { MobiSecNewsletter } from '@/modules/landing/emails/templates/MobiSecNewsletter';
-import { CustomEmail } from '@/modules/landing/emails/templates/CustomEmail';
+import { MobiSecNewsletter } from '@/modules/emails/templates/MobiSecNewsletter';
+import { CustomEmail } from '@/modules/emails/templates/CustomEmail';
 import { Resend } from 'resend';
 import * as cron from 'node-cron';
 import { EmailScheduleData, ScheduledEmail } from '@/types/EmailTypes';
@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
 			scheduledDate,
 			scheduledTime,
 			recipientEmails,
+			recipientDetails,
 			totalRecipients,
 		} = body;
 
@@ -45,7 +46,7 @@ export async function POST(request: NextRequest) {
 
 		if (sendOption === 'now') {
 			// Send email immediately
-			const results = await sendEmailToRecipients(templateType, subject, emailBody, recipientEmails);
+			const results = await sendEmailToRecipients(templateType, subject, emailBody, recipientEmails, recipientDetails);
 			return NextResponse.json({
 				success: true,
 				message: `Email sent immediately to ${totalRecipients} recipients`,
@@ -62,8 +63,12 @@ export async function POST(request: NextRequest) {
 
 			const scheduledFor = new Date(`${scheduledDate}T${scheduledTime}`);
 
-			// Validate the scheduled time is in the future
-			if (scheduledFor <= new Date()) {
+			// Validate the scheduled time is in the future (allow same day scheduling)
+			const now = new Date();
+
+			console.log('scheduled for: ', scheduledFor, now);
+
+			if (scheduledFor < now) {
 				return NextResponse.json({ error: 'Scheduled time must be in the future' }, { status: 400 });
 			}
 
@@ -88,7 +93,13 @@ export async function POST(request: NextRequest) {
 			const job = cron.schedule(cronExpression, async () => {
 				console.log(`Executing scheduled email: ${emailId}`);
 				try {
-					const results = await sendEmailToRecipients(templateType, subject, emailBody, recipientEmails);
+					const results = await sendEmailToRecipients(
+						templateType,
+						subject,
+						emailBody,
+						recipientEmails,
+						recipientDetails
+					);
 
 					// Update email status
 					const email = scheduledEmails.get(emailId);
@@ -140,20 +151,33 @@ async function sendEmailToRecipients(
 	templateType: 'custom' | 'newsletter',
 	subject: string,
 	body: string,
-	recipientEmails: string[]
+	recipientEmails: string[],
+	recipientDetails?: Array<{
+		email: string;
+		title?: string | null;
+		name: string;
+	}>
 ) {
 	const results = [];
 
 	for (const email of recipientEmails) {
 		try {
+			// Find recipient details for this email
+			const recipientDetail = recipientDetails?.find((detail) => detail.email === email);
+			const recipientName = recipientDetail
+				? recipientDetail.title
+					? `${recipientDetail.title} ${recipientDetail.name}`
+					: recipientDetail.name
+				: extractNameFromEmail(email);
+
 			const emailTemplate =
 				templateType === 'newsletter'
 					? MobiSecNewsletter({
-							recipientName: extractNameFromEmail(email),
+							recipientName: recipientName,
 							recipientEmail: email,
 						})
 					: CustomEmail({
-							recipientName: extractNameFromEmail(email),
+							recipientName: recipientName,
 							customSubject: subject,
 							customBody: body,
 						});
@@ -199,19 +223,20 @@ function createCronExpression(date: Date): string {
 	const minute = date.getMinutes();
 	const hour = date.getHours();
 	const day = date.getDate();
-	const month = date.getMonth() + 1; // JavaScript months are 0-indexed
+	const month = date.getMonth() + 1; // getMonth() returns 0-11
 
-	// Create a cron expression for the specific date and time
-	// Format: minute hour day month dayOfWeek
+	// Create a one-time cron job for the specific date/time
 	return `${minute} ${hour} ${day} ${month} *`;
 }
 
-// GET method to check scheduled emails status
+// GET endpoint to check scheduled emails status
 export async function GET() {
-	const emails = Array.from(scheduledEmails.values());
+	const emailsArray = Array.from(scheduledEmails.values());
 	return NextResponse.json({
-		scheduledEmails: emails,
-		totalScheduled: emails.length,
-		pendingEmails: emails.filter((e) => e.status === 'pending').length,
+		scheduledEmails: emailsArray,
+		totalScheduled: emailsArray.length,
+		pending: emailsArray.filter((e) => e.status === 'pending').length,
+		sent: emailsArray.filter((e) => e.status === 'sent').length,
+		failed: emailsArray.filter((e) => e.status === 'failed').length,
 	});
 }

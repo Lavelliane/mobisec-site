@@ -2,7 +2,7 @@ import React from 'react';
 
 const OverviewPage = () => {
 	return (
-		<div className='min-h-screen py-12 px-4'>
+		<div className='py-12 px-4'>
 			<div className='max-w-4xl mx-auto'>
 				<div className='flex flex-col items-center justify-center mb-12'>
 					<h1 className='text-4xl font-bold text-foreground text-center'>Overview</h1>

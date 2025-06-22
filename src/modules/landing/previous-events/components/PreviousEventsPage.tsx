@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Calendar, Location } from '@carbon/icons-react';
 import { Button } from '@/components/ui/button';
 import previousEventsData from '@/data/previous-events.json';
+import Link from 'next/link';
 
 const PreviousEventsPage = () => {
 	const { conferences, statistics, regionalDistribution } = previousEventsData;
@@ -40,8 +41,8 @@ const PreviousEventsPage = () => {
 												event.status === 'upcoming'
 													? 'bg-primary border-primary text-white'
 													: event.status === 'recent'
-													? 'bg-secondary border-primary/40 text-foreground'
-													: 'bg-card border-primary/40 text-foreground'
+														? 'bg-secondary border-primary/40 text-foreground'
+														: 'bg-card border-primary/40 text-foreground'
 											}`}>
 											<span className='font-bold text-sm'>{event.year.slice(-2)}</span>
 										</div>
@@ -53,8 +54,8 @@ const PreviousEventsPage = () => {
 													event.status === 'upcoming'
 														? 'border-primary/30 shadow-primary/5'
 														: event.status === 'recent'
-														? 'border-primary/25 shadow-primary/5'
-														: 'border-border hover:border-primary/20'
+															? 'border-primary/25 shadow-primary/5'
+															: 'border-border hover:border-primary/20'
 												}`}>
 												{/* Background Image */}
 												<Image
@@ -71,8 +72,8 @@ const PreviousEventsPage = () => {
 														event.status === 'upcoming'
 															? 'bg-gradient-to-r from-primary via-primary/70 to-transparent'
 															: event.status === 'recent'
-															? 'bg-gradient-to-r from-primary via-primary/70 to-transparent'
-															: 'bg-gradient-to-r from-primary via-primary/70 to-transparent'
+																? 'bg-gradient-to-r from-primary via-primary/70 to-transparent'
+																: 'bg-gradient-to-r from-primary via-primary/70 to-transparent'
 													}`}></div>
 
 												{/* Content */}
@@ -120,10 +121,27 @@ const PreviousEventsPage = () => {
 							<Card className='overflow-hidden bg-primary border-none'>
 								<CardContent className='relative text-center flex flex-col items-center justify-center gap-8'>
 									<div className='flex flex-col items-center justify-center'>
-										<h3 className='text-lg font-semibold text-white'>MobiSec Conference</h3>
+										<Image
+											src='/assets/logo/mobisec-logo-v2-white-nobg.png'
+											alt='MobiSec 2025'
+											width={100}
+											height={100}
+										/>
+										<h3 className='text-lg font-semibold text-white'>MobiSec 2025</h3>
 										<p className='text-muted'>Call for Papers</p>
 									</div>
-									<Button variant='secondary'>Submit your paper</Button>
+									<div className='flex flex-row items-center justify-center gap-4'>
+										<Button
+											asChild
+											variant='outline'>
+											<Link href='/author-instruction'>Author Instructions</Link>
+										</Button>
+										<Button
+											asChild
+											variant='outline'>
+											<Link href='/registration'>Submit your paper</Link>
+										</Button>
+									</div>
 								</CardContent>
 							</Card>
 

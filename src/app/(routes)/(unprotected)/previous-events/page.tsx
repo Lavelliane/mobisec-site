@@ -3,8 +3,8 @@ import PreviousEventsPage from '@/modules/landing/previous-events/components/Pre
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-	title: 'Previous Events | MobiSec 2025',
-	description: 'Previous Events for MobiSec 2025',
+	title: 'Previous Events | MobiSec',
+	description: 'Previous Events for MobiSec',
 };
 
 const page = () => {

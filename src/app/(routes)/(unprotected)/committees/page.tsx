@@ -3,8 +3,8 @@ import CommitteesPage from '@/modules/landing/committees/components/CommitteesPa
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-	title: 'Committees | MobiSec 2025',
-	description: 'Committees for MobiSec 2025',
+	title: 'Committees | MobiSec',
+	description: 'Committees for MobiSec',
 };
 
 const page = () => {

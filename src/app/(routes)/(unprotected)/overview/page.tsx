@@ -3,8 +3,8 @@ import OverviewPage from '@/modules/landing/overview/components/OverviewPage';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-	title: 'Overview | MobiSec 2025',
-	description: 'Overview for MobiSec 2025',
+	title: 'Overview | MobiSec',
+	description: 'Overview for MobiSec',
 };
 
 const page = () => {

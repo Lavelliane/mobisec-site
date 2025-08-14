@@ -231,15 +231,17 @@ const NavigationBar = ({ session }: { session: Session }) => {
 		<div className='flex flex-col justify-between w-full'>
 			{/* Header Section */}
 			<div className='h-fit w-full flex items-center justify-between md:gap-4 gap-0 max-w-7xl mx-auto md:py-4 py-2 px-4'>
-				<div className='flex flex-row items-center gap-2'>
+				<div
+					className='flex flex-row items-center gap-2 cursor-pointer'
+					onClick={() => router.push('/')}>
 					<Image
 						src='/assets/logo/mobisec-logo-v2-nobg.png'
 						alt='MobiSec Logo'
 						width={150}
 						height={150}
-						className='h-12 md:h-16 w-fit'
+						className='h-10 md:h-12 w-fit'
 					/>
-					<h2 className='text-xl md:text-5xl font-bold'>MobiSec 2025</h2>
+					<h2 className='text-xl md:text-4xl font-bold'>MobiSec 2025</h2>
 				</div>
 				<div className='hidden md:block'>
 					<h4 className='text-sm md:text-lg font-semibold text-end'>

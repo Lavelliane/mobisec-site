@@ -11,9 +11,9 @@ interface Committee {
 }
 
 const CommitteeMemberCard = ({ member }: { member: CommitteeMember }) => (
-	<div className='flex items-center space-x-3 py-3 w-80'>
-		<div className='w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0'>
-			<span className='text-primary font-medium text-sm'>
+	<div className='flex items-center space-x-3 py-3 w-full max-w-sm lg:max-w-xs xl:max-w-sm'>
+		<div className='w-16 h-16 sm:w-20 sm:h-20 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0'>
+			<span className='text-primary font-medium text-xs sm:text-sm'>
 				{member.name
 					.split(' ')
 					.map((n) => n[0])
@@ -21,9 +21,9 @@ const CommitteeMemberCard = ({ member }: { member: CommitteeMember }) => (
 					.substring(0, 2)}
 			</span>
 		</div>
-		<div>
-			<h4 className='font-semibold text-foreground'>{member.name}</h4>
-			<p className='text-sm text-muted-foreground'>{member.affiliation}</p>
+		<div className='min-w-0 flex-1'>
+			<h4 className='font-semibold text-foreground text-sm sm:text-base leading-tight'>{member.name}</h4>
+			<p className='text-xs sm:text-sm text-muted-foreground leading-tight mt-1'>{member.affiliation}</p>
 		</div>
 	</div>
 );
@@ -54,32 +54,38 @@ const CommitteesPage = () => {
 	];
 
 	return (
-		<div className='py-12 px-4'>
+		<div className='py-8 sm:py-12 px-4'>
 			<div className='max-w-4xl mx-auto'>
-				<div className='flex flex-col items-center justify-center gap-4 mb-12'>
-					<h1 className='text-4xl font-bold text-foreground text-center'>Committees</h1>
-					<h2 className='text-xl text-muted-foreground text-center'>MobiSec 2025 Conference Organization</h2>
+				<div className='flex flex-col items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12'>
+					<h1 className='text-3xl sm:text-4xl font-bold text-foreground text-center'>Committees</h1>
+					<h2 className='text-lg sm:text-xl text-muted-foreground text-center px-4 sm:px-0'>
+						MobiSec 2025 Conference Organization
+					</h2>
 				</div>
 
 				{/* Organizational Information */}
-				<div className='flex flex-col md:flex-row gap-6 border-gray-200 pb-8'>
+				<div className='flex flex-col sm:flex-row gap-4 sm:gap-6 border-gray-200 pb-6 sm:pb-8 mb-6 sm:mb-8 border-b'>
 					<div className='text-center flex-1'>
-						<h4 className='text-2xl font-semibold text-foreground'>Organized by</h4>
-						<p className='text-gray-700 text-center leading-relaxed'>KIISC Research Group on 6G Security</p>
+						<h4 className='text-xl sm:text-2xl font-semibold text-foreground mb-2'>Organized by</h4>
+						<p className='text-sm sm:text-base text-gray-700 text-center leading-relaxed px-4 sm:px-0'>
+							KIISC Research Group on 6G Security
+						</p>
 					</div>
 					<div className='text-center flex-1'>
-						<h4 className='text-2xl font-semibold text-foreground'>Hosted by</h4>
-						<p className='text-gray-700 text-center leading-relaxed'>
+						<h4 className='text-xl sm:text-2xl font-semibold text-foreground mb-2'>Hosted by</h4>
+						<p className='text-sm sm:text-base text-gray-700 text-center leading-relaxed px-4 sm:px-0'>
 							Korea Institute of Information Security and Cryptology (KIISC)
 						</p>
 					</div>
 				</div>
 
-				<div className='flex flex-col gap-8'>
+				<div className='flex flex-col gap-6 sm:gap-8'>
 					{committees.map((committee, index) => (
 						<div key={index}>
-							<h2 className='text-xl font-bold text-gray-900 mb-6 border-b border-gray-200 pb-2'>{committee.title}</h2>
-							<div className='flex flex-row flex-wrap md:justify-around justify-start gap-2'>
+							<h2 className='text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6 border-b border-gray-200 pb-2'>
+								{committee.title}
+							</h2>
+							<div className='flex flex-col sm:flex-row sm:flex-wrap lg:justify-around justify-start gap-3 sm:gap-4'>
 								{committee.members.map((member, memberIndex) => (
 									<CommitteeMemberCard
 										key={memberIndex}

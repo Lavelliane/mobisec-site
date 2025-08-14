@@ -202,6 +202,9 @@ const NavigationBar = ({ session }: { session: Session }) => {
 									<DropdownMenuItem asChild>
 										<Link href='/registration'>Registrations</Link>
 									</DropdownMenuItem>
+									<DropdownMenuItem asChild>
+										<Link href='/paper-validation'>Paper Validation</Link>
+									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
 						)}
@@ -379,6 +382,12 @@ const NavigationBar = ({ session }: { session: Session }) => {
 												onClick={closeMobileMenu}
 												className='block text-sm text-gray-600 hover:text-gray-900'>
 												Registrations
+											</Link>
+											<Link
+												href='/paper-validation'
+												onClick={closeMobileMenu}
+												className='block text-sm text-gray-600 hover:text-gray-900'>
+												Paper Validation
 											</Link>
 										</div>
 									)}

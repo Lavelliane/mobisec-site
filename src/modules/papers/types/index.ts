@@ -8,15 +8,17 @@ export interface ValidationResult {
 		hasAuthor: boolean;
 		hasAbstract: boolean;
 		hasKeywords: boolean;
-		hasReferences: boolean;
 		hasIntroduction: boolean;
-		hasMethods: boolean;
-		figureCount: number;
-		tableCount: number;
-		citationCount: number;
-		isEasychair: boolean;
-		hasFootnotes: boolean;
-		footnoteCount: number;
+		hasFootnote: boolean;
+		validatedFootnote: boolean;
+		// EasyChair specific details
+		hasEasyChairClass: boolean;
+		hasAuthorRunning: boolean;
+		hasTitleRunning: boolean;
+		// Author Information details
+		hasInst: boolean;
+		hasInstitute: boolean;
+		hasEmail: boolean;
 	};
 }
 
@@ -31,7 +33,6 @@ export interface SpringerCriteria {
 	maxPages: number;
 	requiredSections: string[];
 	recommendedSections: string[];
-	maxTitleLength: number;
 	minAbstractWords: number;
 	maxAbstractWords: number;
 }

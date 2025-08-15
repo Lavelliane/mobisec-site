@@ -356,7 +356,7 @@ const EditRegistrationCard: React.FC<EditRegistrationCardProps> = ({ registratio
 											name='firstName'
 											render={({ field }) => (
 												<FormItem>
-													<FormLabel>First Name *</FormLabel>
+													<FormLabel>First Name</FormLabel>
 													<FormControl>
 														<Input
 															{...field}
@@ -376,7 +376,7 @@ const EditRegistrationCard: React.FC<EditRegistrationCardProps> = ({ registratio
 											name='lastName'
 											render={({ field }) => (
 												<FormItem>
-													<FormLabel>Last Name *</FormLabel>
+													<FormLabel>Last Name</FormLabel>
 													<FormControl>
 														<Input
 															{...field}
@@ -397,7 +397,7 @@ const EditRegistrationCard: React.FC<EditRegistrationCardProps> = ({ registratio
 										name='email'
 										render={({ field }) => (
 											<FormItem>
-												<FormLabel>Email Address *</FormLabel>
+												<FormLabel>Email Address</FormLabel>
 												<FormControl>
 													<Input
 														{...field}
@@ -439,7 +439,7 @@ const EditRegistrationCard: React.FC<EditRegistrationCardProps> = ({ registratio
 										name='attendeeType'
 										render={({ field }) => (
 											<FormItem>
-												<FormLabel>Attendee Type *</FormLabel>
+												<FormLabel>Attendee Type</FormLabel>
 												<Select
 													onValueChange={field.onChange}
 													value={field.value}

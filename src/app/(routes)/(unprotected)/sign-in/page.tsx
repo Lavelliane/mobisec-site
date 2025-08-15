@@ -97,7 +97,7 @@ export default async function SignIn() {
 			<div className='flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8 relative min-h-[300px] lg:min-h-auto order-1 lg:order-2'>
 				<div className='absolute top-0 left-0 z-0 p-4 sm:p-6 lg:p-8 overflow-hidden w-full h-full'>
 					<Image
-						src='/assets/sapporo/1.jpg'
+						src='/assets/sapporo/1.png'
 						alt='MobiSec'
 						width={1000}
 						height={1000}

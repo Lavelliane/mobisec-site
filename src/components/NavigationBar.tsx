@@ -36,6 +36,8 @@ const navigationCategories = [
 		label: 'For Authors',
 		items: [
 			{ label: 'Author Instructions', href: '/author-instruction', description: 'Guidelines for paper submission' },
+			{ label: 'Author Registration', href: '/author-registration', description: 'Register as an author' },
+			{ label: 'Paper Submission', href: '/paper-submission', description: 'Submit your paper' },
 			{ label: 'Post Publication', href: '/post-publication', description: 'Post-publication process', disabled: true },
 		],
 	},
@@ -70,17 +72,21 @@ const navigationCategories = [
 		],
 	},
 	{
-		label: 'Events',
-		href: '/events',
-		disabled: true,
-		isStandalone: true,
+		label: 'Admin',
+		items: [
+			{ label: 'Emails', href: '/emails', description: 'View and manage emails' },
+			{ label: 'Events', href: '/events', description: 'View and manage events' },
+			{ label: 'Registrations', href: '/registration', description: 'View and manage registrations' },
+			{ label: 'Paper Validation', href: '/paper-validation', description: 'Validate papers' },
+		],
 	},
-	{
-		label: 'Registration',
-		href: '/registration',
-		disabled: true,
-		isStandalone: true,
-	},
+
+	// {
+	// 	label: 'Registration',
+	// 	href: '/registration',
+	// 	disabled: true,
+	// 	isStandalone: true,
+	// },
 	{
 		label: 'Contact Us',
 		href: '/contact',

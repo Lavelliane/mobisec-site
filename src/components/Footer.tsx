@@ -21,8 +21,9 @@ const footerLinks = {
 		{ label: 'Workshops', href: '/workshops' },
 	],
 	attend: [
+		{ label: 'Paper Submission', href: '/paper-submission' },
 		{ label: 'Registration', href: '/registration' },
-		{ label: 'Contact', href: '/contact' },
+		{ label: 'Contact Us', href: '/contact' },
 	],
 };
 
@@ -96,7 +97,7 @@ const Footer = () => {
 									<li key={link.label}>
 										<Link
 											href={link.href}
-											className='text-sm text-sail-300 hover:text-sail-100 transition-colors'>
+											className='text-sm text-sail-200 hover:text-sail-100 transition-colors'>
 											{link.label}
 										</Link>
 									</li>

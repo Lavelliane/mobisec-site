@@ -16,10 +16,11 @@ import EditRegistrationCard from '@/modules/registrations/components/EditRegistr
 import { useRouter } from 'next/navigation';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertTriangle } from 'lucide-react';
+import { authClient } from '@/lib/client';
 
 const RegistrationPage = () => {
 	const router = useRouter();
-	const { data: session } = useSession();
+	const { data: session } = authClient.useSession()
 	const queryClient = useQueryClient();
 	const [registrationType, setRegistrationType] = useState<RegistrationType>('self');
 	const [userProfile, setUserProfile] = useState<Profile | null>(null);

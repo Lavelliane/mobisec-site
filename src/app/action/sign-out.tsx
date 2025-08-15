@@ -1,9 +1,11 @@
 'use server';
 
-import { signOut } from '../../../auth';
+import { authClient } from '@/lib/client';
+import { redirect } from 'next/navigation';
 
 const SignOut = async () => {
-	await signOut({ redirectTo: '/' });
+	await authClient.signOut();
+	redirect('/');
 };
 
 export default SignOut;

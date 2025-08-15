@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button';
 import SignOut from '@/app/action/sign-out';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { useRouter } from 'next/navigation';
-import { Session } from 'next-auth';
+import { Session } from '@/lib/auth';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
 
 const navigationCategories = [
@@ -137,6 +137,8 @@ function MobileNavItem({
 
 const NavigationBar = ({ session }: { session: Session }) => {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+	console.log('session NAVBA', session)
 
 	const router = useRouter();
 

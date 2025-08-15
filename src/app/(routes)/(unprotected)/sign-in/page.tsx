@@ -1,19 +1,30 @@
-import { auth, signIn } from '../../../../../auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Metadata } from 'next';
 import Image from 'next/image';
+import { redirect } from 'next/navigation';
+import { authClient } from '@/lib/client';
 
 export const metadata: Metadata = {
 	title: 'Sign In | MobiSec',
 	description: 'Sign In for MobiSec',
 };
 
+async function signInAction() {
+	'use server'
+	const data = await authClient.signIn.social({
+		provider: "google",
+		callbackURL: "/dashboard",
+	})
+	redirect(data.data?.url || '/')
+}
+
 export default async function SignIn() {
-	const session = await auth();
+
+	const session = await authClient.getSession()
 
 	// If user is already authenticated, they shouldn't see this page
-	if (session?.user) {
+	if (session.data) {
 		return (
 			<div className='min-h-[calc(100vh-132px)] flex items-center justify-center bg-white px-4'>
 				<Card className='w-full max-w-md'>
@@ -22,7 +33,7 @@ export default async function SignIn() {
 						<CardDescription>You are already authenticated</CardDescription>
 					</CardHeader>
 					<CardContent className='space-y-4'>
-						<p className='text-center text-gray-600'>Welcome back, {session.user.name}!</p>
+						<p className='text-center text-gray-600'>Welcome back, {session.data?.user.name}!</p>
 						<Button
 							asChild
 							className='w-full'>
@@ -49,43 +60,22 @@ export default async function SignIn() {
 					<div className='space-y-4 lg:space-y-6'>
 						{/* Social Login Buttons */}
 						<div className='flex flex-col gap-3 lg:gap-4'>
-							<form
-								action={async () => {
-									'use server';
-									await signIn('google', { redirectTo: '/profile' });
-								}}>
-								<Button
-									type='submit'
-									variant='outline'
-									className='w-full h-12'
-									size='lg'>
-									<Image
-										src='/google.svg'
-										alt='Google'
-										width={20}
-										height={20}
-										className='w-5 h-5 mr-2'
-									/>
-									Google
-								</Button>
-							</form>
+
 							<Button
-								variant='ghost'
-								className='w-full h-12 bg-[#fae204] hover:bg-[#fae204]/80 hover:text-black'
-								size='lg'
-								onClick={async () => {
-									'use server';
-									await signIn('kakao', { redirectTo: '/profile' });
-								}}>
+								onClick={signInAction}
+								variant='outline'
+								className='w-full h-12'
+								size='lg'>
 								<Image
-									src='/kakao.svg'
-									alt='Kakao'
+									src='/google.svg'
+									alt='Google'
 									width={20}
 									height={20}
 									className='w-5 h-5 mr-2'
 								/>
-								Kakao
+								Google
 							</Button>
+
 						</div>
 					</div>
 

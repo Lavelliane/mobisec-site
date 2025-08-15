@@ -1,7 +1,8 @@
 import React from 'react';
-import { signOut } from '../../../../../auth';
-import { auth } from '../../../../../auth';
 import { Metadata } from 'next';
+import { authClient } from '@/lib/client';
+import { redirect } from 'next/navigation';
+import { getSession } from '@/actions/get-session';
 
 export const metadata: Metadata = {
 	title: 'Dashboard | MobiSec',
@@ -9,14 +10,15 @@ export const metadata: Metadata = {
 };
 
 const Dashboard = async () => {
-	const session = await auth();
-	console.log(session);
+	const session = await getSession();
+	console.log('session DASHBOARD', session)
 	return (
 		<div>
 			<form
 				action={async () => {
 					'use server';
-					await signOut({ redirectTo: '/' });
+					await authClient.signOut();
+					redirect('/');
 				}}>
 				<button type='submit'>Sign Out</button>
 			</form>

@@ -4,9 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Profile } from '@/context/profile/domain/profile.schema';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useSession } from 'next-auth/react';
 import { Separator } from '@/components/ui/separator';
 import { Notification } from '@carbon/icons-react';
+import { authClient } from '@/lib/client';
 
 interface ProfileCardProps {
 	userProfile: Profile;
@@ -14,7 +14,7 @@ interface ProfileCardProps {
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ userProfile, onEdit }) => {
-	const { data: session } = useSession();
+	const { data: session } = authClient.useSession()
 
 	return (
 		<Card className='max-w-sm w-full h-[400px]'>

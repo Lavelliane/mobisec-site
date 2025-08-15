@@ -16,9 +16,11 @@ import EditProfileDialog from './EditProfileDialog';
 import EditRegistrationCard from './EditRegistrationCard';
 import JoinedEventsHistoryCard from './JoinedEventsHistoryCard';
 import SkeletonProfilePage from './SkeletonProfilePage';
+import { authClient } from '@/lib/client';
 
 const ProfilePage = () => {
-	const { data: session } = useSession();
+	const { data: session } = authClient.useSession()
+	console.log('session PROFILE', session)
 	const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 	const [userProfile, setUserProfile] = useState<Profile | null>(null);
 	const [userRegistration, setUserRegistration] = useState<Registration | null>(null);

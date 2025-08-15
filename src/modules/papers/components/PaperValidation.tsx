@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Alert } from '@/components/ui/alert';
+import { Progress } from '@/components/ui/progress';
 
 import { FileText, Upload, CheckCircle, XCircle, AlertTriangle, Loader2, Copy, Code } from 'lucide-react';
 import { ValidationResult, ValidationResponse } from '../types';
@@ -17,6 +18,16 @@ interface PaperValidationComponentProps {
 	showGuidelines?: boolean;
 	className?: string;
 }
+
+// Validation steps for progress tracking
+const VALIDATION_STEPS = [
+	'Analyzing document structure...',
+	'Checking title and abstract...',
+	'Validating author information...',
+	'Verifying EasyChair format...',
+	'Checking for required elements...',
+	'Finalizing validation results...',
+];
 
 // Sample LaTeX code for different validation errors
 const SAMPLE_CODES = {
@@ -162,7 +173,6 @@ const WARNING_EXPLANATIONS = {
 export default function PaperValidationComponent({
 	onValidationComplete,
 	onPdfUpload,
-	showGuidelines = true,
 	className = '',
 }: PaperValidationComponentProps) {
 	const [file, setFile] = useState<File | null>(null);
@@ -175,6 +185,8 @@ export default function PaperValidationComponent({
 	const [expandedErrors, setExpandedErrors] = useState<Set<number>>(new Set());
 	const [expandedWarnings, setExpandedWarnings] = useState<Set<number>>(new Set());
 	const [isGuidelinesOpen, setIsGuidelinesOpen] = useState(false);
+	const [validationProgress, setValidationProgress] = useState(0);
+	const [currentStep, setCurrentStep] = useState(0);
 
 	const handleFileSelect = (selectedFile: File) => {
 		const allowedTypes = [
@@ -281,8 +293,22 @@ export default function PaperValidationComponent({
 
 		setIsValidating(true);
 		setError('');
+		setValidationProgress(0);
+		setCurrentStep(0);
 
 		try {
+			// Simulate validation steps with progress
+			for (let i = 0; i < VALIDATION_STEPS.length; i++) {
+				setCurrentStep(i);
+				setValidationProgress((i / (VALIDATION_STEPS.length - 1)) * 100);
+
+				// Add 200ms delay per validation step
+				await new Promise((resolve) => setTimeout(resolve, 200));
+			}
+
+			// Set to 100% completion
+			setValidationProgress(100);
+
 			const formData = new FormData();
 			formData.append('paper', file);
 
@@ -303,6 +329,8 @@ export default function PaperValidationComponent({
 			const data: ValidationResponse = await response.json();
 
 			if (data.success && data.validation) {
+				// Add a small delay to show completion
+				await new Promise((resolve) => setTimeout(resolve, 500));
 				setValidationResult(data.validation);
 				onValidationComplete?.(data.validation);
 			} else {
@@ -313,6 +341,8 @@ export default function PaperValidationComponent({
 			console.error('Validation error:', err);
 		} finally {
 			setIsValidating(false);
+			setValidationProgress(0);
+			setCurrentStep(0);
 		}
 	};
 
@@ -322,6 +352,8 @@ export default function PaperValidationComponent({
 		setError('');
 		setExpandedErrors(new Set());
 		setExpandedWarnings(new Set());
+		setValidationProgress(0);
+		setCurrentStep(0);
 	};
 
 	const getScoreBadgeVariant = (score: number) => {
@@ -361,11 +393,11 @@ export default function PaperValidationComponent({
 		return (
 			<li
 				key={index}
-				className='border border-red-200 rounded-lg p-4 bg-red-50'>
+				className='border border-destructive/50 rounded-lg p-4 bg-destructive/5'>
 				<div className='flex items-start gap-3'>
 					<div className='flex-1'>
 						<div className='flex items-center justify-between'>
-							<h4 className='font-medium text-red-800'>{error}</h4>
+							<h4 className='font-medium text-destructive'>{error}</h4>
 							<Button
 								size='sm'
 								variant='destructive'
@@ -376,7 +408,7 @@ export default function PaperValidationComponent({
 
 						{isExpanded && explanation && (
 							<div className='mt-3 space-y-3'>
-								<p className='text-sm text-red-700'>{explanation.description}</p>
+								<p className='text-sm text-destructive'>{explanation.description}</p>
 
 								{explanation.sample && (
 									<div className='bg-gray-900 rounded-lg p-4'>
@@ -414,24 +446,24 @@ export default function PaperValidationComponent({
 		return (
 			<li
 				key={index}
-				className='border border-red-200 rounded-lg p-4 bg-red-50'>
+				className='border border-destructive/50 rounded-lg p-4 bg-destructive/5'>
 				<div className='flex items-start gap-3'>
-					<XCircle className='h-5 w-5 text-red-600 mt-0.5 flex-shrink-0' />
+					<XCircle className='h-5 w-5 text-destructive mt-0.5 flex-shrink-0' />
 					<div className='flex-1'>
 						<div className='flex items-center justify-between mb-2'>
-							<h4 className='font-medium text-red-800'>{warning}</h4>
+							<h4 className='font-medium text-destructive'>{warning}</h4>
 							<Button
 								variant='ghost'
 								size='sm'
 								onClick={() => toggleWarningExpansion(index)}
-								className='h-6 px-2 text-red-600 hover:text-red-800'>
+								className='h-6 px-2 text-destructive hover:text-destructive'>
 								{isExpanded ? 'Hide Details' : 'Show Details'}
 							</Button>
 						</div>
 
 						{isExpanded && explanation && (
 							<div className='mt-3 space-y-3'>
-								<p className='text-sm text-red-700'>{explanation.description}</p>
+								<p className='text-sm text-destructive'>{explanation.description}</p>
 
 								{explanation.sample && (
 									<div className='bg-gray-900 rounded-lg p-4'>
@@ -482,17 +514,17 @@ export default function PaperValidationComponent({
 					{!file ? (
 						<div
 							className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
-								dragOver ? 'border-primary/50 bg-primary/5' : 'border-secondary/50 hover:border-secondary/100'
-							}`}
+								dragOver ? 'border-primary/50 bg-primary/5' : 'border-secondary/20 hover:border-secondary/50'
+							} ${isValidating ? 'opacity-50 pointer-events-none' : ''}`}
 							onDrop={handleDrop}
 							onDragOver={handleDragOver}
 							onDragEnter={handleDragEnter}
 							onDragLeave={handleDragLeave}>
-							<FileText className='h-12 w-12 text-gray-400 mx-auto mb-4' />
-							<p className='text-lg font-medium text-gray-900 mb-2'>
+							<FileText className='h-12 w-12 text-secondary mx-auto mb-4' />
+							<p className='text-lg font-medium text-secondary'>
 								Drop your LaTeX file here or click the button below to browse
 							</p>
-							<p className='text-gray-600 mb-4'>
+							<p className='text-secondary/50 mb-4'>
 								Accepted formats: .tex (single file), .zip (LaTeX project) | Maximum file size: 10MB
 							</p>
 							<div className='space-y-4'>
@@ -502,16 +534,33 @@ export default function PaperValidationComponent({
 									onChange={handleFileInputChange}
 									className='hidden'
 									id='paper-validation-file-upload'
+									disabled={isValidating}
 								/>
 								<Button
 									variant='secondary'
-									onClick={handleBrowseClick}>
-									Browse Files
+									onClick={handleBrowseClick}
+									disabled={isValidating}>
+									{isValidating ? (
+										<>
+											<Loader2 className='h-4 w-4 mr-2 animate-spin' />
+											Validating...
+										</>
+									) : (
+										'Browse Files'
+									)}
 								</Button>
 							</div>
 						</div>
 					) : (
-						<div className='space-y-4'>
+						<div className='space-y-4 relative'>
+							{isValidating && (
+								<div className='absolute inset-0 bg-background/80 backdrop-blur-sm rounded-lg z-10 flex items-center justify-center'>
+									<div className='text-center'>
+										<Loader2 className='h-8 w-8 animate-spin mx-auto mb-2 text-primary' />
+										<p className='text-sm text-muted-foreground'>Validating paper...</p>
+									</div>
+								</div>
+							)}
 							<div className='flex items-center justify-between p-4 border border-secondary/5 rounded-lg'>
 								<div className='flex items-center gap-3'>
 									<FileText className='h-8 w-8 text-primary' />
@@ -523,16 +572,17 @@ export default function PaperValidationComponent({
 								<Button
 									variant='outline'
 									size='sm'
-									onClick={resetForm}>
+									onClick={resetForm}
+									disabled={isValidating}>
 									Remove
 								</Button>
 							</div>
 
-							<div className='flex gap-3'>
+							<div className='space-y-4'>
 								<Button
 									onClick={validatePaper}
 									disabled={isValidating}
-									className='flex-1'>
+									className='w-full'>
 									{isValidating ? (
 										<>
 											<Loader2 className='h-4 w-4 mr-2 animate-spin' />
@@ -545,6 +595,51 @@ export default function PaperValidationComponent({
 										</>
 									)}
 								</Button>
+
+								{isValidating && (
+									<div className='space-y-4'>
+										<div className='flex items-center justify-between text-sm text-muted-foreground'>
+											<span>
+												{validationProgress === 100
+													? 'Validation completed successfully!'
+													: VALIDATION_STEPS[currentStep]}
+											</span>
+											<span>{Math.round(validationProgress)}%</span>
+										</div>
+										<Progress
+											value={validationProgress}
+											className='w-full'
+										/>
+
+										{/* Detailed validation steps */}
+										<div className='space-y-2'>
+											{VALIDATION_STEPS.map((step, index) => (
+												<div
+													key={index}
+													className={`flex items-center gap-2 text-xs transition-colors ${
+														index < currentStep
+															? 'text-green-600'
+															: index === currentStep
+																? 'text-blue-600 font-medium'
+																: 'text-muted-foreground'
+													}`}>
+													{index < currentStep ? (
+														<CheckCircle className='h-3 w-3' />
+													) : index === currentStep ? (
+														validationProgress === 100 ? (
+															<CheckCircle className='h-3 w-3' />
+														) : (
+															<Loader2 className='h-3 w-3 animate-spin' />
+														)
+													) : (
+														<div className='h-3 w-3 rounded-full border border-muted-foreground/30' />
+													)}
+													<span>{step}</span>
+												</div>
+											))}
+										</div>
+									</div>
+								)}
 							</div>
 						</div>
 					)}

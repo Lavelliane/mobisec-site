@@ -8,7 +8,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useGetProfiles } from '@/modules/profile/hooks';
 import { Profile } from '@/context/profile/domain/profile.schema';
 import { Registration } from '@/context/registration/domain/registration.schema';
-import { useSession } from 'next-auth/react';
 import { RegistrationFormData, RegistrationType } from '@/modules/registrations/types';
 import RegistrationTypeSelector from './RegistrationTypeSelector';
 import RegistrationForm from './RegistrationForm';
@@ -20,7 +19,7 @@ import { authClient } from '@/lib/client';
 
 const RegistrationPage = () => {
 	const router = useRouter();
-	const { data: session } = authClient.useSession()
+	const { data: session } = authClient.useSession();
 	const queryClient = useQueryClient();
 	const [registrationType, setRegistrationType] = useState<RegistrationType>('self');
 	const [userProfile, setUserProfile] = useState<Profile | null>(null);

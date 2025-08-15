@@ -11,17 +11,16 @@ export const metadata: Metadata = {
 };
 
 async function signInAction() {
-	'use server'
+	'use server';
 	const data = await authClient.signIn.social({
-		provider: "google",
-		callbackURL: "/dashboard",
-	})
-	redirect(data.data?.url || '/')
+		provider: 'google',
+		callbackURL: '/profile',
+	});
+	redirect(data.data?.url || '/');
 }
 
 export default async function SignIn() {
-
-	const session = await authClient.getSession()
+	const session = await authClient.getSession();
 
 	// If user is already authenticated, they shouldn't see this page
 	if (session.data) {
@@ -37,7 +36,7 @@ export default async function SignIn() {
 						<Button
 							asChild
 							className='w-full'>
-							<a href='/dashboard'>Go to Dashboard</a>
+							<a href='/profile'>Go to Profile</a>
 						</Button>
 					</CardContent>
 				</Card>
@@ -60,7 +59,6 @@ export default async function SignIn() {
 					<div className='space-y-4 lg:space-y-6'>
 						{/* Social Login Buttons */}
 						<div className='flex flex-col gap-3 lg:gap-4'>
-
 							<Button
 								onClick={signInAction}
 								variant='outline'
@@ -75,7 +73,6 @@ export default async function SignIn() {
 								/>
 								Google
 							</Button>
-
 						</div>
 					</div>
 

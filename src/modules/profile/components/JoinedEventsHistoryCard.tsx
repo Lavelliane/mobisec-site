@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, MapPin, Users, Clock, ChevronDown, ChevronRight } from 'lucide-react';
 import { Event } from '@/context/event/domain/event.schema';

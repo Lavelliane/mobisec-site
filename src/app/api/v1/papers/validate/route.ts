@@ -266,6 +266,7 @@ async function validateLatexContent(content: string, _filename: string): Promise
 	const errors: string[] = [];
 	const warnings: string[] = [];
 	let score = 0;
+	console.log('filename', _filename);
 
 	// Initialize validation details
 	const details = {

@@ -17,6 +17,7 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { useRouter } from 'next/navigation';
 import { Session } from '@/lib/auth';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
+import { authClient } from '@/lib/client';
 
 const navigationCategories = [
 	{
@@ -144,7 +145,7 @@ function MobileNavItem({
 const NavigationBar = ({ session }: { session: Session }) => {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-	console.log('session NAVBA', session)
+	console.log('session NAVBA', session);
 
 	const router = useRouter();
 
@@ -221,8 +222,9 @@ const NavigationBar = ({ session }: { session: Session }) => {
 							type='submit'
 							className='self-end'
 							variant='secondary'
-							onClick={() => {
-								SignOut();
+							onClick={async () => {
+								await authClient.signOut();
+								router.push('/');
 							}}>
 							Sign Out
 						</Button>

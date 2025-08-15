@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 
 const SignOut = async () => {
 	await authClient.signOut();
+
 	redirect('/');
 };
 

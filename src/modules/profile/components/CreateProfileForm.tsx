@@ -172,7 +172,7 @@ const CreateProfileForm: React.FC<CreateProfileFormProps> = ({ onSubmit, isLoadi
 											type='checkbox'
 											checked={field.value}
 											onChange={field.onChange}
-											className='h-4 w-4 rounded border border-input bg-background text-primary focus:ring-2 focus:ring-ring'
+											className='h-4 w-4 rounded border border-input bg-background text-primary focus:ring-2 focus:ring-primary'
 										/>
 									</FormControl>
 									<div className='space-y-1 leading-none'>

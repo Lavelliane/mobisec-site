@@ -8,7 +8,6 @@ import { useGetRegistrations } from '@/modules/registrations/hooks';
 import { useGetEvents } from '@/modules/events/hooks';
 import { Profile } from '@/context/profile/domain/profile.schema';
 import { Registration } from '@/context/registration/domain/registration.schema';
-import { useSession } from 'next-auth/react';
 import { ProfileFormData } from '@/modules/profile/types';
 import ProfileCard from './ProfileCard';
 import CreateProfileForm from './CreateProfileForm';
@@ -19,8 +18,8 @@ import SkeletonProfilePage from './SkeletonProfilePage';
 import { authClient } from '@/lib/client';
 
 const ProfilePage = () => {
-	const { data: session } = authClient.useSession()
-	console.log('session PROFILE', session)
+	const { data: session } = authClient.useSession();
+	console.log('session PROFILE', session);
 	const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 	const [userProfile, setUserProfile] = useState<Profile | null>(null);
 	const [userRegistration, setUserRegistration] = useState<Registration | null>(null);

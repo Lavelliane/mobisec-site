@@ -6,6 +6,7 @@ import { Profile } from '@/context/profile/domain/profile.schema';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useSession } from 'next-auth/react';
 import { Separator } from '@/components/ui/separator';
+import { Notification } from '@carbon/icons-react';
 
 interface ProfileCardProps {
 	userProfile: Profile;
@@ -16,7 +17,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userProfile, onEdit }) => {
 	const { data: session } = useSession();
 
 	return (
-		<Card className='max-w-sm w-full h-fit'>
+		<Card className='max-w-sm w-full h-[400px]'>
 			<CardHeader>
 				<div className='flex flex-col gap-2 items-start'>
 					<div className='flex items-center gap-3'>
@@ -77,7 +78,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userProfile, onEdit }) => {
 					)}
 
 					<div className='flex items-center gap-3'>
-						<MailIcon className='w-5 h-5 text-muted-foreground' />
+						<Notification className='w-5 h-5 text-muted-foreground' />
 						<div>
 							<p className='text-sm font-medium'>Email Notifications</p>
 							<p className='text-sm text-muted-foreground'>{userProfile.receiveEmails ? 'Enabled' : 'Disabled'}</p>

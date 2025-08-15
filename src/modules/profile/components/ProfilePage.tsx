@@ -136,7 +136,7 @@ const ProfilePage = () => {
 	}
 
 	return (
-		<div className='max-w-7xl w-full h-full py-12 px-4'>
+		<div className='max-w-6xl w-full h-full py-12 px-4'>
 			{userProfile ? (
 				<div className='space-y-8'>
 					{/* Two-column layout: Registration (left) and Profile (right) */}

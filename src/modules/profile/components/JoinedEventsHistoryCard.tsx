@@ -69,8 +69,8 @@ const JoinedEventsHistoryCard: React.FC<JoinedEventsHistoryCardProps> = ({ userR
 	};
 
 	return (
-		<Card className='w-full'>
-			<CardHeader>
+		<div className='w-full space-y-4'>
+			<div className='flex items-center gap-2'>
 				<div className='flex items-center gap-2'>
 					<Calendar className='h-5 w-5' />
 					<h3 className='text-lg font-semibold'>Joined Events History</h3>
@@ -80,8 +80,8 @@ const JoinedEventsHistoryCard: React.FC<JoinedEventsHistoryCardProps> = ({ userR
 						{joinedEvents.length} {joinedEvents.length === 1 ? 'Event' : 'Events'}
 					</Badge>
 				</div>
-			</CardHeader>
-			<CardContent>
+			</div>
+			<div className='w-full'>
 				{joinedEvents.length === 0 ? (
 					<div className='text-center py-8 text-muted-foreground'>
 						<Calendar className='h-12 w-12 mx-auto mb-4 opacity-50' />
@@ -96,28 +96,28 @@ const JoinedEventsHistoryCard: React.FC<JoinedEventsHistoryCardProps> = ({ userR
 							return (
 								<div
 									key={`${event.id}-${registration.id}`}
-									className='border rounded-lg hover:shadow-sm transition-shadow'>
+									className='border rounded-lg hover:shadow-sm hover:bg-secondary/90 transition-all bg-secondary'>
 									{/* Clickable header section */}
 									<div
-										className='p-4 cursor-pointer hover:bg-muted/50 transition-colors'
+										className='p-4 cursor-pointer hover:bg-secondary/50 transition-colors'
 										onClick={() => toggleEventExpansion(event.id)}>
 										<div className='flex items-start justify-between'>
 											<div className='flex-1 flex items-start gap-3'>
 												<div className='mt-1'>
 													{isExpanded ? (
-														<ChevronDown className='h-4 w-4 text-muted-foreground' />
+														<ChevronDown className='h-4 w-4 text-secondary-foreground/80' />
 													) : (
-														<ChevronRight className='h-4 w-4 text-muted-foreground' />
+														<ChevronRight className='h-4 w-4 text-secondary-foreground/80' />
 													)}
 												</div>
-												<div className='flex-1'>
+												<div className='flex-1 text-secondary-foreground'>
 													<h4 className='font-semibold text-base mb-1'>{event.name}</h4>
-													<div className='flex items-center gap-2 text-sm text-muted-foreground'>
+													<div className='flex items-center gap-2 text-sm text-secondary-foreground/80'>
 														<Calendar className='h-4 w-4' />
 														<span>{formatEventDate(event.startDate, event.endDate)}</span>
 													</div>
 													{event.location && (
-														<div className='flex items-center gap-2 text-sm text-muted-foreground'>
+														<div className='flex items-center gap-2 text-sm text-secondary-foreground/80'>
 															<MapPin className='h-4 w-4' />
 															<span>{event.location}</span>
 														</div>
@@ -129,7 +129,7 @@ const JoinedEventsHistoryCard: React.FC<JoinedEventsHistoryCardProps> = ({ userR
 
 									{/* Expanded content */}
 									{isExpanded && (
-										<div className='px-4 pb-4 border-t bg-muted/20'>
+										<div className='px-4 pb-4 border-t bg-white'>
 											<div className='pt-4 space-y-4'>
 												{/* Description */}
 												{event.description && (
@@ -196,8 +196,8 @@ const JoinedEventsHistoryCard: React.FC<JoinedEventsHistoryCardProps> = ({ userR
 						})}
 					</div>
 				)}
-			</CardContent>
-		</Card>
+			</div>
+		</div>
 	);
 };
 

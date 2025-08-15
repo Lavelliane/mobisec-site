@@ -158,7 +158,7 @@ const NavigationBar = ({ session }: { session: Session }) => {
 						{!isAdmin && (
 							<Button
 								variant='ghost'
-								className='hover:bg-gray-600'
+								className='hover:bg-black/20'
 								onClick={() => {
 									router.push('/profile');
 								}}>
@@ -178,7 +178,7 @@ const NavigationBar = ({ session }: { session: Session }) => {
 								<DropdownMenuTrigger asChild>
 									<Button
 										variant='ghost'
-										className='hover:bg-gray-600 flex items-center gap-2'>
+										className='hover:bg-black/20'>
 										<Avatar>
 											<AvatarImage
 												src={session.user?.image || ''}
@@ -201,6 +201,9 @@ const NavigationBar = ({ session }: { session: Session }) => {
 									</DropdownMenuItem>
 									<DropdownMenuItem asChild>
 										<Link href='/registration'>Registrations</Link>
+									</DropdownMenuItem>
+									<DropdownMenuItem asChild>
+										<Link href='/paper-validation'>Paper Validation</Link>
 									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
@@ -379,6 +382,12 @@ const NavigationBar = ({ session }: { session: Session }) => {
 												onClick={closeMobileMenu}
 												className='block text-sm text-gray-600 hover:text-gray-900'>
 												Registrations
+											</Link>
+											<Link
+												href='/paper-validation'
+												onClick={closeMobileMenu}
+												className='block text-sm text-gray-600 hover:text-gray-900'>
+												Paper Validation
 											</Link>
 										</div>
 									)}

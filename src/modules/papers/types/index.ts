@@ -15,6 +15,8 @@ export interface ValidationResult {
 		tableCount: number;
 		citationCount: number;
 		isEasychair: boolean;
+		hasFootnotes: boolean;
+		footnoteCount: number;
 	};
 }
 

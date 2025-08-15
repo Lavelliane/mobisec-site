@@ -17,8 +17,34 @@ interface SpringerValidationResult {
 		figureCount: number;
 		tableCount: number;
 		citationCount: number;
+		hasFootnotes: boolean;
+		footnoteCount: number;
+		footnoteContent?: {
+			hasProceedings: boolean;
+			hasConferenceInfo: boolean;
+			hasLocation: boolean;
+			hasCopyright: boolean;
+			hasArticleNo: boolean;
+		};
 	};
 }
+
+// Configuration flags
+const VALIDATION_CONFIG = {
+	ENABLE_FOOTNOTE_VALIDATION: false, // Set to true to enable detailed footnote validation
+	ENABLE_FOOTNOTE_CONTENT_CHECK: false, // Set to true to validate footnote content patterns
+};
+
+// Footnote content patterns (for future validation)
+const FOOTNOTE_PATTERNS = {
+	PROCEEDINGS:
+		/proceedings\s+of\s+the\s+\d+(?:st|nd|rd|th)\s+international\s+conference\s+on\s+mobile\s+internet\s+security\s*\(mobisec'?\d+\)/i,
+	CONFERENCE_INFO:
+		/(?:december|january|february|march|april|may|june|july|august|september|october|november)\s+\d{1,2}-\d{1,2},\s+\d{4}/i,
+	LOCATION: /(?:sapporo|jeju|okinawa|taiwan|cebu),\s+(?:japan|korea|taiwan|philippines)/i,
+	COPYRIGHT: /©\s*the\s+copyright\s+of\s+this\s+paper\s+remains\s+with\s+the\s+author\(s\)/i,
+	ARTICLE_NO: /article\s+no\.\s*\d+/i,
+};
 
 // LaTeX patterns for validation
 const LATEX_PATTERNS = {
@@ -36,6 +62,9 @@ const LATEX_PATTERNS = {
 	REFS: /\\ref\s*\{([^}]+)\}/gi,
 	INTRODUCTION: /\\section\s*\{[^}]*Introduction[^}]*\}/i,
 	METHODS: /\\section\s*\{[^}]*(Methods?|Methodology)[^}]*\}/i,
+	// Footnote patterns
+	FOOTNOTES: /\\footnote\s*\{([^}]+)\}/gi,
+	FOOTNOTES_ALT: /\\footnote\s*\[([^\]]*)\]\s*\{([^}]+)\}/gi,
 };
 
 export async function POST(request: NextRequest) {
@@ -266,6 +295,9 @@ async function validateLatexContent(content: string, _filename: string): Promise
 		figureCount: 0,
 		tableCount: 0,
 		citationCount: 0,
+		hasFootnotes: false,
+		footnoteCount: 0,
+		footnoteContent: undefined,
 	};
 
 	// 1. Document Structure Validation (30 points)
@@ -325,6 +357,15 @@ function validateDocumentStructure(content: string): {
 		hasReferences: boolean;
 		hasIntroduction: boolean;
 		hasMethods: boolean;
+		hasFootnotes: boolean;
+		footnoteCount: number;
+		footnoteContent?: {
+			hasProceedings: boolean;
+			hasConferenceInfo: boolean;
+			hasLocation: boolean;
+			hasCopyright: boolean;
+			hasArticleNo: boolean;
+		};
 	};
 } {
 	const errors: string[] = [];
@@ -355,6 +396,12 @@ function validateDocumentStructure(content: string): {
 		/\\section\s*\{[^}]*implementation[^}]*\}/i.test(content) ||
 		/\\chapter\s*\{[^}]*(methods?|methodology|approach|implementation)[^}]*\}/i.test(content);
 
+	// Check for footnotes
+	const footnotes = content.match(LATEX_PATTERNS.FOOTNOTES) || [];
+	const footnotesAlt = content.match(LATEX_PATTERNS.FOOTNOTES_ALT) || [];
+	const hasFootnotes = footnotes.length > 0 || footnotesAlt.length > 0;
+	const footnoteCount = footnotes.length + footnotesAlt.length;
+
 	// Debug logging (can be removed in production)
 	console.log('LaTeX Validation Debug:', {
 		hasTitle,
@@ -364,6 +411,8 @@ function validateDocumentStructure(content: string): {
 		hasReferences,
 		hasIntroduction,
 		hasMethods,
+		hasFootnotes,
+		footnoteCount,
 		contentLength: content.length,
 		contentPreview: content.substring(0, 200) + (content.length > 200 ? '...' : ''),
 	});
@@ -434,6 +483,53 @@ function validateDocumentStructure(content: string): {
 		warnings.push('Consider adding a Methods/Methodology section');
 	}
 
+	// Footnotes validation (2 points)
+	let footnoteContent = undefined;
+
+	if (hasFootnotes) {
+		score += 2;
+		// Check for conference proceedings footnotes
+		const allFootnotes = [...footnotes, ...footnotesAlt];
+		const hasProceedingsFootnote = allFootnotes.some(
+			(footnote) =>
+				footnote.toLowerCase().includes('proceedings') ||
+				footnote.toLowerCase().includes('conference') ||
+				footnote.toLowerCase().includes('mobisec')
+		);
+		if (hasProceedingsFootnote) {
+			warnings.push('Conference proceedings footnote detected - appropriate for academic papers');
+		}
+
+		// Enhanced footnote content validation (when enabled)
+		if (VALIDATION_CONFIG.ENABLE_FOOTNOTE_CONTENT_CHECK) {
+			const allFootnoteTexts = allFootnotes.map((footnote) => {
+				// Extract text content from footnote matches
+				const match = footnote.match(/\\footnote\s*\{([^}]+)\}/i);
+				return match ? match[1] : footnote;
+			});
+
+			const footnoteText = allFootnoteTexts.join(' ').toLowerCase();
+
+			footnoteContent = {
+				hasProceedings: FOOTNOTE_PATTERNS.PROCEEDINGS.test(footnoteText),
+				hasConferenceInfo: FOOTNOTE_PATTERNS.CONFERENCE_INFO.test(footnoteText),
+				hasLocation: FOOTNOTE_PATTERNS.LOCATION.test(footnoteText),
+				hasCopyright: FOOTNOTE_PATTERNS.COPYRIGHT.test(footnoteText),
+				hasArticleNo: FOOTNOTE_PATTERNS.ARTICLE_NO.test(footnoteText),
+			};
+
+			// Add specific feedback based on content patterns
+			if (footnoteContent.hasProceedings) {
+				warnings.push('Proceedings format detected in footnotes');
+			}
+			if (footnoteContent.hasCopyright) {
+				warnings.push('Copyright notice detected in footnotes');
+			}
+		}
+	} else {
+		warnings.push('Consider adding footnotes for additional context or citations');
+	}
+
 	// References validation (5 points) - Always pass
 	score += 5;
 
@@ -449,6 +545,9 @@ function validateDocumentStructure(content: string): {
 			hasReferences,
 			hasIntroduction,
 			hasMethods,
+			hasFootnotes,
+			footnoteCount,
+			footnoteContent,
 		},
 	};
 }

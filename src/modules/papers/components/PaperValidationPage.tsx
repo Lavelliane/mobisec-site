@@ -361,6 +361,10 @@ export default function PaperValidationPage() {
 											<span>{validationResult.details.citationCount}</span>
 										</div>
 										<div className='flex justify-between'>
+											<span>Footnotes Count</span>
+											<span>{validationResult.details.footnoteCount}</span>
+										</div>
+										<div className='flex justify-between'>
 											<span>Easychair Document Class</span>
 											{validationResult.details.isEasychair ? (
 												<CheckCircle className='h-4 w-4 text-green-600' />
@@ -466,6 +470,7 @@ export default function PaperValidationPage() {
 								<li>
 									Labels for cross-references (\label{'{}'}, \ref{'{}'})
 								</li>
+								<li>Footnotes using \footnote{'{}'} for additional context</li>
 							</ul>
 						</div>
 						<Separator />
@@ -477,6 +482,7 @@ export default function PaperValidationPage() {
 								<li>Ensure all \cite{'{}'} references exist in bibliography</li>
 								<li>Add Methods/Methodology section for research papers</li>
 								<li>Keep abstract concise and informative</li>
+								<li>Include conference proceedings footnotes for academic papers</li>
 							</ul>
 						</div>
 						<Separator />

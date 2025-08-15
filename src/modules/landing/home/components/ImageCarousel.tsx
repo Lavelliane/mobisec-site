@@ -7,44 +7,60 @@ import Autoplay from 'embla-carousel-autoplay';
 
 const images = [
 	{
-		src: '/assets/sapporo/1.jpg',
+		src: '/assets/sapporo/1.png',
 		alt: 'Sapporo 1',
 	},
 	{
-		src: '/assets/sapporo/2.jpg',
+		src: '/assets/sapporo/2.png',
 		alt: 'Sapporo 2',
 	},
 	{
-		src: '/assets/sapporo/3.jpg',
+		src: '/assets/sapporo/3.png',
 		alt: 'Sapporo 3',
 	},
 	{
-		src: '/assets/sapporo/4.jpg',
+		src: '/assets/sapporo/4.png',
 		alt: 'Sapporo 4',
 	},
 	{
-		src: '/assets/sapporo/5.jpg',
+		src: '/assets/sapporo/5.png',
 		alt: 'Sapporo 5',
 	},
 	{
-		src: '/assets/sapporo/6.jpg',
+		src: '/assets/sapporo/6.png',
 		alt: 'Sapporo 6',
 	},
 	{
-		src: '/assets/sapporo/7.jpg',
+		src: '/assets/sapporo/7.png',
 		alt: 'Sapporo 7',
 	},
 	{
-		src: '/assets/sapporo/8.jpg',
+		src: '/assets/sapporo/8.png',
 		alt: 'Sapporo 8',
 	},
 	{
-		src: '/assets/sapporo/9.jpg',
+		src: '/assets/sapporo/9.png',
 		alt: 'Sapporo 9',
 	},
 	{
-		src: '/assets/sapporo/10.jpg',
+		src: '/assets/sapporo/10.png',
 		alt: 'Sapporo 10',
+	},
+	{
+		src: '/assets/sapporo/11.png',
+		alt: 'Sapporo 11',
+	},
+	{
+		src: '/assets/sapporo/12.png',
+		alt: 'Sapporo 12',
+	},
+	{
+		src: '/assets/sapporo/13.png',
+		alt: 'Sapporo 13',
+	},
+	{
+		src: '/assets/sapporo/14.png',
+		alt: 'Sapporo 14',
 	},
 ];
 

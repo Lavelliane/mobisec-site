@@ -368,6 +368,19 @@ function validateDocumentStructure(content: string): {
 		contentPreview: content.substring(0, 200) + (content.length > 200 ? '...' : ''),
 	});
 
+	// Keywords debug logging
+	const keywordsMatches = [
+		LATEX_PATTERNS.KEYWORDS.test(content),
+		/^Keywords?\s*:/im.test(content),
+		content.includes('\\keywords{'),
+		/\\begin\s*\{\s*keywords\s*\}/i.test(content),
+		/\\section\*?\s*\{[^}]*keywords[^}]*\}/i.test(content),
+		/\\subsection\*?\s*\{[^}]*keywords[^}]*\}/i.test(content),
+		/\bkeywords?\s*:/i.test(content),
+		/\bkeywords?\s*=/i.test(content),
+	];
+	console.log('Keywords detection patterns:', keywordsMatches);
+
 	// Title validation (5 points)
 	if (hasTitle) {
 		score += 5;

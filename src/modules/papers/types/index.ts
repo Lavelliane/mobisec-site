@@ -14,6 +14,7 @@ export interface ValidationResult {
 		figureCount: number;
 		tableCount: number;
 		citationCount: number;
+		isEasychair: boolean;
 	};
 }
 

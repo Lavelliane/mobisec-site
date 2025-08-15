@@ -360,6 +360,14 @@ export default function PaperValidationPage() {
 											<span>Citations Count</span>
 											<span>{validationResult.details.citationCount}</span>
 										</div>
+										<div className='flex justify-between'>
+											<span>Easychair Document Class</span>
+											{validationResult.details.isEasychair ? (
+												<CheckCircle className='h-4 w-4 text-green-600' />
+											) : (
+												<Info className='h-4 w-4 text-gray-400' />
+											)}
+										</div>
 									</div>
 								</div>
 							</div>

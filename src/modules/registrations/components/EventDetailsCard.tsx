@@ -11,7 +11,8 @@ interface EventDetailsCardProps {
 
 const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event }) => {
 	return (
-		<Card className={`relative overflow-hidden transition-all duration-300 hover:shadow-lg border-none rounded-none`}>
+		<Card
+			className={`relative h-60 overflow-hidden transition-all duration-300 hover:shadow-lg border-none rounded-none`}>
 			<div className='z-10 flex flex-col gap-4'>
 				{/* Background Image */}
 				<CardHeader className='text-white'>
@@ -59,7 +60,7 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event }) => {
 				className='absolute w-full h-full object-cover top-0 left-0'
 				width={600}
 				height={600}
-				src={'/assets/previous-events/okinawa-25.png'}
+				src={'/assets/previous-events/sapporo-25.jpg'}
 				alt={`MobiSec ${event.name}`}
 			/>
 			{/* Gradient Overlay */}

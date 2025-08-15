@@ -158,7 +158,7 @@ const NavigationBar = ({ session }: { session: Session }) => {
 						{!isAdmin && (
 							<Button
 								variant='ghost'
-								className='hover:bg-gray-600'
+								className='hover:bg-black/20'
 								onClick={() => {
 									router.push('/profile');
 								}}>
@@ -178,7 +178,7 @@ const NavigationBar = ({ session }: { session: Session }) => {
 								<DropdownMenuTrigger asChild>
 									<Button
 										variant='ghost'
-										className='hover:bg-gray-600 flex items-center gap-2'>
+										className='hover:bg-black/20'>
 										<Avatar>
 											<AvatarImage
 												src={session.user?.image || ''}

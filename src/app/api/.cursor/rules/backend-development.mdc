@@ -1,0 +1,404 @@
+---
+description: Backend development and domain driven design as well as database design
+alwaysApply: false
+---
+# Backend Development Rules - Domain-Driven Design
+
+You are an expert backend developer specializing in Domain-Driven Design (DDD) with TypeScript, Next.js API routes, Drizzle ORM, and PostgreSQL. Follow these rules to maintain architectural consistency and best practices.
+
+## Core Domain-Driven Design Principles
+
+### 1. **Domain Layer Structure**
+- **Domain entities**: Pure TypeScript types/interfaces representing business concepts
+- **Domain services**: Business logic that doesn't belong to a single entity
+- **Repositories**: Abstract interfaces defining data access contracts
+- **Value objects**: Immutable objects representing domain concepts
+
+### 2. **Application Layer Structure**
+- **Application services**: Orchestrate domain objects and coordinate business workflows
+- **Use cases**: Single-purpose functions representing specific business operations
+- **Command/Query handlers**: Handle specific application commands or queries
+
+### 3. **Infrastructure Layer Structure**
+- **API implementations**: Concrete implementations of repository interfaces
+- **Database adapters**: Drizzle ORM implementations for data persistence
+- **External service integrations**: Third-party service implementations
+
+## Directory Structure Pattern
+
+Follow this exact pattern for all domain contexts:
+src/context/{domain-name}/
+├── application/
+│ ├── {domain-name}.application.ts # Use cases and application services
+│ └── ...
+├── domain/
+│ ├── {domain-name}.repository.ts # Repository interface
+│ ├── {domain-name}.schema.ts # Domain entity and Drizzle schema
+│ └── ...
+└── infrastructure/
+├── {domain-name}.api.ts # Repository implementation
+└── ...
+
+
+## Schema and Entity Design
+
+### 1. **Database Schema Patterns**
+```typescript
+// Use consistent field patterns across all schemas
+export const tableName = pgTable('table_name', {
+  // Standard metadata fields (always include)
+  id: uuid('id').defaultRandom().primaryKey(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  
+  // Domain-specific fields
+  // Use descriptive, business-oriented field names
+  // Follow camelCase for TypeScript, snake_case for database
+});
+
+// Always export inferred types
+export type EntityName = typeof tableName.$inferSelect;
+```
+
+### 2. **Enum Definitions**
+- Define enums using `pgEnum` for type safety
+- Use lowercase with underscores for enum values
+- Co-locate enums with their primary usage domain
+
+### 3. **Relationships**
+- Use explicit foreign key references
+- Prefer nullable foreign keys for optional relationships
+- Document relationship cardinality in comments
+
+## Repository Pattern
+
+### 1. **Repository Interface**
+```typescript
+// Always use generic, business-focused method names
+export interface EntityRepository {
+  create(entity: Omit<Entity, 'id' | 'createdAt' | 'updatedAt'>): Promise<Entity>;
+  findAll(): Promise<Entity[]>;
+  findById(id: string): Promise<Entity | null>;
+  findByBusinessKey(key: string): Promise<Entity | null>; // Business-specific finders
+  update(id: string, entity: Partial<Entity>): Promise<Entity>;
+  delete(id: string): Promise<void>;
+}
+```
+
+### 2. **Repository Implementation**
+```typescript
+// Use factory pattern for repository creation
+export const EntityApi = (): EntityRepository => {
+  return {
+    create: createEntity,
+    findAll: findAllEntities,
+    // ... implement all interface methods
+  };
+};
+
+// Implement as pure functions with descriptive names
+async function createEntity(entity: CreateEntityType): Promise<Entity> {
+  const result = await db.insert(entities).values(entity).returning();
+  return result[0];
+}
+```
+
+## Application Services
+
+### 1. **Use Case Functions**
+```typescript
+// One function per business use case
+// Pure functions that take repository as dependency
+export const createEntity = async (
+  entityRepository: EntityRepository, 
+  entity: CreateEntityInput
+): Promise<Entity> => {
+  // Business logic here
+  return entityRepository.create(entity);
+};
+
+// Always include validation and business rules
+export const updateEntityStatus = async (
+  entityRepository: EntityRepository,
+  id: string,
+  status: EntityStatus
+): Promise<Entity> => {
+  const existing = await entityRepository.findById(id);
+  if (!existing) {
+    throw new Error('Entity not found');
+  }
+  
+  // Apply business rules
+  validateStatusTransition(existing.status, status);
+  
+  return entityRepository.update(id, { status });
+};
+```
+
+## API Route Patterns
+
+### 1. **RESTful Resource Routes**
+```typescript
+// src/app/api/v1/{resource}/route.ts - Collection operations
+export async function GET(request: NextRequest) {
+  try {
+    const repository = EntityApi();
+    const entities = await findAllEntities(repository);
+    
+    return NextResponse.json({
+      success: true,
+      entities,
+    }, { status: 200 });
+  } catch (error) {
+    return handleApiError(error);
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const repository = EntityApi();
+    
+    // Validate input
+    const entityData = validateCreateEntityInput(body);
+    
+    const entity = await createEntity(repository, entityData);
+    
+    return NextResponse.json({
+      success: true,
+      entity,
+      message: 'Entity created successfully',
+    }, { status: 201 });
+  } catch (error) {
+    return handleApiError(error);
+  }
+}
+```
+
+### 2. **Individual Resource Routes**
+```typescript
+// src/app/api/v1/{resource}/[id]/route.ts - Individual operations
+export async function GET(
+  request: NextRequest, 
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    const repository = EntityApi();
+    const entity = await findEntityById(repository, id);
+    
+    if (!entity) {
+      return NextResponse.json({
+        success: false,
+        message: 'Entity not found',
+      }, { status: 404 });
+    }
+    
+    return NextResponse.json({
+      success: true,
+      entity,
+    }, { status: 200 });
+  } catch (error) {
+    return handleApiError(error);
+  }
+}
+```
+
+## Error Handling
+
+### 1. **Domain Errors**
+```typescript
+// Create domain-specific error classes
+export class EntityNotFoundError extends Error {
+  constructor(id: string) {
+    super(`Entity with id ${id} not found`);
+    this.name = 'EntityNotFoundError';
+  }
+}
+
+export class InvalidStatusTransitionError extends Error {
+  constructor(from: string, to: string) {
+    super(`Invalid status transition from ${from} to ${to}`);
+    this.name = 'InvalidStatusTransitionError';
+  }
+}
+```
+
+### 2. **API Error Handler**
+```typescript
+// Centralized error handling
+function handleApiError(error: unknown): NextResponse {
+  console.error('API Error:', error);
+  
+  if (error instanceof EntityNotFoundError) {
+    return NextResponse.json({
+      success: false,
+      message: error.message,
+    }, { status: 404 });
+  }
+  
+  if (error instanceof InvalidStatusTransitionError) {
+    return NextResponse.json({
+      success: false,
+      message: error.message,
+    }, { status: 400 });
+  }
+  
+  return NextResponse.json({
+    success: false,
+    message: error instanceof Error ? error.message : 'Internal server error',
+  }, { status: 500 });
+}
+```
+
+## Database Migrations
+
+### 1. **Migration Naming**
+- Use descriptive names: `XXXX_add_event_id_to_registrations.sql`
+- Include purpose in filename
+- Use sequential numbering
+
+### 2. **Schema Changes**
+- Always use explicit column types
+- Include proper constraints
+- Document breaking changes
+- Use `ALTER TABLE` for schema modifications
+
+## Validation and Type Safety
+
+### 1. **Input Validation**
+```typescript
+// Use Zod for runtime validation
+import { z } from 'zod';
+
+const CreateEntitySchema = z.object({
+  name: z.string().min(1).max(255),
+  description: z.string().optional(),
+  status: z.enum(['active', 'inactive']),
+});
+
+export function validateCreateEntityInput(input: unknown): CreateEntityInput {
+  return CreateEntitySchema.parse(input);
+}
+```
+
+### 2. **Type Definitions**
+```typescript
+// Export clean type definitions from domain
+export type CreateEntityInput = Omit<Entity, 'id' | 'createdAt' | 'updatedAt'>;
+export type UpdateEntityInput = Partial<Pick<Entity, 'name' | 'description' | 'status'>>;
+```
+
+## Testing Patterns
+
+### 1. **Repository Testing**
+```typescript
+// Test repository implementations with real database
+describe('EntityApi', () => {
+  let repository: EntityRepository;
+  
+  beforeEach(() => {
+    repository = EntityApi();
+  });
+  
+  it('should create entity successfully', async () => {
+    const entityData = { name: 'Test Entity' };
+    const entity = await repository.create(entityData);
+    
+    expect(entity.id).toBeDefined();
+    expect(entity.name).toBe('Test Entity');
+    expect(entity.createdAt).toBeDefined();
+  });
+});
+```
+
+### 2. **Application Service Testing**
+```typescript
+// Test application services with mocked repositories
+describe('createEntity', () => {
+  it('should create entity with valid data', async () => {
+    const mockRepository = {
+      create: jest.fn().mockResolvedValue({ id: '1', name: 'Test' }),
+    } as jest.Mocked<EntityRepository>;
+    
+    const result = await createEntity(mockRepository, { name: 'Test' });
+    
+    expect(mockRepository.create).toHaveBeenCalledWith({ name: 'Test' });
+    expect(result.name).toBe('Test');
+  });
+});
+```
+
+## Performance Guidelines
+
+### 1. **Database Queries**
+- Use selective field queries when possible
+- Implement pagination for list endpoints
+- Add appropriate database indexes
+- Avoid N+1 queries in relationships
+
+### 2. **API Response Optimization**
+- Return only necessary fields
+- Use proper HTTP status codes
+- Implement response caching where appropriate
+- Consider using streaming for large datasets
+
+## Security Best Practices
+
+### 1. **Input Sanitization**
+- Validate all input at API boundaries
+- Use parameterized queries (Drizzle handles this)
+- Sanitize user-generated content
+- Implement rate limiting
+
+### 2. **Authorization**
+- Check permissions at application service level
+- Use middleware for authentication
+- Implement proper session management
+- Log security-relevant events
+
+## Code Organization Rules
+
+### 1. **File Naming**
+- Use kebab-case for directories: `user-management/`
+- Use camelCase for TypeScript files: `userRepository.ts`
+- Use descriptive names that reflect business concepts
+
+### 2. **Import Organization**
+```typescript
+// 1. Node/external libraries
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
+// 2. Internal domain imports
+import { Entity } from '../domain/entity.schema';
+import { EntityRepository } from '../domain/entity.repository';
+
+// 3. Application services
+import { createEntity } from '../application/entity.application';
+
+// 4. Infrastructure
+import { EntityApi } from '../infrastructure/entity.api';
+```
+
+### 3. **Documentation**
+- Use JSDoc for all public functions
+- Document business rules and constraints
+- Include examples in complex functions
+- Maintain README files for each domain context
+
+## Deployment and Environment
+
+### 1. **Environment Variables**
+- Use `.env` for local development
+- Validate required environment variables at startup
+- Use type-safe environment configuration
+- Document all environment variables
+
+### 2. **Database Connection**
+- Use connection pooling
+- Implement proper connection error handling
+- Monitor database performance
+- Use migrations for schema changes
+
+Remember: Always prioritize business domain clarity over technical convenience. The code should read like the business requirements and be easily understood by domain experts.

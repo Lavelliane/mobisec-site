@@ -31,6 +31,13 @@ const CommitteeMemberCard = ({ member }: { member: CommitteeMember }) => (
 const CommitteesPage = () => {
 	const committees: Committee[] = [
 		{
+			title: 'Honorary Chairs',
+			members: [
+				{ name: 'Fang-Yie Leu', affiliation: 'ThungHai University, Taiwan' },
+				{ name: 'Kouichi Sakurai', affiliation: 'Kyushu University, Japan' },
+			],
+		},
+		{
 			title: 'Steering Chairs',
 			members: [
 				{ name: 'Koji Nakao', affiliation: 'NICT and Yokohama National University, Japan' },
@@ -48,7 +55,15 @@ const CommitteesPage = () => {
 			title: 'Program Chairs',
 			members: [
 				{ name: 'Hwankuk Kim', affiliation: 'Kookmin University, South Korea' },
+				{ name: 'Seonghan Shin', affiliation: 'AIST, Japan' },
 				{ name: 'Antonio Skarmeta', affiliation: 'University of Murcia, Spain' },
+			],
+		},
+		{
+			title: 'Local Arrangement Chairs',
+			members: [
+				{ name: 'Bonam Kim', affiliation: 'Kookmin University, South Korea' },
+				{ name: 'Hyungrok Jo', affiliation: 'Yokohama National University, Japan' },
 			],
 		},
 	];
@@ -64,11 +79,11 @@ const CommitteesPage = () => {
 				</div>
 
 				{/* Organizational Information */}
-				<div className='flex flex-col sm:flex-row gap-4 sm:gap-6 border-gray-200 pb-6 sm:pb-8 mb-6 sm:mb-8 border-b'>
+				<div className='flex flex-col sm:flex-row gap-4 sm:gap-6 pb-6 sm:pb-8 mb-6 sm:mb-8'>
 					<div className='text-center flex-1'>
 						<h4 className='text-xl sm:text-2xl font-semibold text-foreground mb-2'>Organized by</h4>
 						<p className='text-sm sm:text-base text-gray-700 text-center leading-relaxed px-4 sm:px-0'>
-							KIISC Research Group on 6G Security
+							KIISC Research Group on 6G Security <br /> Electronics and Telecommunications Research Institute (ETRI)
 						</p>
 					</div>
 					<div className='text-center flex-1'>

@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import {
 	NavigationMenu,
@@ -12,12 +12,8 @@ import {
 } from '@/components/ui/navigation-menu';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import SignOut from '@/app/action/sign-out';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { useRouter } from 'next/navigation';
 import { Session } from '@/lib/auth';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
-import { authClient } from '@/lib/client';
 
 const navigationCategories = [
 	{
@@ -72,15 +68,15 @@ const navigationCategories = [
 			},
 		],
 	},
-	{
-		label: 'Admin',
-		items: [
-			{ label: 'Emails', href: '/emails', description: 'View and manage emails' },
-			{ label: 'Events', href: '/events', description: 'View and manage events' },
-			{ label: 'Registrations', href: '/registration', description: 'View and manage registrations' },
-			{ label: 'Paper Validation', href: '/paper-validation', description: 'Validate papers' },
-		],
-	},
+	// {
+	// 	label: 'Admin',
+	// 	items: [
+	// 		{ label: 'Emails', href: '/emails', description: 'View and manage emails' },
+	// 		{ label: 'Events', href: '/events', description: 'View and manage events' },
+	// 		{ label: 'Registrations', href: '/registration', description: 'View and manage registrations' },
+	// 		{ label: 'Paper Validation', href: '/paper-validation', description: 'Validate papers' },
+	// 	],
+	// },
 
 	// {
 	// 	label: 'Registration',
@@ -89,11 +85,18 @@ const navigationCategories = [
 	// 	isStandalone: true,
 	// },
 	{
+		label: 'Proceedings',
+		href: '/proceedings',
+		disabled: true,
+		isStandalone: true,
+	},
+	{
 		label: 'Contact Us',
 		href: '/contact',
 		disabled: true,
 		isStandalone: true,
 	},
+
 ];
 
 function ListItem({
@@ -157,88 +160,88 @@ const NavigationBar = ({ session }: { session: Session }) => {
 		setIsMobileMenuOpen(false);
 	};
 
-	const isAdmin = true;
+	// const isAdmin = true;
 
-	const handleSignIn = useCallback(() => {
-		return (
-			<>
-				{session?.user ? (
-					<div className='flex flex-row items-center gap-2'>
-						{!isAdmin && (
-							<Button
-								variant='ghost'
-								className='hover:bg-black/20'
-								onClick={() => {
-									router.push('/profile');
-								}}>
-								<Avatar>
-									<AvatarImage
-										src={session.user?.image || ''}
-										alt={session.user?.name || ''}
-									/>
-									<AvatarFallback>{session.user?.name?.charAt(0)}</AvatarFallback>
-								</Avatar>
-								<p className='text-sm text-white'>{session.user?.name}</p>
-							</Button>
-						)}
+	// const handleSignIn = useCallback(() => {
+	// 	return (
+	// 		<>
+	// 			{session?.user ? (
+	// 				<div className='flex flex-row items-center gap-2'>
+	// 					{!isAdmin && (
+	// 						<Button
+	// 							variant='ghost'
+	// 							className='hover:bg-black/20'
+	// 							onClick={() => {
+	// 								router.push('/profile');
+	// 							}}>
+	// 							<Avatar>
+	// 								<AvatarImage
+	// 									src={session.user?.image || ''}
+	// 									alt={session.user?.name || ''}
+	// 								/>
+	// 								<AvatarFallback>{session.user?.name?.charAt(0)}</AvatarFallback>
+	// 							</Avatar>
+	// 							<p className='text-sm text-white'>{session.user?.name}</p>
+	// 						</Button>
+	// 					)}
 
-						{isAdmin && (
-							<DropdownMenu>
-								<DropdownMenuTrigger asChild>
-									<Button
-										variant='ghost'
-										className='hover:bg-black/20'>
-										<Avatar>
-											<AvatarImage
-												src={session.user?.image || ''}
-												alt={session.user?.name || ''}
-											/>
-											<AvatarFallback>{session.user?.name?.charAt(0)}</AvatarFallback>
-										</Avatar>
-										<p className='text-sm text-white'>{session.user?.name}</p>
-									</Button>
-								</DropdownMenuTrigger>
-								<DropdownMenuContent align='end'>
-									<DropdownMenuItem asChild>
-										<Link href='/profile'>Profile</Link>
-									</DropdownMenuItem>
-									<DropdownMenuItem asChild>
-										<Link href='/emails'>Emails</Link>
-									</DropdownMenuItem>
-									<DropdownMenuItem asChild>
-										<Link href='/events'>Events</Link>
-									</DropdownMenuItem>
-									<DropdownMenuItem asChild>
-										<Link href='/registration'>Registrations</Link>
-									</DropdownMenuItem>
-									<DropdownMenuItem asChild>
-										<Link href='/paper-validation'>Paper Validation</Link>
-									</DropdownMenuItem>
-								</DropdownMenuContent>
-							</DropdownMenu>
-						)}
+	// 					{isAdmin && (
+	// 						<DropdownMenu>
+	// 							<DropdownMenuTrigger asChild>
+	// 								<Button
+	// 									variant='ghost'
+	// 									className='hover:bg-black/20'>
+	// 									<Avatar>
+	// 										<AvatarImage
+	// 											src={session.user?.image || ''}
+	// 											alt={session.user?.name || ''}
+	// 										/>
+	// 										<AvatarFallback>{session.user?.name?.charAt(0)}</AvatarFallback>
+	// 									</Avatar>
+	// 									<p className='text-sm text-white'>{session.user?.name}</p>
+	// 								</Button>
+	// 							</DropdownMenuTrigger>
+	// 							<DropdownMenuContent align='end'>
+	// 								<DropdownMenuItem asChild>
+	// 									<Link href='/profile'>Profile</Link>
+	// 								</DropdownMenuItem>
+	// 								<DropdownMenuItem asChild>
+	// 									<Link href='/emails'>Emails</Link>
+	// 								</DropdownMenuItem>
+	// 								<DropdownMenuItem asChild>
+	// 									<Link href='/events'>Events</Link>
+	// 								</DropdownMenuItem>
+	// 								<DropdownMenuItem asChild>
+	// 									<Link href='/registration'>Registrations</Link>
+	// 								</DropdownMenuItem>
+	// 								<DropdownMenuItem asChild>
+	// 									<Link href='/paper-validation'>Paper Validation</Link>
+	// 								</DropdownMenuItem>
+	// 							</DropdownMenuContent>
+	// 						</DropdownMenu>
+	// 					)}
 
-						<Button
-							type='submit'
-							className='self-end'
-							variant='secondary'
-							onClick={async () => {
-								await authClient.signOut();
-								router.push('/');
-							}}>
-							Sign Out
-						</Button>
-					</div>
-				) : (
-					<Button
-						className='self-end'
-						variant='secondary'>
-						<Link href='/sign-in'>Sign In</Link>
-					</Button>
-				)}
-			</>
-		);
-	}, [session, isAdmin, router]);
+	// 					<Button
+	// 						type='submit'
+	// 						className='self-end'
+	// 						variant='secondary'
+	// 						onClick={async () => {
+	// 							await authClient.signOut();
+	// 							router.push('/');
+	// 						}}>
+	// 						Sign Out
+	// 					</Button>
+	// 				</div>
+	// 			) : (
+	// 				<Button
+	// 					className='self-end'
+	// 					variant='secondary'>
+	// 					<Link href='/sign-in'>Sign In</Link>
+	// 				</Button>
+	// 			)}
+	// 		</>
+	// 	);
+	// }, [session, isAdmin, router]);
 
 	return (
 		<div className='flex flex-col justify-between w-full'>
@@ -342,7 +345,7 @@ const NavigationBar = ({ session }: { session: Session }) => {
 							})}
 						</NavigationMenuList>
 					</NavigationMenu>
-					{handleSignIn()}
+					{/* {handleSignIn()} */}
 				</div>
 			</div>
 
@@ -350,8 +353,8 @@ const NavigationBar = ({ session }: { session: Session }) => {
 			{isMobileMenuOpen && (
 				<div className='md:hidden bg-white border-t border-gray-200 shadow-lg'>
 					<div className='max-h-96 overflow-y-auto'>
-						{/* Authentication Section for Mobile */}
-						<div className='border-b border-gray-200 p-4'>
+						{/* Authentication Section for Mobile - HIDDEN */}
+						{/* <div className='border-b border-gray-200 p-4'>
 							{session?.user ? (
 								<div className='flex flex-col gap-3'>
 									<div className='flex items-center gap-3'>
@@ -421,7 +424,7 @@ const NavigationBar = ({ session }: { session: Session }) => {
 									<Link href='/sign-in'>Sign In</Link>
 								</Button>
 							)}
-						</div>
+						</div> */}
 
 						{/* Navigation Categories */}
 						{navigationCategories.map((category) => {

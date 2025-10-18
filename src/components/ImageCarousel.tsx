@@ -7,27 +7,27 @@ import Image from 'next/image';
 const images = [
 	{
 		src: '/assets/1.png',
-		alt: 'Okinawa 1',
+		alt: 'Sapporo 1',
 	},
 	{
 		src: '/assets/2.png',
-		alt: 'Okinawa 2',
+		alt: 'Sapporo 2',
 	},
 	{
 		src: '/assets/3.png',
-		alt: 'Okinawa 3',
+		alt: 'Sapporo 3',
 	},
 	{
 		src: '/assets/4.png',
-		alt: 'Okinawa 4',
+		alt: 'Sapporo 4',
 	},
 	{
 		src: '/assets/5.png',
-		alt: 'Okinawa 5',
+		alt: 'Sapporo 5',
 	},
 	{
 		src: '/assets/6.png',
-		alt: 'Okinawa 6',
+		alt: 'Sapporo 6',
 	},
 ];
 
@@ -53,7 +53,7 @@ const ImageCarousel = () => {
 								/>
 								<div className='absolute left-24 z-10 right-0 p-4 bg-black/30 backdrop-blur-xs max-w-sm flex flex-col justify-center items-start'>
 									<h4 className='text-white text-5xl font-bold'>MobiSec 2025</h4>
-									<p className='text-white text-lg'>Okinawa, Japan | December 16-18, 2025</p>
+									<p className='text-white text-lg'>Sapporo, Japan | December 16-18, 2025</p>
 								</div>
 							</CardContent>
 						</Card>

@@ -66,8 +66,8 @@
 	--primary-foreground: var(--color-sail-50); /* Sail 50 */
 	--secondary: var(--color-sail-100); /* Sail 100 */
 	--secondary-foreground: var(--color-sail-900); /* Sail 900 */
-	--muted: var(--color-sail-100); /* Sail 100 */
-	--muted-foreground: var(--color-sail-700); /* Sail 700 */
+	--muted: oklch(0.95 0 0); /* Neutral gray */
+	--muted-foreground: oklch(0.45 0 0); /* Neutral gray */
 	--accent: var(--color-sail-200); /* Sail 200 */
 	--accent-foreground: var(--color-sail-900); /* Sail 900 */
 	--destructive: oklch(0.577 0.245 27.325); /* Red 60 (#da1e28) */
@@ -114,8 +114,8 @@
 	--primary-foreground: var(--color-sail-950); /* Sail 950 */
 	--secondary: var(--color-sail-800); /* Sail 800 */
 	--secondary-foreground: var(--color-sail-100); /* Sail 100 */
-	--muted: var(--color-sail-800); /* Sail 800 */
-	--muted-foreground: var(--color-sail-300); /* Sail 300 */
+	--muted: oklch(0.15 0 0); /* Neutral gray */
+	--muted-foreground: oklch(0.65 0 0); /* Neutral gray */
 	--accent: var(--color-sail-700); /* Sail 700 */
 	--accent-foreground: var(--color-sail-100); /* Sail 100 */
 	--destructive: oklch(0.704 0.191 22.216); /* Red 50 (#fa4d56) */

@@ -70,6 +70,12 @@ const navigationCategories = [
 			{ label: 'Contact', href: '/contact', description: 'Get in touch with organizers' },
 		],
 	},
+	{
+		label: 'Proceedings',
+		href: '/proceedings',
+		disabled: false,
+		isStandalone: true,
+	}
 ];
 
 function ListItem({
@@ -99,7 +105,7 @@ const NavigationBar = () => {
 	return (
 		<div className='flex flex-col justify-between w-full'>
 			<div className='h-fit w-full flex items-center justify-between gap-4 max-w-7xl mx-auto p-4'>
-				<div className='flex items-center gap-2'>
+				<Link href='/' className='flex items-center gap-2'>
 					<Image
 						src='/assets/mobisec-logo.png'
 						alt='MobiSec Logo'
@@ -108,7 +114,7 @@ const NavigationBar = () => {
 						className='h-12 w-fit'
 					/>
 					<h2 className='text-5xl font-bold'>MobiSec 2025</h2>
-				</div>
+				</Link>
 				<h4 className='text-lg font-semibold text-end'>
 					The 9th IFIP WG 8.4/KIISC International Conference
 					<br />

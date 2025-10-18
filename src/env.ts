@@ -15,6 +15,8 @@ export const env = createEnv({
     PORT: z.string().min(1),
     BETTER_AUTH_URL: z.string().url(),
     BETTER_AUTH_SECRET: z.string().min(1),
+    PROCEEDINGS_USERNAME: z.string().min(1),
+    PROCEEDINGS_PASSWORD: z.string().min(1),
   },
   runtimeEnv: process.env,
 });

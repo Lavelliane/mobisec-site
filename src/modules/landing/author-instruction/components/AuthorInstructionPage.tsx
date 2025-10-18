@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 import React from 'react';
 import Link from 'next/link';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { FileText } from 'lucide-react';
+import callForPapersData from '@/data/call-for-papers.json';
+import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
 	title: 'Author Instructions | MobiSec',
@@ -28,7 +28,13 @@ const AuthorInstructionPage = () => {
 							<p className='text-sm sm:text-base text-foreground leading-relaxed'>
 								All papers must be original and not simultaneously submitted to another journal or conference. The
 								contributions to MobiSec 2025 must be submitted to the conference submission system:{' '}
-								<strong>TBD</strong>
+								<a
+									href='https://easychair.org/conferences?conf=mobisec2025'
+									className='text-primary hover:text-primary/80 underline'
+									target='_blank'
+									rel='noopener noreferrer'>
+									https://easychair.org/conferences?conf=mobisec2025
+								</a>
 							</p>
 						</div>
 					</div>
@@ -47,63 +53,50 @@ const AuthorInstructionPage = () => {
 								Authors are invited to submit original papers: they must not substantially duplicate work that any of
 								the authors have published elsewhere or have submitted in parallel to any other conferences that have
 								proceedings. An accepted paper must be registered before the registration deadline and presented at the
-								symposium. Failure to register before the deadline will result in automatic withdrawal of the paper from
-								the conference proceedings and the program.
+								conference. Failure to register before the deadline will result in automatic withdrawal of the paper
+								from the conference proceedings and the program.
 							</p>
 
-							<h3 className='text-lg sm:text-xl font-medium text-foreground mb-3 sm:mb-4'>Submission Requirements</h3>
-
-							<div className='bg-accent rounded-lg p-3 sm:p-4 mb-4'>
-								<h4 className='font-medium text-foreground mb-2 sm:mb-3 text-sm sm:text-base'>File Format:</h4>
-								<ul className='space-y-2 text-foreground text-sm sm:text-base'>
-									<li>• PDF or PS file format produced via:</li>
-									<li className='ml-4 text-xs sm:text-sm'>
-										◦ <strong>Easychair Latex Class file</strong> (US letter size) -
-										<a
-											href='https://easychair.org/publications/easychair.zip'
-											className='text-primary hover:text-primary/80 underline ml-1 break-all'>
-											Available here
-										</a>
-									</li>
-									<li className='ml-4 text-xs sm:text-sm'>
-										◦ <strong>Easychair Microsoft Word file</strong> -
-										<a
-											href='https://easychair.org/publications/easychair.docx'
-											className='text-primary hover:text-primary/80 underline ml-1 break-all'>
-											Available here
-										</a>
-									</li>
-								</ul>
-							</div>
-
-							<div className='space-y-3 text-foreground'>
-								<div className='flex items-start gap-3'>
-									<span className='bg-primary/10 text-primary rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm font-medium flex-shrink-0 mt-0.5'>
-										✓
-									</span>
-									<span className='text-sm sm:text-base'>
-										Each paper should be <strong>at least 5 pages long</strong> based on the Easychair style.
-									</span>
-								</div>
-								<div className='flex items-start gap-3'>
-									<span className='bg-primary/10 text-primary rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm font-medium flex-shrink-0 mt-0.5'>
-										✓
-									</span>
-									<span className='text-sm sm:text-base'>
+							<ul className='space-y-3 text-foreground text-sm sm:text-base mb-4'>
+								<li className='flex items-start gap-3'>
+									<span className='text-foreground font-medium'>-</span>
+									<span>The submission file is in PDF or PS file format produced via</span>
+								</li>
+								<li className='ml-6'>
+									· the Easychair Latex Class file (US letter size)
+									<br />
+									<a
+										href='https://easychair.org/publications/easychair.zip'
+										className='text-primary hover:text-primary/80 underline ml-4 break-all text-xs sm:text-sm'>
+										[Available at https://easychair.org/publications/easychair.zip]
+									</a>
+								</li>
+								<li className='ml-6'>
+									· the Easychair Microsoft Word file
+									<br />
+									<a
+										href='https://easychair.org/publications/easychair.docx'
+										className='text-primary hover:text-primary/80 underline ml-4 break-all text-xs sm:text-sm'>
+										[Available at https://easychair.org/publications/easychair.docx]
+									</a>
+								</li>
+								<li className='flex items-start gap-3'>
+									<span className='text-foreground font-medium'>-</span>
+									<span>Each paper should be at least 5 pages long based on the Easychair style.</span>
+								</li>
+								<li className='flex items-start gap-3'>
+									<span className='text-foreground font-medium'>-</span>
+									<span>
 										Submission of a paper implies that should the paper be accepted, at least one of the authors will
 										register and present the paper at the conference.
 									</span>
-								</div>
-								<div className='flex items-start gap-3'>
-									<span className='bg-primary/10 text-primary rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm font-medium flex-shrink-0 mt-0.5'>
-										✓
-									</span>
-									<span className='text-sm sm:text-base'>
-										During submission, authors need to select <strong>&quot;MobiSec 2025 - Main Track&quot;</strong> for
-										their paper.
-									</span>
-								</div>
-							</div>
+								</li>
+							</ul>
+							<p className='text-sm sm:text-base text-foreground leading-relaxed mb-4'>
+								<strong>
+									During submission, authors need to select &quot;MobiSec 2025 - Main Track&quot; for their paper.
+								</strong>
+							</p>
 						</div>
 					</div>
 
@@ -117,81 +110,53 @@ const AuthorInstructionPage = () => {
 						</h2>
 
 						<div className='prose max-w-none'>
-							<p className='text-sm sm:text-base text-foreground leading-relaxed mb-4 sm:mb-6'>
+							<p className='text-sm sm:text-base text-foreground leading-relaxed mb-4'>
 								The submission should be a single PDF document consisting of (i) the poster abstract and (ii) the poster
 								draft.
 							</p>
 
-							<div className='flex flex-col lg:grid lg:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6'>
-								{/* Poster Abstract */}
-								<div className='bg-accent rounded-lg p-4 sm:p-5'>
-									<h3 className='text-base sm:text-lg font-medium text-foreground mb-3 flex items-center'>
-										<span className='bg-accent text-accent-foreground rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold mr-2 flex-shrink-0'>
-											A
-										</span>
-										Poster Abstract
-									</h3>
-									<p className='text-sm sm:text-base text-foreground mb-3 sm:mb-4'>
-										Poster abstract should provide sufficient details about your research showing that you have adequate
-										information to fill a poster.
-									</p>
+							<p className='text-sm sm:text-base text-foreground leading-relaxed mb-4'>
+								<strong>Poster abstract:</strong> Poster abstract should provide sufficient details about your research
+								showing that you have adequate information to fill a poster.
+							</p>
 
-									<h4 className='font-medium text-foreground mb-2 text-sm sm:text-base'>Requirements:</h4>
-									<ul className='space-y-2 text-foreground text-xs sm:text-sm'>
-										<li>
-											• <strong>No more than 2 pages</strong>, including references and figures
-										</li>
-										<li>
-											• Submission should <strong>not be anonymized</strong>
-										</li>
-										<li>• PDF or PS format using Easychair style (same as Regular Paper)</li>
-									</ul>
-								</div>
+							<p className='text-sm sm:text-base text-foreground leading-relaxed mb-4'>
+								<strong>Poster abstract should meet the following requirements:</strong>
+							</p>
 
-								{/* Poster Draft */}
-								<div className='bg-accent rounded-lg p-4 sm:p-5'>
-									<h3 className='text-base sm:text-lg font-medium text-foreground mb-3 flex items-center'>
-										<span className='bg-accent text-accent-foreground rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold mr-2 flex-shrink-0'>
-											B
-										</span>
-										Poster Draft
-									</h3>
-									<p className='text-sm sm:text-base text-foreground mb-3 sm:mb-4'>
-										All submissions must also include draft of the poster to receive feedback from the committee before
-										the symposium.
-									</p>
+							<ul className='space-y-2 text-foreground text-sm sm:text-base mb-6'>
+								<li className='flex items-start gap-3'>
+									<span className='text-foreground font-medium'>-</span>
+									<span>No more than 2-pages, including references and figures</span>
+								</li>
+								<li className='flex items-start gap-3'>
+									<span className='text-foreground font-medium'>-</span>
+									<span>Submission should not be anonymized</span>
+								</li>
+								<li className='flex items-start gap-3'>
+									<span className='text-foreground font-medium'>-</span>
+									<span>
+										The submission file is in PDF or PS file format produced via the Easychair Latex Class file (US
+										letter size) like Regular Paper.
+									</span>
+								</li>
+							</ul>
 
-									<h4 className='font-medium text-foreground mb-2 text-sm sm:text-base'>Specifications:</h4>
-									<ul className='space-y-2 text-foreground text-xs sm:text-sm'>
-										<li>
-											• Poster size should be <strong>32&times;40 inches</strong>
-										</li>
-										<li>• Can be scaled down to &quot;letter&quot; paper size for submission</li>
-									</ul>
-								</div>
-							</div>
+							<p className='text-sm sm:text-base text-foreground leading-relaxed mb-4'>
+								<strong>Poster draft:</strong> All submission must also include draft of the poster to receive feedback
+								from the committee before the conference. Poster size should be 32x40 inches but can be scaled down to
+								&quot;letter&quot; paper size.
+							</p>
 
-							<Alert
-								variant='warning'
-								className='mb-4'>
-								<FileText className='h-4 w-4' />
-								<AlertTitle className='text-sm sm:text-base'>Important Note</AlertTitle>
-								<AlertDescription className='text-xs sm:text-sm'>
-									The accepted posters will <strong>not be formally published</strong>, and their copyright will be
-									owned by their authors. Therefore, authors can present or publish any content of their poster in other
-									conferences or journals. Moreover, we welcome the latest research outcomes, which were introduced at
-									other venues.
-								</AlertDescription>
-							</Alert>
+							<p className='text-sm sm:text-base text-foreground leading-relaxed mb-4'>
+								The accepted posters will not be formally published, and their copyright will be owned by their authors.
+								Therefore, authors can present or publish any content of their poster in other conference or journal.
+								Moreover, we will welcome the latest research outcomes, which were introduced at other venue.
+							</p>
 
-							<div className='flex items-start gap-3'>
-								<span className='bg-primary/10 text-primary rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm font-medium flex-shrink-0 mt-0.5'>
-									✓
-								</span>
-								<span className='text-foreground text-sm sm:text-base'>
-									During submission, please select <strong>&quot;MobiSec 2025 - Poster Track&quot;</strong>
-								</span>
-							</div>
+							<p className='text-sm sm:text-base text-foreground leading-relaxed'>
+								<strong>During submission, please select &quot;MobiSec 2025 - Poster Track&quot;</strong>
+							</p>
 						</div>
 					</div>
 
@@ -220,17 +185,51 @@ const AuthorInstructionPage = () => {
 						</div>
 					</div>
 
-					{/* Registration Call-to-Action */}
-					<div className='bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 rounded-lg p-6 sm:p-8 text-center'>
-						<h2 className='text-xl sm:text-2xl font-semibold text-foreground mb-4'>Ready to Submit?</h2>
-						<p className='text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6 max-w-2xl mx-auto px-4 sm:px-0'>
-							Register for MobiSec 2025 to submit your paper and be part of the premier mobile security symposium.
+					{/* Topics */}
+					<div className='bg-white border border-border rounded-lg p-4 sm:p-6'>
+						<h2 className='text-xl sm:text-2xl font-semibold text-foreground mb-4'>TOPICS (not limited to)</h2>
+						<ul className='space-y-2 text-sm sm:text-base text-foreground'>
+							{callForPapersData.topics.map((topic, index) => (
+								<li
+									key={index}
+									className='flex items-start gap-2'>
+									<span className='text-foreground'>-</span>
+									<span className='leading-relaxed'>{topic}</span>
+								</li>
+							))}
+						</ul>
+					</div>
+
+					{/* Call to Action Section */}
+					<div className='bg-primary p-8'>
+						<div className='text-center flex flex-col gap-6'>
+							<h2 className='text-2xl text-white font-bold'>{callForPapersData.callToAction.title}</h2>
+							<p className='text-muted max-w-2xl mx-auto'>{callForPapersData.callToAction.description}</p>
+							<div className='flex flex-col sm:flex-row gap-4 justify-center'>
+								<Button
+									asChild
+									variant='secondary'>
+									<Link
+										href='https://easychair.org/conferences?conf=mobisec2025'
+										target='_blank'
+										rel='noopener noreferrer'>
+										Submit Your Paper
+									</Link>
+								</Button>
+							</div>
+						</div>
+					</div>
+
+					{/* Contact Information */}
+					<div className='bg-accent rounded-lg p-6 text-center'>
+						<p className='text-foreground'>
+							{callForPapersData.contact.message}{' '}
+							<Link
+								href={`mailto:${callForPapersData.contact.email}`}
+								className='text-primary hover:text-primary/80 font-medium underline'>
+								{callForPapersData.contact.email}
+							</Link>
 						</p>
-						<Link
-							href='/registration'
-							className='inline-flex items-center justify-center px-6 sm:px-8 py-2 sm:py-3 bg-primary text-primary-foreground font-medium rounded-lg hover:bg-primary/90 transition-colors duration-200 text-sm sm:text-base'>
-							Register Now
-						</Link>
 					</div>
 				</div>
 			</div>

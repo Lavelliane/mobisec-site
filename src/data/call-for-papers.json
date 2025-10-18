@@ -2,48 +2,62 @@
 	"title": "Call for Papers",
 	"description": "We invite researchers, practitioners, and students to submit original research papers, case studies, and position papers that advance the field of mobile security.",
 	"topics": [
-		"Mobile application security and vulnerability analysis",
-		"Android and iOS platform security",
-		"Mobile malware detection and analysis",
-		"Privacy-preserving mobile technologies",
-		"Mobile device forensics and incident response",
-		"IoT and embedded systems security",
-		"Mobile network security and 5G",
-		"Mobile authentication and biometrics"
+		"Security for 5G/6G and Next-Generation Mobile Networks",
+		"Quantum Security",
+		"Mobile, Wireless, and Cellular System Security",
+		"Network/Edge/Cloud Security and Infrastructure Protection",
+		"Data Security and Privacy in Edge and Distributed Environments",
+		"(Post-Quantum) Cryptography, Lightweight/Advanced Encryption, and Side-Channel Countermeasures",
+		"Security for IoT and Cyber-Physical Systems",
+		"Embedded Systems and Hardware Security",
+		"Trusted Execution Environments and Trustworthy Computing",
+		"Security for AI Systems and Applications of AI in Security (e.g., AI-Driven Threat Detection)",
+		"Digital Forensics and Malware Analysis in Mobile Ecosystems",
+		"Secure Access Control, Authentication, and Authorization",
+		"Secure Protocol Design and Real-World Protocol Analysis",
+		"Blockchain and Distributed Ledger Security",
+		"Supply Chain Security and Digital Platform Ecosystem Resilience",
+		"Automated Tools for Software/Binary Vulnerability Analysis",
+		"Operating System, Storage, and File System Security",
+		"Web and Application Security",
+		"HCI Security and Privacy (e.g., for Wearables and Smart Devices)",
+		"Security for Unmanned Systems (Vehicles, Drones, Ships)",
+		"Denial-of-Service Attacks and Botnet Defense",
+		"Exploit Techniques, Vulnerability Research, and Practical Cryptanalysis",
+		"Privacy-Preserving Technologies (e.g., Anonymity, Anti-Censorship Tools)",
+		"Security Policy, Management, and Governance Models",
+		"Safety and Security Issues in Digital Transformation and Industry 4.0/5.0 Platforms",
+		"Emerging Trends and Challenges in Mobile Internet and Application Security",
+		"Case Studies and Practical Security Applications in Real-World Environments",
+		"Others and Emerging New Topics in Mobile Internet Security"
 	],
 	"importantDates": {
 		"regularPapers": [
 			{
 				"title": "Regular Paper Submission Deadline",
-				"date": "September 19, 2025 (KST/JST)",
-				"color": "green"
+				"date": "September 19, 2025 (KST/JST)"
 			},
 			{
 				"title": "Acceptance Notification",
-				"date": "October 12, 2025 (KST/JST)",
-				"color": "yellow"
+				"date": "October 20, 2025 (KST/JST)"
 			},
 			{
 				"title": "Final Version Deadline",
-				"date": "November 2, 2025 (KST/JST)",
-				"color": "blue"
+				"date": "November 2, 2025 (KST/JST)"
 			}
 		],
 		"posters": [
 			{
 				"title": "Poster Submission Deadline",
-				"date": "October 19, 2025 (KST/JST)",
-				"color": "green"
+				"date": "October 22, 2025 (KST/JST)"
 			},
 			{
 				"title": "Acceptance Notification",
-				"date": "October 12, 2025 (KST/JST)",
-				"color": "yellow"
+				"date": "October 26, 2025 (KST/JST)"
 			},
 			{
 				"title": "Final Version Deadline",
-				"date": "November 2, 2025 (KST/JST)",
-				"color": "blue"
+				"date": "November 2, 2025 (KST/JST)"
 			}
 		]
 	},
@@ -63,19 +77,7 @@
 	},
 	"callToAction": {
 		"title": "Ready to Submit?",
-		"description": "Join leading researchers and practitioners in advancing mobile security research.",
-		"buttons": [
-			{
-				"text": "Author Instructions",
-				"type": "outline",
-				"link": "/author-instruction"
-			},
-			{
-				"text": "Submit Your Paper",
-				"type": "secondary",
-				"link": "/paper-submission"
-			}
-		]
+		"description": "Join leading researchers and practitioners in advancing mobile security research."
 	},
 	"contact": {
 		"email": "cyberchair.mobisec@gmail.com",

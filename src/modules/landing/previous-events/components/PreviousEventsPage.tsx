@@ -41,7 +41,7 @@ const PreviousEventsPage = () => {
 												event.status === 'upcoming'
 													? 'bg-primary border-primary text-white'
 													: event.status === 'recent'
-														? 'bg-secondary border-primary/40 text-foreground'
+														? 'bg-card border-primary text-foreground'
 														: 'bg-card border-primary/40 text-foreground'
 											}`}>
 											<span className='font-bold text-xs sm:text-sm'>{event.year.slice(-2)}</span>
@@ -89,7 +89,7 @@ const PreviousEventsPage = () => {
 																</span>
 															)}
 															{event.status === 'recent' && (
-																<span className='px-3 py-1 text-xs font-medium bg-secondary/60 text-primary rounded-full border border-primary/25 backdrop-blur-sm self-start'>
+																<span className='px-3 py-1 text-xs font-medium bg-secondary/60 text-white rounded-full border border-primary/25 backdrop-blur-sm self-start'>
 																	Recent
 																</span>
 															)}
@@ -142,9 +142,9 @@ const PreviousEventsPage = () => {
 										</Button>
 										<Button
 											asChild
-											variant='outline'
+											variant='secondary'
 											className='w-full sm:w-auto lg:w-full xl:w-auto'>
-											<Link href='/registration'>Submit your paper</Link>
+											<Link target='_blank' rel='noopener noreferrer' href='https://easychair.org/conferences?conf=mobisec2025'>Submit your paper</Link>
 										</Button>
 									</div>
 								</CardContent>

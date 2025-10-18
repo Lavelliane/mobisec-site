@@ -1,19 +1,9 @@
 import React from 'react';
-import callForPapersData from '../../../../data/call-for-papers.json';
+import callForPapersData from '@/data/call-for-papers.json';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 const CallForPapers = () => {
-	const getColorClasses = (color: string) => {
-		const colorMap = {
-			green: 'border-sail-400',
-			yellow: 'border-sail-300',
-			blue: 'border-sail-600',
-			purple: 'border-sail-700',
-		};
-		return colorMap[color as keyof typeof colorMap] || 'border-sail-400';
-	};
-
 	return (
 		<div className='container mx-auto py-12 px-6'>
 			<div className='max-w-6xl mx-auto'>
@@ -41,7 +31,7 @@ const CallForPapers = () => {
 										{callForPapersData.importantDates.regularPapers.map((dateItem, index) => (
 											<div
 												key={index}
-												className={`border-l-4 ${getColorClasses(dateItem.color)} pl-4`}>
+												className={`border-l-4 border-primary/40 pl-4`}>
 												<div className='font-semibold text-foreground mb-1'>{dateItem.title}</div>
 												<div className='text-muted-foreground'>{dateItem.date}</div>
 											</div>
@@ -56,7 +46,7 @@ const CallForPapers = () => {
 										{callForPapersData.importantDates.posters.map((dateItem, index) => (
 											<div
 												key={index}
-												className={`border-l-4 ${getColorClasses(dateItem.color)} pl-4`}>
+												className={`border-l-4 border-primary/40 pl-4`}>
 												<div className='font-semibold text-foreground mb-1'>{dateItem.title}</div>
 												<div className='text-muted-foreground'>{dateItem.date}</div>
 											</div>
@@ -127,14 +117,24 @@ const CallForPapers = () => {
 							<h2 className='text-2xl text-white font-bold'>{callForPapersData.callToAction.title}</h2>
 							<p className='text-muted max-w-2xl mx-auto'>{callForPapersData.callToAction.description}</p>
 							<div className='flex flex-col sm:flex-row gap-4 justify-center'>
-								{callForPapersData.callToAction.buttons.map((button, index) => (
-									<Button
-										asChild
-										key={index}
-										variant={button.type as 'default' | 'secondary'}>
-										<Link href={button.link}>{button.text}</Link>
-									</Button>
-								))}
+								<Button
+									asChild
+									variant='outline'>
+									<Link
+										href='/author-instruction'>
+										Author Instructions
+									</Link>
+								</Button>
+								<Button
+									asChild
+									variant='secondary'>
+									<Link
+										target='_blank'
+										rel='noopener noreferrer'
+										href='https://easychair.org/conferences?conf=mobisec2025'>
+										Submit Your Paper
+									</Link>
+								</Button>
 							</div>
 						</div>
 					</div>

@@ -33,8 +33,8 @@ const navigationCategories = [
 		label: 'For Authors',
 		items: [
 			{ label: 'Author Instructions', href: '/author-instruction', description: 'Guidelines for paper submission' },
-			{ label: 'Author Registration', href: '/author-registration', description: 'Register as an author' },
-			{ label: 'Paper Submission', href: '/paper-submission', description: 'Submit your paper' },
+			// { label: 'Author Registration', href: '/author-registration', description: 'Register as an author' },
+			// { label: 'Paper Submission', href: '/paper-submission', description: 'Submit your paper' },
 			{ label: 'Post Publication', href: '/post-publication', description: 'Post-publication process', disabled: true },
 		],
 	},
@@ -307,9 +307,9 @@ const NavigationBar = ({ session }: { session: Session }) => {
 			</div>
 
 			{/* Desktop Navigation */}
-			<div className='hidden md:block w-full py-2 border-primary/20 bg-primary text-primary-foreground'>
+			<div className='hidden md:block w-full py-2 border-primary/20 bg-primary text-primary-foreground relative z-50'>
 				<div className='max-w-7xl mx-auto flex flex-row items-center justify-between gap-4'>
-					<NavigationMenu>
+					<NavigationMenu delayDuration={0} skipDelayDuration={0} viewport={false}>
 						<NavigationMenuList>
 							{navigationCategories.map((category) => {
 								if (category.isStandalone) {
@@ -328,7 +328,7 @@ const NavigationBar = ({ session }: { session: Session }) => {
 									<NavigationMenuItem key={category.label}>
 										<NavigationMenuTrigger>{category.label}</NavigationMenuTrigger>
 										<NavigationMenuContent>
-											<ul className='grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]'>
+											<ul className='grid w-[400px] gap-3 md:w-[500px] md:grid-cols-2 lg:w-[600px]'>
 												{category.items?.map((item) => (
 													<ListItem
 														key={item.label}

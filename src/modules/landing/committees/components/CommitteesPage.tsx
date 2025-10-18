@@ -11,7 +11,7 @@ interface Committee {
 }
 
 const CommitteeMemberCard = ({ member }: { member: CommitteeMember }) => (
-	<div className='flex items-center space-x-3 py-3 w-full max-w-sm lg:max-w-xs xl:max-w-sm'>
+	<div className='flex items-center space-x-3 py-3 w-full max-w-sm lg:max-w-xs xl:max-w-xs'>
 		<div className='w-16 h-16 sm:w-20 sm:h-20 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0'>
 			<span className='text-primary font-medium text-xs sm:text-sm'>
 				{member.name
@@ -33,7 +33,8 @@ const CommitteesPage = () => {
 		{
 			title: 'Honorary Chairs',
 			members: [
-				{ name: 'Fang-Yie Leu', affiliation: 'ThungHai University, Taiwan' },
+				{ name: 'Il Yeon Cho', affiliation: 'ETRI, South Korea' },
+				{ name: 'Fang-Yie Leu', affiliation: 'Tunghai University, Taiwan' },
 				{ name: 'Kouichi Sakurai', affiliation: 'Kyushu University, Japan' },
 			],
 		},
@@ -49,21 +50,112 @@ const CommitteesPage = () => {
 			members: [
 				{ name: 'Kiwook Sohn', affiliation: 'Seoul National University of Science & Technology, South Korea' },
 				{ name: 'Goichiro Hanaoka', affiliation: 'AIST, Japan' },
+				{ name: 'Jeong Nye Kim', affiliation: 'ETRI, South Korea' },
 			],
 		},
 		{
-			title: 'Program Chairs',
+			title: 'Program Committee Chairs',
 			members: [
 				{ name: 'Hwankuk Kim', affiliation: 'Kookmin University, South Korea' },
-				{ name: 'Seonghan Shin', affiliation: 'AIST, Japan' },
+				{ name: 'SeongHan Shin', affiliation: 'AIST, Japan' },
 				{ name: 'Antonio Skarmeta', affiliation: 'University of Murcia, Spain' },
+			],
+		},
+		{
+			title: 'Program Committee',
+			members: [
+				{ name: 'Ramón Alcarria', affiliation: 'Universidad Politécnica de Madrid, Spain' },
+				{ name: 'Pelin Angin', affiliation: 'Middle East Technical University, Republic of Türkiye' },
+				{ name: 'Ram Basnet', affiliation: 'Colorado Mesa University, USA' },
+				{ name: 'Daniele Bringhenti', affiliation: 'The Polytechnic University of Turin, Italy' },
+				{ name: 'Yuanlong Cao', affiliation: 'Jiangxi Normal University, China' },
+				{ name: 'Gaurav Choudhary', affiliation: 'University of Southern Denmark, Denmark' },
+				{ name: 'Yu-Fang Chung', affiliation: 'Tunghai University, Taiwan' },
+				{ name: 'Baojiang Cui', affiliation: 'BUPT, China' },
+				{ name: 'Steven Duong', affiliation: 'University of Wollongong, Australia' },
+				{ name: 'Jianfeng Guan', affiliation: 'BUPT, China' },
+				{ name: 'Shoichi Hirose', affiliation: 'University of Fukui, Japan' },
+				{ name: 'Huisu Jang', affiliation: 'Soongsil University, South Korea' },
+				{ name: 'Sanghoon Jeon', affiliation: 'Kookmin University, South Korea' },
+				{ name: 'Anuchit Jitpattanakul', affiliation: 'KMUTNB, Thailand' },
+				{ name: 'Jongkil Kim', affiliation: 'Ewha Womans University, South Korea' },
+				{ name: 'Taeguen Kim', affiliation: 'Korea University, South Korea' },
+				{ name: 'Youngsoo Kim', affiliation: 'ETRI, South Korea' },
+				{ name: 'Dowon Kim', affiliation: 'KISA, South Korea' },
+				{ name: 'Hyun Kwon', affiliation: 'Korea Militaray Academy, South Korea' },
+				{ name: 'Mun-Kyu Lee', affiliation: 'Inha University, South Korea' },
+				{ name: 'C. Mala', affiliation: 'National Institute of Technology, Tiruchirapalli, India' },
+				{ name: 'Sakorn Mekruksavanich', affiliation: 'University of Phayao, Thailand' },
+				{ name: 'Alessio Merlo', affiliation: 'CASD, School of Advanced Defense Studies, Italy' },
+				{ name: 'Moohong Min', affiliation: 'SKKU, South Korea' },
+				{ name: 'Hoonyong Park', affiliation: 'AUTOCRYPT, South Korea' },
+				{ name: 'Seongmin Park', affiliation: 'KISA, South Korea' },
+				{ name: 'Marek Pawlicki', affiliation: 'Bydgoszcz University of Science and Technology, Poland' },
+				{ name: 'SeogChung Seo', affiliation: 'Kookmin University, South Korea' },
+				{ name: 'DaeMin Shin', affiliation: 'Financial Security Institute, South Korea' },
+				{ name: 'Kunwar Singh', affiliation: 'NIT Trichy, India' },
+				{ name: 'Toi Tomita', affiliation: 'Yokohama National University, Japan' },
+				{ name: 'Kunlin Tsai', affiliation: 'Tunghai University, Taiwan' },
+				{ name: 'Noriki Uchida', affiliation: 'Fukuoka Institute of Technology, Japan' },
+				{ name: 'Sang Uk Shin', affiliation: 'Pukyong National University, South Korea' },
+				{ name: 'Fulvio Valenza', affiliation: 'Polytechnic University of Turin, Italy' },
+				{ name: 'Luca Verderame', affiliation: 'DIBRIS - University of Genova, Italy' },
+				{ name: 'Elena Vlahu-Gjorgievska', affiliation: 'University of Wollongong, Australia' },
+				{ name: 'Yohei Watanabe', affiliation: 'The University of Electo-Communications, Japan' },
+				{ name: 'Jie Xu', affiliation: 'BUPT, China' },
+				{ name: 'Akihiro Yamamura', affiliation: 'Akita University, Japan' },
+				{ name: 'Toshihiro Yamauchi', affiliation: 'Okayama University, Japan' },
+				{ name: 'Baokang Zhao', affiliation: 'NUDT, China' },
+			],
+		},
+		{
+			title: 'Poster Chairs',
+			members: [
+				{ name: 'Jiyoon Kim', affiliation: 'Gyeongsang National University, South Korea' },
+				{ name: 'Il-Gu Lee', affiliation: 'Sungshin Women\'s University, South Korea' },
+				{ name: 'Jungsoo Park', affiliation: 'Kangnam University, South Korea' },
+			],
+		},
+		{
+			title: 'Workshop Chairs',
+			members: [
+				{ name: 'Shingo Sato', affiliation: 'Yokohama National University, Japan' },
+				{ name: 'Jong-Geun Park', affiliation: 'ETRI, South Korea' },
+				{ name: 'Taek-Young Youn', affiliation: 'Dankook University, South Korea' },
+			],
+		},
+		{
+			title: 'Special Session Chairs',
+			members: [
+				{ name: 'Yuta Kodera', affiliation: 'Okayama University, Japan' },
+				{ name: 'Ki-Woong Park', affiliation: 'Sejong University, South Korea' },
 			],
 		},
 		{
 			title: 'Local Arrangement Chairs',
 			members: [
-				{ name: 'Bonam Kim', affiliation: 'Kookmin University, South Korea' },
 				{ name: 'Hyungrok Jo', affiliation: 'Yokohama National University, Japan' },
+				{ name: 'Bonam Kim', affiliation: 'Kookmin University, South Korea' },
+			],
+		},
+		{
+			title: 'International Liaison Chairs',
+			members: [
+				{ name: 'Yuntao Wang', affiliation: 'The University of Electro-Communications, Japan' },
+				{ name: 'Karl Andersson', affiliation: 'Luleå University of Technology, Sweden' },
+			],
+		},
+		{
+			title: 'Publicity Chairs',
+			members: [
+				{ name: 'Kuo-Hui Yeh', affiliation: 'National Yang Ming Chiao Tung University, Taiwan' },
+				{ name: 'Su Hyun Kim', affiliation: 'SoonChunHyang University, South Korea' },
+			],
+		},
+		{
+			title: 'Publication Chair',
+			members: [
+				{ name: 'Philip Astilo', affiliation: 'University of San Carlos, Philippines' },
 			],
 		},
 	];

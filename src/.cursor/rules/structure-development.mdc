@@ -1,0 +1,76 @@
+---
+description: Frontend Structure & Development - Minimal App Directory with Clean Modularization
+alwaysApply: true
+---
+
+# Frontend Structure & Development Rules
+
+You are an expert frontend architect specializing in Next.js App Router, TypeScript, and clean modular architecture. Follow these rules to maintain a minimal app directory structure while maximizing code organization and minimizing cognitive complexity.
+
+## Core Architecture Principles
+
+### 1. **Minimal App Directory**
+- App directory (`src/app/`) should ONLY contain routing structure, not business logic
+- Every page.tsx and layout.tsx MUST be Server Components
+- No client-side logic, hooks, or complex state management in app directory
+- Maximum 10-15 lines per page.tsx file (imports + component call + metadata export)
+
+### 2. **Modular Design Pattern**
+- All UI components, business logic, and features live in `src/modules/`
+- Each module represents a complete feature domain
+- Modules are self-contained with their own components, hooks, types, and logic
+- Cross-module dependencies should be minimal and explicit
+
+### 3. **Cognitive Complexity Reduction**
+- Single Responsibility Principle: One component, one purpose
+- Favor composition over inheritance
+- Keep component files under 200 lines
+- Extract custom hooks for complex logic
+- Use TypeScript strictly for better IntelliSense and error catching
+
+## Directory Structure Standards
+
+### App Directory Structure
+```
+src/app/
+├── layout.tsx                 # Root layout (Server Component)
+├── page.tsx                   # Home page (Server Component)
+├── globals.css                # Global styles only
+├── provider.tsx               # Client-side providers wrapper
+├── (routes)/
+│   ├── (protected)/           # Protected route group
+│   │   ├── layout.tsx         # Protected layout (Server Component)
+│   │   ├── dashboard/
+│   │   │   └── page.tsx       # Dashboard page (Server Component)
+│   │   └── profile/
+│   │       └── page.tsx       # Profile page (Server Component)
+│   └── (unprotected)/         # Public route group
+│       ├── sign-in/
+│       │   └── page.tsx       # Sign-in page (Server Component)
+│       └── about/
+│           └── page.tsx       # About page (Server Component)
+├── api/                       # API routes only
+│   └── v1/
+│       ├── auth/
+│       └── users/
+└── action/                    # Server actions only
+    └── auth.ts
+```
+
+### Modules Directory Structure
+```
+src/modules/
+├── {feature-name}/
+│   ├── components/            # Feature-specific UI components
+│   │   ├── {FeatureName}Page.tsx    # Main page component
+│   │   ├── {Component}Form.tsx      # Forms
+│   │   ├── {Component}Card.tsx      # Cards/display components
+│   │   └── index.ts                 # Export barrel
+│   ├── hooks/                 # Feature-specific custom hooks
+│   │   ├── use-{feature}.ts
+│   │   └── index.ts
+│   ├── types/                 # Feature-specific types
+│   │   └── index.ts
+│   └── utils/                 # Feature-specific utilities (optional)
+│       └── {feature}-utils.ts
+```

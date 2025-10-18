@@ -1,11 +1,5 @@
-import ImageCarousel from '@/components/ImageCarousel';
-import CallForPapers from './_components/CallForPapers';
+import HomePage from '@/modules/landing/home/components/HomePage';
 
 export default function Home() {
-	return (
-		<section className='p-8'>
-			<ImageCarousel />
-			<CallForPapers />
-		</section>
-	);
+	return <HomePage />;
 }

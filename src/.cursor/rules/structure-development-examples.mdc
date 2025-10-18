@@ -1,0 +1,378 @@
+---
+description: Frontend Structure Examples & Patterns
+alwaysApply: false
+---
+
+# Frontend Structure Examples & Patterns
+
+## Page Component Rules
+
+### 1. **Page.tsx Standards**
+```typescript
+// ✅ GOOD: Minimal page component (Server Component)
+import { Metadata } from 'next';
+import ProfilePage from '@/modules/profile/components/ProfilePage';
+
+export const metadata: Metadata = {
+  title: 'Profile | MyApp',
+  description: 'User profile management',
+};
+
+export default function Page() {
+  return <ProfilePage />;
+}
+```
+
+```typescript
+// ❌ BAD: Page with business logic
+'use client';
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+
+export default function Page() {
+  const [data, setData] = useState(null);
+  const { data: session } = useSession();
+  
+  useEffect(() => {
+    // Complex logic here - WRONG!
+  }, []);
+  
+  return <div>{/* Complex JSX - WRONG! */}</div>;
+}
+```
+
+### 2. **Layout.tsx Standards**
+```typescript
+// ✅ GOOD: Clean layout (Server Component)
+import { ReactNode } from 'react';
+import Navigation from '@/components/Navigation';
+import { auth } from '@/auth';
+
+interface LayoutProps {
+  children: ReactNode;
+}
+
+export default async function Layout({ children }: LayoutProps) {
+  const session = await auth();
+  
+  return (
+    <div className="min-h-screen">
+      <Navigation session={session} />
+      <main className="container mx-auto py-6">
+        {children}
+      </main>
+    </div>
+  );
+}
+```
+
+## Module Component Rules
+
+### 1. **Page Components in Modules**
+```typescript
+// ✅ GOOD: Feature page component
+'use client';
+import { useState } from 'react';
+import { useGetProfiles } from '@/modules/profile/hooks';
+import ProfileCard from './ProfileCard';
+import CreateProfileForm from './CreateProfileForm';
+
+const ProfilePage = () => {
+  const { data: profiles, isLoading, error } = useGetProfiles();
+  const [selectedProfile, setSelectedProfile] = useState(null);
+
+  // All business logic here
+  const handleProfileSelect = (profile) => {
+    setSelectedProfile(profile);
+  };
+
+  if (isLoading) return <ProfileSkeleton />;
+  if (error) return <ErrorMessage error={error} />;
+
+  return (
+    <div className="space-y-6">
+      <h1 className="text-2xl font-bold">Profile Management</h1>
+      {profiles?.length > 0 ? (
+        <ProfileCard 
+          profile={selectedProfile} 
+          onSelect={handleProfileSelect} 
+        />
+      ) : (
+        <CreateProfileForm />
+      )}
+    </div>
+  );
+};
+
+export default ProfilePage;
+```
+
+### 2. **Component Composition Rules**
+```typescript
+// ✅ GOOD: Small, focused components
+interface ProfileCardProps {
+  profile: Profile;
+  onEdit?: (profile: Profile) => void;
+  isEditable?: boolean;
+}
+
+const ProfileCard: React.FC<ProfileCardProps> = ({ 
+  profile, 
+  onEdit, 
+  isEditable = false 
+}) => {
+  return (
+    <Card className="p-6">
+      <CardHeader>
+        <CardTitle>{profile.name}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <ProfileDetails profile={profile} />
+        {isEditable && (
+          <Button onClick={() => onEdit?.(profile)}>
+            Edit Profile
+          </Button>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
+```
+
+### 3. **Custom Hooks Pattern**
+```typescript
+// ✅ GOOD: Extract complex logic to hooks
+export const useProfileManagement = () => {
+  const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  
+  const { data: profiles, isLoading } = useGetProfiles();
+  const updateMutation = useUpdateProfile();
+  
+  const handleProfileUpdate = useCallback(async (data: ProfileFormData) => {
+    if (!selectedProfile) return;
+    
+    try {
+      await updateMutation.mutateAsync({
+        id: selectedProfile.id,
+        profile: data,
+      });
+      setIsEditing(false);
+      toast.success('Profile updated successfully');
+    } catch (error) {
+      toast.error('Failed to update profile');
+    }
+  }, [selectedProfile, updateMutation]);
+  
+  return {
+    profiles,
+    selectedProfile,
+    isLoading,
+    isEditing,
+    setSelectedProfile,
+    setIsEditing,
+    handleProfileUpdate,
+  };
+};
+```
+
+## Import Organization Rules
+
+### 1. **Import Order (Strict)**
+```typescript
+// 1. React and Next.js core imports
+import { useState, useEffect } from 'react';
+import { NextPage } from 'next';
+import Link from 'next/link';
+
+// 2. Third-party libraries (alphabetical)
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import * as z from 'zod';
+
+// 3. Internal UI components
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Form, FormField } from '@/components/ui/form';
+
+// 4. Internal modules (feature-specific)
+import { useGetProfiles } from '@/modules/profile/hooks';
+import { ProfileFormData } from '@/modules/profile/types';
+
+// 5. Types and schemas
+import { Profile } from '@/context/profile/domain/profile.schema';
+```
+
+### 2. **Export Patterns**
+```typescript
+// ✅ GOOD: Named exports for components
+export const ProfileCard: React.FC<ProfileCardProps> = ({ ... }) => {
+  // Component implementation
+};
+
+// ✅ GOOD: Default export for main page components
+const ProfilePage = () => {
+  // Page implementation
+};
+
+export default ProfilePage;
+
+// ✅ GOOD: Barrel exports in index.ts
+export { ProfilePage } from './ProfilePage';
+export { ProfileCard } from './ProfileCard';
+export { ProfileForm } from './ProfileForm';
+```
+
+## State Management Rules
+
+### 1. **Local State First**
+```typescript
+// ✅ GOOD: Use useState for component-specific state
+const ProfileForm = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<string[]>([]);
+  
+  // Component logic
+};
+```
+
+### 2. **Server State with TanStack Query**
+```typescript
+// ✅ GOOD: Server state management
+const ProfilePage = () => {
+  const { 
+    data: profiles, 
+    isLoading, 
+    error,
+    refetch 
+  } = useGetProfiles();
+  
+  const createMutation = useCreateProfile();
+  
+  const handleCreate = async (data: ProfileFormData) => {
+    try {
+      await createMutation.mutateAsync({ profile: data });
+      await refetch();
+      toast.success('Profile created');
+    } catch (error) {
+      toast.error('Creation failed');
+    }
+  };
+};
+```
+
+## Error Handling & Loading States
+
+### 1. **Consistent Error Patterns**
+```typescript
+// ✅ GOOD: Standardized error handling
+const ProfilePage = () => {
+  const { data, isLoading, error } = useGetProfiles();
+  
+  if (isLoading) return <ProfilePageSkeleton />;
+  
+  if (error) {
+    return (
+      <ErrorBoundary>
+        <Alert variant="destructive">
+          <AlertTitle>Error Loading Profiles</AlertTitle>
+          <AlertDescription>{error.message}</AlertDescription>
+        </Alert>
+      </ErrorBoundary>
+    );
+  }
+  
+  return <ProfileContent data={data} />;
+};
+```
+
+### 2. **Loading States**
+```typescript
+// ✅ GOOD: Skeleton components for loading
+const ProfilePageSkeleton = () => (
+  <div className="space-y-6">
+    <Skeleton className="h-8 w-48" />
+    <Card>
+      <CardContent className="space-y-4">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-3/4" />
+        <Skeleton className="h-10 w-32" />
+      </CardContent>
+    </Card>
+  </div>
+);
+```
+
+## Anti-Patterns to Avoid
+
+### 1. **App Directory Anti-Patterns**
+```typescript
+// ❌ BAD: Business logic in page.tsx
+'use client';
+export default function Page() {
+  const [data, setData] = useState(null);
+  const { data: session } = useSession();
+  
+  useEffect(() => {
+    fetchData().then(setData); // Business logic in page!
+  }, []);
+  
+  return <ComplexComponent data={data} />; // Complex JSX in page!
+}
+
+// ❌ BAD: Multiple responsibilities in one component
+const UserDashboard = () => {
+  // User management logic
+  // Analytics logic  
+  // Navigation logic
+  // Profile logic
+  // Too many responsibilities!
+};
+```
+
+### 2. **Structure Anti-Patterns**
+```typescript
+// ❌ BAD: Deeply nested directories
+src/components/pages/user/profile/forms/edit/ProfileEditForm.tsx
+
+// ❌ BAD: Generic component directories
+src/components/forms/    // Too generic
+src/components/buttons/  // Too generic
+src/components/cards/    // Too generic
+
+// ✅ GOOD: Feature-based organization
+src/modules/profile/components/ProfileEditForm.tsx
+src/modules/auth/components/LoginForm.tsx
+src/modules/dashboard/components/StatsCard.tsx
+```
+
+## File Naming Conventions
+
+### 1. **Component Files**
+- PascalCase for React components: `ProfileCard.tsx`
+- camelCase for utilities: `profileUtils.ts`
+- kebab-case for directories: `profile-management/`
+- UPPERCASE for constants: `PROFILE_CONSTANTS.ts`
+
+### 2. **Hook Files**
+- Prefix with `use-`: `use-profile-form.ts`
+- Descriptive names: `use-profile-validation.ts`
+- Export with `use` prefix: `export const useProfileForm = () => {}`
+
+## Code Quality Metrics
+
+### 1. **Complexity Thresholds**
+- Max 200 lines per component file
+- Max 10 props per component
+- Max 5 levels of nesting in JSX
+- Max 3 useEffect hooks per component
+- Extract custom hooks when logic exceeds 20 lines
+
+### 2. **Performance Targets**
+- Bundle size impact: <50KB per new module
+- First Contentful Paint: <1.5s
+- Largest Contentful Paint: <2.5s
+- Cumulative Layout Shift: <0.1
+
+Remember: The goal is to create a maintainable, scalable frontend architecture where business logic is properly separated, components are focused and reusable, and the app directory remains a clean routing layer. Always prioritize developer experience and code readability over clever solutions.

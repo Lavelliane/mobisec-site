@@ -22,22 +22,22 @@ const PreviousEventsPage = () => {
 				</div>
 
 				{/* Main Content Grid */}
-				<div className='flex flex-col lg:grid lg:grid-cols-3 gap-8 lg:gap-12 items-start'>
+				<div className='flex flex-col lg:grid lg:grid-cols-3 w-full gap-8 lg:gap-12 items-start'>
 					{/* Timeline Section */}
-					<div className='lg:col-span-2 order-2 lg:order-1'>
-						<div className='relative'>
+					<div className='lg:col-span-2 order-2 lg:order-1 w-full'>
+						<div className='relative w-full'>
 							{/* Timeline Line - Hidden on mobile */}
 							<div className='absolute left-6 sm:left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/70 to-muted hidden sm:block'></div>
 
 							{/* Timeline Items */}
-							<div className='space-y-6 sm:space-y-8'>
+							<div className='space-y-6 sm:space-y-8 w-full flex flex-col'>
 								{conferences.map((event) => (
 									<div
 										key={event.year}
-										className='relative flex flex-col sm:flex-row items-start'>
+										className='relative flex flex-col sm:flex-row items-start w-full'>
 										{/* Timeline Dot */}
 										<div
-											className={`relative z-10 flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full border-4 shadow-lg flex-shrink-0 mb-4 sm:mb-0 ${
+											className={`relative z-10 flex items-center justify-center w-10 h-10 sm:w-16 sm:h-16 rounded-full sm:border-4 border-2 shadow-lg flex-shrink-0 mb-2 sm:mb-0 ${
 												event.status === 'upcoming'
 													? 'bg-primary border-primary text-white'
 													: event.status === 'recent'
@@ -79,7 +79,7 @@ const PreviousEventsPage = () => {
 												{/* Content */}
 												<div className='relative z-10'>
 													<CardHeader className='pb-2 sm:pb-3'>
-														<CardTitle className='flex flex-col sm:flex-row items-start sm:items-center justify-between text-white gap-2'>
+														<CardTitle className='flex flex-row items-start sm:items-center justify-between text-white gap-2'>
 															<span className='text-xl sm:text-2xl font-semibold drop-shadow-sm'>
 																MobiSec {event.year}
 															</span>

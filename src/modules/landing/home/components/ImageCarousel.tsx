@@ -83,11 +83,17 @@ const ImageCarousel = () => {
 									alt={image.alt}
 									width={1000}
 									height={1000}
-									className='w-full h-[560px] object-cover'
+									className='w-full h-[280px] sm:h-[400px] lg:h-[560px] object-cover'
 								/>
-								<div className='absolute left-24 z-10 right-0 p-4 bg-black/30 backdrop-blur-xs max-w-sm flex flex-col justify-center items-start'>
-									<h4 className='text-white text-5xl font-bold'>MobiSec 2025</h4>
-									<p className='text-white text-lg'>Sapporo, Japan | December 16-18, 2025</p>
+								<div className='absolute inset-0 z-10 flex items-center justify-center sm:justify-start'>
+									<div className='w-full max-w-3xs sm:max-w-sm lg:max-w-md ml-0 sm:ml-16 lg:ml-24 p-4 sm:p-4 lg:p-6 bg-black/40 sm:bg-black/30 backdrop-blur-sm rounded-r-lg'>
+										<h4 className='text-white text-2xl sm:text-4xl lg:text-5xl font-bold mb-1 sm:mb-2 text-center sm:text-left'>
+											MobiSec 2025
+										</h4>
+										<p className='text-white text-sm sm:text-base lg:text-lg leading-tight flex sm:flex-row flex-col items-center'>
+											<span>Sapporo, Japan</span> <span className='mx-1 sm:inline hidden'>|</span> <span>December 16-18, 2025</span>
+										</p>
+									</div>
 								</div>
 							</CardContent>
 						</Card>
@@ -96,11 +102,11 @@ const ImageCarousel = () => {
 			</CarouselContent>
 			<CarouselPrevious
 				variant='ghost'
-				className='absolute left-12 top-1/2 -translate-y-1/2 cursor-pointer scale-200 text-white'
+				className='absolute left-2 sm:left-4 lg:left-12 top-1/2 -translate-y-1/2 cursor-pointer scale-125 sm:scale-150 lg:scale-200 text-white hover:bg-white/20'
 			/>
 			<CarouselNext
 				variant='ghost'
-				className='absolute right-12 top-1/2 -translate-y-1/2 cursor-pointer scale-200 text-white'
+				className='absolute right-2 sm:right-4 lg:right-12 top-1/2 -translate-y-1/2 cursor-pointer scale-125 sm:scale-150 lg:scale-200 text-white hover:bg-white/20'
 			/>
 		</Carousel>
 	);

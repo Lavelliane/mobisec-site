@@ -87,13 +87,13 @@ const navigationCategories = [
 	{
 		label: 'Proceedings',
 		href: '/proceedings',
-		disabled: true,
+		disabled: false,
 		isStandalone: true,
 	},
 	{
 		label: 'Contact Us',
 		href: '/contact',
-		disabled: true,
+		disabled: false,
 		isStandalone: true,
 	},
 
@@ -127,18 +127,28 @@ function MobileNavItem({
 	href,
 	disabled,
 	onClick,
+	isSubitem = false,
+	...props
 }: {
 	title: string;
 	href: string;
 	disabled?: boolean;
 	onClick: () => void;
-}) {
+	isSubitem?: boolean;
+} & React.ComponentPropsWithoutRef<'a'>) {
 	return (
 		<Link
+			{...props}
 			href={disabled ? '#' : href}
 			onClick={onClick}
-			className={`block px-4 py-3 text-sm font-medium border-b border-gray-200 hover:bg-gray-50 transition-colors ${
-				disabled ? 'opacity-50 cursor-not-allowed text-gray-400' : 'text-gray-700'
+			className={`${
+				isSubitem ? 'ml-6' : 'ml-3'
+			} block px-4 py-3 text-sm font-medium border-b border-border hover:bg-accent transition-colors ${
+				disabled
+					? 'opacity-50 cursor-not-allowed text-muted-foreground'
+					: isSubitem
+					? 'text-muted-foreground hover:text-foreground'
+					: 'text-foreground'
 			}`}>
 			{title}
 		</Link>
@@ -246,7 +256,7 @@ const NavigationBar = ({ session }: { session: Session }) => {
 	return (
 		<div className='flex flex-col justify-between w-full'>
 			{/* Header Section */}
-			<div className='h-fit w-full flex items-center justify-between md:gap-4 gap-0 max-w-7xl mx-auto md:py-4 py-2 px-4'>
+			<div className='h-fit w-full flex items-center justify-between md:gap-4 gap-0 max-w-7xl mx-auto md:py-4 pt-4 px-4'>
 				<div
 					className='flex flex-row items-center gap-2 cursor-pointer'
 					onClick={() => router.push('/')}>
@@ -300,8 +310,8 @@ const NavigationBar = ({ session }: { session: Session }) => {
 			</div>
 
 			{/* Mobile Conference Title */}
-			<div className='md:hidden px-4 pb-2'>
-				<h4 className='text-xs font-semibold text-center text-gray-600'>
+			<div className='md:hidden px-4 pb-4'>
+				<h4 className='text-sm font-semibold text-start text-muted-foreground'>
 					The 9th International Conference on Mobile Internet Security
 				</h4>
 			</div>
@@ -351,10 +361,10 @@ const NavigationBar = ({ session }: { session: Session }) => {
 
 			{/* Mobile Navigation Menu */}
 			{isMobileMenuOpen && (
-				<div className='md:hidden bg-white border-t border-gray-200 shadow-lg'>
+				<div className='md:hidden bg-background border-t border-border shadow-lg'>
 					<div className='max-h-96 overflow-y-auto'>
 						{/* Authentication Section for Mobile - HIDDEN */}
-						{/* <div className='border-b border-gray-200 p-4'>
+						{/* <div className='border-b border-border p-4'>
 							{session?.user ? (
 								<div className='flex flex-col gap-3'>
 									<div className='flex items-center gap-3'>
@@ -364,10 +374,10 @@ const NavigationBar = ({ session }: { session: Session }) => {
 												alt={session.user?.name || ''}
 											/>
 											<AvatarFallback>{session.user?.name?.charAt(0)}</AvatarFallback>
-										</Avatar>
+											</Avatar>
 										<div>
-											<p className='text-sm font-medium text-gray-900'>{session.user?.name}</p>
-											<p className='text-xs text-gray-500'>{session.user?.email}</p>
+											<p className='text-sm font-medium text-foreground'>{session.user?.name}</p>
+											<p className='text-xs text-muted-foreground'>{session.user?.email}</p>
 										</div>
 									</div>
 									{isAdmin && (
@@ -375,31 +385,31 @@ const NavigationBar = ({ session }: { session: Session }) => {
 											<Link
 												href='/profile'
 												onClick={closeMobileMenu}
-												className='block text-sm text-gray-600 hover:text-gray-900'>
+												className='block text-sm text-muted-foreground hover:text-foreground'>
 												Profile
 											</Link>
 											<Link
 												href='/emails'
 												onClick={closeMobileMenu}
-												className='block text-sm text-gray-600 hover:text-gray-900'>
+												className='block text-sm text-muted-foreground hover:text-foreground'>
 												Emails
 											</Link>
 											<Link
 												href='/events'
 												onClick={closeMobileMenu}
-												className='block text-sm text-gray-600 hover:text-gray-900'>
+												className='block text-sm text-muted-foreground hover:text-foreground'>
 												Events
 											</Link>
 											<Link
 												href='/registration'
 												onClick={closeMobileMenu}
-												className='block text-sm text-gray-600 hover:text-gray-900'>
+												className='block text-sm text-muted-foreground hover:text-foreground'>
 												Registrations
 											</Link>
 											<Link
 												href='/paper-validation'
 												onClick={closeMobileMenu}
-												className='block text-sm text-gray-600 hover:text-gray-900'>
+												className='block text-sm text-muted-foreground hover:text-foreground'>
 												Paper Validation
 											</Link>
 										</div>
@@ -426,24 +436,31 @@ const NavigationBar = ({ session }: { session: Session }) => {
 							)}
 						</div> */}
 
-						{/* Navigation Categories */}
-						{navigationCategories.map((category) => {
-							if (category.isStandalone) {
-								return (
-									<MobileNavItem
-										key={category.label}
-										title={category.label}
-										href={category.href!}
-										disabled={category.disabled}
-										onClick={closeMobileMenu}
-									/>
-								);
-							}
+						{/* Standalone Navigation Items */}
+						{(() => {
+							const standaloneItems = navigationCategories.filter(category => category.isStandalone);
+							return standaloneItems.map((item) => (
+								<MobileNavItem
+									key={item.label}
+									title={item.label}
+									href={item.href!}
+									disabled={item.disabled}
+									isSubitem={false}
+									onClick={closeMobileMenu}
+								/>
+							));
+						})()}
 
-							return (
+						{/* Navigation Categories */}
+						{navigationCategories
+							.filter(category => !category.isStandalone)
+							.map((category) => (
 								<div key={category.label}>
-									<div className='px-4 py-3 bg-gray-50 border-b border-gray-200'>
-										<h3 className='text-sm font-semibold text-gray-900'>{category.label}</h3>
+									<div className='px-4 py-3 bg-accent border-b border-border'>
+										<h3 className='text-sm font-semibold text-foreground flex items-center'>
+											<span className="inline-block w-1 h-4 bg-primary rounded-full mr-2"></span>
+											{category.label}
+										</h3>
 									</div>
 									{category.items?.map((item) => (
 										<MobileNavItem
@@ -451,12 +468,12 @@ const NavigationBar = ({ session }: { session: Session }) => {
 											title={item.label}
 											href={item.href}
 											disabled={item.disabled}
+											isSubitem={true}
 											onClick={closeMobileMenu}
 										/>
 									))}
 								</div>
-							);
-						})}
+							))}
 					</div>
 				</div>
 			)}

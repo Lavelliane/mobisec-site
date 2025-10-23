@@ -40,7 +40,7 @@ const ProceedingsPage = async () => {
 					<a
 						href='https://link.springer.com/book/10.1007/978-981-95-0172-4'
 						target='_blank'
-						rel='noopener noreferrer'
+						rel='noopener'
 						className='inline-flex items-center px-4 sm:px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm sm:text-base'
 					>
 						View Proceedings on Springer

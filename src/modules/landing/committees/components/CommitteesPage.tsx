@@ -41,6 +41,7 @@ const CommitteesPage = () => {
 		{
 			title: 'Steering Chairs',
 			members: [
+				{ name: 'Young-Ho Park', affiliation: 'Sejong Cyber University, South Korea' },
 				{ name: 'Koji Nakao', affiliation: 'NICT and Yokohama National University, Japan' },
 				{ name: 'Ilsun You', affiliation: 'Kookmin University, South Korea' },
 			],

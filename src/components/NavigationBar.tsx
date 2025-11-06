@@ -85,6 +85,12 @@ const navigationCategories = [
 	// 	isStandalone: true,
 	// },
 	{
+		label: 'Registration Guide',
+		href: '/registration-guide',
+		disabled: false,
+		isStandalone: true,
+	},
+	{
 		label: 'Proceedings',
 		href: '/proceedings',
 		disabled: false,

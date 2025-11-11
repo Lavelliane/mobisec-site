@@ -8,7 +8,7 @@ import { Globe2 } from 'lucide-react';
 const RegistrationPage = () => {
   // URL bisa kamu ganti ke yang real
   const REG_LOCAL_URL = 'https://kiisc.or.kr/payment/pay'; // base
-  const REG_FOREIGN_URL = '/payment'; // misal halaman kamu sendiri
+  const REG_FOREIGN_URL = 'https://ebision.ifip-wg84.org/payment'; // misal halaman kamu sendiri
 
   // buka tab baru
   const goMobiLocal = () => {

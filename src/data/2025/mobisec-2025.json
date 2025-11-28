@@ -1,0 +1,562 @@
+{
+	"conference": {
+		"name": "MobiSec 2025",
+		"fullName": "MobiSec 2025",
+		"dates": "December 16-19, 2025",
+		"location": "Sapporo, Japan",
+		"venue": "Hotel Emisia Sapporo"
+	},
+	"rooms": [
+		{ "id": "pbr-east", "name": "Palace Ball Room (East)" },
+		{ "id": "pbr-west", "name": "Palace Ball Room (West)" },
+		{ "id": "crown", "name": "Crown Room" }
+	],
+	"days": [
+		{
+			"date": "2025-12-16",
+			"dayName": "Tuesday",
+			"slots": [
+				{
+					"startTime": "09:00",
+					"endTime": "10:30",
+					"duration": "1H 30M",
+					"sessions": [
+						{
+							"room": "pbr-east",
+							"type": "session",
+							"sessionId": "1A",
+							"title": "Session 1A",
+							"topic": "System Operation Security",
+							"chair": null,
+							"speakers": []
+						},
+						{
+							"room": "pbr-west",
+							"type": "session",
+							"sessionId": "1B",
+							"title": "Session 1B",
+							"topic": "AI-driven Security 1",
+							"chair": null,
+							"speakers": []
+						},
+						{
+							"room": "crown",
+							"type": "session",
+							"sessionId": "1C",
+							"title": "Session 1C",
+							"topic": "IoT Security",
+							"chair": null,
+							"speakers": []
+						}
+					]
+				},
+				{
+					"startTime": "10:30",
+					"endTime": "10:45",
+					"duration": "15M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "break",
+							"title": "Break",
+							"topic": "Break (15M)"
+						}
+					]
+				},
+				{
+					"startTime": "10:45",
+					"endTime": "12:00",
+					"duration": "1H 15M",
+					"sessions": [
+						{
+							"room": "pbr-east",
+							"type": "session",
+							"sessionId": "2A",
+							"title": "Session 2A",
+							"topic": "Advanced Cryptography",
+							"chair": null,
+							"speakers": []
+						},
+						{
+							"room": "pbr-west",
+							"type": "session",
+							"sessionId": "2B",
+							"title": "Session 2B",
+							"topic": "Network Threat Detection",
+							"chair": null,
+							"speakers": []
+						},
+						{
+							"room": "crown",
+							"type": "session",
+							"sessionId": "2C",
+							"title": "Session 2C",
+							"topic": "Quantum/Post-Quantum Security",
+							"chair": null,
+							"speakers": []
+						}
+					]
+				},
+				{
+					"startTime": "12:00",
+					"endTime": "13:40",
+					"duration": "1H 40M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "lunch",
+							"title": "Lunch",
+							"topic": "Lunch - Complement of MobiSec conference"
+						}
+					]
+				},
+				{
+					"startTime": "13:40",
+					"endTime": "14:00",
+					"duration": "20M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "ceremony",
+							"title": "Opening Ceremony"
+						}
+					]
+				},
+				{
+					"startTime": "14:00",
+					"endTime": "15:00",
+					"duration": "1H",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "keynote",
+							"sessionId": "K1",
+							"title": "Keynote 1",
+							"topic": "TBD",
+							"chair": null,
+							"speakers": [
+								{
+									"name": "Prof. Yongdae Kim",
+									"affiliation": "Korea Institute of Science and Technology, Korea",
+									"role": "keynote"
+								}
+							]
+						}
+					]
+				},
+				{
+					"startTime": "15:00",
+					"endTime": "15:15",
+					"duration": "15M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "break",
+							"title": "Break",
+							"topic": "Break (15M)"
+						}
+					]
+				},
+				{
+					"startTime": "15:15",
+					"endTime": "16:15",
+					"duration": "1H",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "panel",
+							"title": "Panel Discussion"
+						}
+					]
+				},
+				{
+					"startTime": "16:15",
+					"endTime": "16:30",
+					"duration": "15M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "break",
+							"title": "Break",
+							"topic": "Break (15M)"
+						}
+					]
+				},
+				{
+					"startTime": "16:30",
+					"endTime": "18:00",
+					"duration": "1H 30M",
+					"sessions": [
+						{
+							"room": "pbr-east",
+							"type": "session",
+							"sessionId": "3A",
+							"title": "Session 3A",
+							"topic": "Key Exchange & Management System",
+							"chair": null,
+							"speakers": []
+						},
+						{
+							"room": "pbr-west",
+							"type": "session",
+							"sessionId": "3B",
+							"title": "Session 3B",
+							"topic": "6G and Next Generation Network Security",
+							"chair": null,
+							"speakers": []
+						},
+						{
+							"room": "crown",
+							"type": "special",
+							"title": "Special Session",
+							"topic": "Speicla Session",
+							"chair": null,
+							"speakers": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"date": "2025-12-17",
+			"dayName": "Wednesday",
+			"slots": [
+				{
+					"startTime": "09:00",
+					"endTime": "10:30",
+					"duration": "1H 30M",
+					"sessions": [
+						{
+							"room": "pbr-east",
+							"type": "session",
+							"sessionId": "4A",
+							"title": "Session 4A",
+							"topic": "Formal Verification",
+							"chair": null,
+							"speakers": []
+						},
+						{
+							"room": "pbr-west",
+							"type": "session",
+							"sessionId": "4B",
+							"title": "Session 4B",
+							"topic": "Air & Space Security",
+							"chair": null,
+							"speakers": []
+						},
+						{
+							"room": "crown",
+							"type": "workshop",
+							"title": "2025 MobiSec Workshop 1"
+						}
+					]
+				},
+				{
+					"startTime": "10:30",
+					"endTime": "10:45",
+					"duration": "15M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "break",
+							"title": "Break",
+							"topic": "Break (15M)"
+						}
+					]
+				},
+				{
+					"startTime": "10:45",
+					"endTime": "12:00",
+					"duration": "1H 15M",
+					"sessions": [
+						{
+							"room": "pbr-east",
+							"type": "session",
+							"sessionId": "5A",
+							"title": "Session 5A",
+							"topic": "Cryptographic Applications and Analysis",
+							"chair": null,
+							"speakers": []
+						},
+						{
+							"room": "pbr-west",
+							"type": "session",
+							"title": "Formal Verification Session 1",
+							"topic": "Formal Verification",
+							"chair": null,
+							"speakers": []
+						},
+						{
+							"room": "crown",
+							"type": "workshop",
+							"title": "2025 MobiSec Workshop 2"
+						}
+					]
+				},
+				{
+					"startTime": "12:00",
+					"endTime": "13:30",
+					"duration": "1H 30M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "lunch",
+							"title": "Lunch",
+							"topic": "Lunch - Complement of MobiSec conference"
+						}
+					]
+				},
+				{
+					"startTime": "13:30",
+					"endTime": "14:30",
+					"duration": "1H",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "keynote",
+							"sessionId": "K2",
+							"title": "Keynote 2",
+							"topic": "TBD",
+							"chair": null,
+							"speakers": [
+								{
+									"name": "Prof. Junji Shikata",
+									"affiliation": "Yokohama National University, Japan",
+									"role": "keynote"
+								}
+							]
+						}
+					]
+				},
+				{
+					"startTime": "14:30",
+					"endTime": "15:00",
+					"duration": "30M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "break",
+							"title": "Break",
+							"topic": "Break (30M)"
+						}
+					]
+				},
+				{
+					"startTime": "15:00",
+					"endTime": "16:15",
+					"duration": "1H 15M",
+					"sessions": [
+						{
+							"room": "pbr-east",
+							"type": "session",
+							"sessionId": "6A",
+							"title": "Session 6A",
+							"topic": "Adaptive Intelligence and System Security",
+							"chair": null,
+							"speakers": []
+						},
+						{
+							"room": "pbr-west",
+							"type": "session",
+							"title": "Formal Verification Session 2",
+							"topic": "Formal Verification",
+							"chair": null,
+							"speakers": []
+						},
+						{
+							"room": "crown",
+							"type": "workshop",
+							"title": "TTA eqSIM Project Workshop"
+						}
+					]
+				},
+				{
+					"startTime": "16:15",
+					"endTime": "16:30",
+					"duration": "15M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "break",
+							"title": "Break",
+							"topic": "Break (15M)"
+						}
+					]
+				},
+				{
+					"startTime": "16:30",
+					"endTime": "18:00",
+					"duration": "1H 30M",
+					"sessions": [
+						{
+							"room": "pbr-east",
+							"type": "poster",
+							"title": "Poster Session 1&2 (Offline)"
+						},
+						{
+							"room": "pbr-west",
+							"type": "forum",
+							"title": "Global Research Collaboration Forum"
+						}
+					]
+				},
+				{
+					"startTime": "19:00",
+					"endTime": "21:00",
+					"duration": "2H",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "banquet",
+							"title": "Banquet",
+							"topic": "Banquet - Complement of MobiSec conference"
+						}
+					]
+				}
+			]
+		},
+		{
+			"date": "2025-12-18",
+			"dayName": "Thursday",
+			"slots": [
+				{
+					"startTime": "09:00",
+					"endTime": "10:30",
+					"duration": "1H 30M",
+					"sessions": [
+						{
+							"room": "pbr-east",
+							"type": "session",
+							"sessionId": "7A",
+							"title": "Session 7A",
+							"topic": "Digital Asset Protection",
+							"chair": null,
+							"speakers": []
+						},
+						{
+							"room": "pbr-west",
+							"type": "session",
+							"sessionId": "7B",
+							"title": "Session 7B",
+							"topic": "Blockchain/Distributed Trust",
+							"chair": null,
+							"speakers": []
+						},
+						{
+							"room": "crown",
+							"type": "session",
+							"sessionId": "7C",
+							"title": "Session 7C",
+							"topic": "Covert Threat Analysis",
+							"chair": null,
+							"speakers": []
+						}
+					]
+				},
+				{
+					"startTime": "10:30",
+					"endTime": "10:45",
+					"duration": "15M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "break",
+							"title": "Break",
+							"topic": "Break (15M)"
+						}
+					]
+				},
+				{
+					"startTime": "10:45",
+					"endTime": "12:00",
+					"duration": "1H 15M",
+					"sessions": [
+						{
+							"room": "pbr-east",
+							"type": "session",
+							"sessionId": "8A",
+							"title": "Session 8A",
+							"topic": "TBD",
+							"chair": null,
+							"speakers": []
+						},
+						{
+							"room": "pbr-west",
+							"type": "session",
+							"sessionId": "8B",
+							"title": "Session 8B",
+							"topic": "TBD",
+							"chair": null,
+							"speakers": []
+						},
+						{
+							"room": "crown",
+							"type": "session",
+							"sessionId": "8C",
+							"title": "Session 8C",
+							"topic": "TBD",
+							"chair": null,
+							"speakers": []
+						}
+					]
+				},
+				{
+					"startTime": "12:00",
+					"endTime": "13:30",
+					"duration": "1H 30M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "lunch",
+							"title": "Lunch",
+							"topic": "Lunch - Complement of MobiSec conference"
+						}
+					]
+				},
+				{
+					"startTime": "13:30",
+					"endTime": "15:30",
+					"duration": "2H",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "workshop",
+							"title": "AirGap Project Workshop"
+						}
+					]
+				},
+				{
+					"startTime": "15:30",
+					"endTime": "17:00",
+					"duration": "1H 30M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "forum",
+							"title": "E-Business Information Systems & Cyber Security Insight Hour"
+						}
+					]
+				}
+			]
+		},
+		{
+			"date": "2025-12-19",
+			"dayName": "Friday",
+			"slots": [
+				{
+					"startTime": "09:00",
+					"endTime": "11:00",
+					"duration": "2H",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "roundtable",
+							"title": "Roundtable on Research Challenges in the 6G, Quantum, AI, and E-Business Information Systems, etc."
+						}
+					]
+				}
+			]
+		}
+	]
+}
+

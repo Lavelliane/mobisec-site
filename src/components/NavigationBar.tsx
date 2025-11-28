@@ -45,7 +45,6 @@ const navigationCategories = [
 				label: 'Program Schedule',
 				href: '/program',
 				description: 'View the complete conference schedule',
-				disabled: true,
 			},
 			{
 				label: 'Keynotes',

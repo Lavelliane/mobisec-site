@@ -1,0 +1,417 @@
+{
+	"conference": {
+		"name": "EBISION 2025",
+		"fullName": "The 2025 IFIP WG 8.4 International Symposium on E-Business Information Systems Evolution",
+		"dates": "December 16-19, 2025",
+		"location": "Sapporo, Japan",
+		"venue": "Hotel Emisia Sapporo"
+	},
+	"rooms": [
+		{ "id": "symphony-4f", "name": "Symphony Room (4F)" }
+	],
+	"days": [
+		{
+			"date": "2025-12-16",
+			"dayName": "Tuesday",
+			"slots": [
+				{
+					"startTime": "09:00",
+					"endTime": "10:30",
+					"duration": "1H 30M",
+					"sessions": [
+						{
+							"room": "symphony-4f",
+							"type": "session",
+							"sessionId": "Session 1",
+							"title": "Session 1",
+							"chair": null,
+							"speakers": []
+						}
+					]
+				},
+				{
+					"startTime": "10:30",
+					"endTime": "10:45",
+					"duration": "15M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "break",
+							"title": "Break",
+							"topic": "Break (15M)"
+						}
+					]
+				},
+				{
+					"startTime": "10:45",
+					"endTime": "12:00",
+					"duration": "1H 15M",
+					"sessions": [
+						{
+							"room": "symphony-4f",
+							"type": "session",
+							"sessionId": "Session 2",
+							"title": "Session 2",
+							"chair": null,
+							"speakers": []
+						}
+					]
+				},
+				{
+					"startTime": "12:00",
+					"endTime": "13:40",
+					"duration": "1H 40M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "lunch",
+							"title": "Lunch",
+							"topic": "Lunch - Complement of MobiSec conference"
+						}
+					]
+				},
+				{
+					"startTime": "13:40",
+					"endTime": "14:00",
+					"duration": "20M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "ceremony",
+							"title": "Opening Ceremony"
+						}
+					]
+				},
+				{
+					"startTime": "14:00",
+					"endTime": "15:00",
+					"duration": "1H",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "keynote",
+							"sessionId": "Keynote 1",
+							"title": "Keynote 1",
+							"topic": "TBD",
+							"chair": null,
+							"speakers": [
+								{
+									"name": "Prof. Yongdae Kim",
+									"affiliation": "Korea Institute of Science and Technology, Korea",
+									"role": "keynote"
+								}
+							]
+						}
+					]
+				},
+				{
+					"startTime": "15:00",
+					"endTime": "15:15",
+					"duration": "15M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "break",
+							"title": "Break",
+							"topic": "Break (15M)"
+						}
+					]
+				},
+				{
+					"startTime": "15:15",
+					"endTime": "16:15",
+					"duration": "1H",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "panel",
+							"title": "Panel Discussion",
+							"topic": "TBD"
+						}
+					]
+				},
+				{
+					"startTime": "16:15",
+					"endTime": "16:30",
+					"duration": "15M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "break",
+							"title": "Break",
+							"topic": "Break (15M)"
+						}
+					]
+				},
+				{
+					"startTime": "16:30",
+					"endTime": "18:00",
+					"duration": "1H 30M",
+					"sessions": [
+						{
+							"room": "symphony-4f",
+							"type": "session",
+							"sessionId": "Session 3",
+							"title": "Session 3",
+							"chair": null,
+							"speakers": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"date": "2025-12-17",
+			"dayName": "Wednesday",
+			"slots": [
+				{
+					"startTime": "09:00",
+					"endTime": "10:30",
+					"duration": "1H 30M",
+					"sessions": [
+						{
+							"room": "symphony-4f",
+							"type": "session",
+							"title": "Industrial & Innovation Session",
+							"chair": null,
+							"speakers": []
+						}
+					]
+				},
+				{
+					"startTime": "10:30",
+					"endTime": "10:45",
+					"duration": "15M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "break",
+							"title": "Break",
+							"topic": "Break (15 min)"
+						}
+					]
+				},
+				{
+					"startTime": "10:45",
+					"endTime": "12:00",
+					"duration": "1H 15M",
+					"sessions": [
+						{
+							"room": "symphony-4f",
+							"type": "special",
+							"title": "EBISION Award",
+							"chair": null,
+							"speakers": []
+						}
+					]
+				},
+				{
+					"startTime": "12:00",
+					"endTime": "13:30",
+					"duration": "1H 30M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "lunch",
+							"title": "Lunch",
+							"topic": "Lunch - Complement of MobiSec conference"
+						}
+					]
+				},
+				{
+					"startTime": "13:30",
+					"endTime": "14:30",
+					"duration": "1H",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "keynote",
+							"sessionId": "Keynote 2",
+							"title": "Keynote 2",
+							"topic": "TBD",
+							"chair": null,
+							"speakers": [
+								{
+									"name": "Prof. Junji Shikata",
+									"affiliation": "Yokohama National University, Japan",
+									"role": "keynote"
+								}
+							]
+						}
+					]
+				},
+				{
+					"startTime": "14:30",
+					"endTime": "15:00",
+					"duration": "30M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "break",
+							"title": "Break",
+							"topic": "Break (30M)"
+						}
+					]
+				},
+				{
+					"startTime": "15:00",
+					"endTime": "16:15",
+					"duration": "1H 15M",
+					"sessions": [
+						{
+							"room": "symphony-4f",
+							"type": "session",
+							"sessionId": "Session 6",
+							"title": "Session 6",
+							"chair": null,
+							"speakers": []
+						}
+					]
+				},
+				{
+					"startTime": "16:15",
+					"endTime": "16:30",
+					"duration": "15M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "break",
+							"title": "Break",
+							"topic": "Break (15M)"
+						}
+					]
+				},
+				{
+					"startTime": "16:30",
+					"endTime": "18:00",
+					"duration": "1H 30M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "poster",
+							"title": "Poster Session 1&2 (Offline)"
+						}
+					]
+				},
+				{
+					"startTime": "19:00",
+					"endTime": "21:00",
+					"duration": "2H",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "banquet",
+							"title": "Banquet",
+							"topic": "Banquet - Complement of MobiSec conference"
+						}
+					]
+				}
+			]
+		},
+		{
+			"date": "2025-12-18",
+			"dayName": "Thursday",
+			"slots": [
+				{
+					"startTime": "09:00",
+					"endTime": "10:45",
+					"duration": "1H 45M",
+					"sessions": [
+						{
+							"room": "symphony-4f",
+							"type": "session",
+							"sessionId": "Session 7",
+							"title": "Session 7",
+							"chair": null,
+							"speakers": []
+						}
+					]
+				},
+				{
+					"startTime": "10:45",
+					"endTime": "11:00",
+					"duration": "15M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "break",
+							"title": "Break",
+							"topic": "Break (15M)"
+						}
+					]
+				},
+				{
+					"startTime": "11:00",
+					"endTime": "12:00",
+					"duration": "1H",
+					"sessions": [
+						{
+							"room": "symphony-4f",
+							"type": "session",
+							"sessionId": "Session 8",
+							"title": "Session 8",
+							"chair": null,
+							"speakers": []
+						}
+					]
+				},
+				{
+					"startTime": "12:00",
+					"endTime": "13:30",
+					"duration": "1H 30M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "break",
+							"title": "Break",
+							"topic": "Break (1H 30M)"
+						}
+					]
+				},
+				{
+					"startTime": "13:30",
+					"endTime": "15:30",
+					"duration": "2H",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "workshop",
+							"title": "AirGap Project Workshop"
+						}
+					]
+				},
+				{
+					"startTime": "15:30",
+					"endTime": "17:00",
+					"duration": "1H 30M",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "forum",
+							"title": "E-Business Information Systems & Cyber Security Insight Hour"
+						}
+					]
+				}
+			]
+		},
+		{
+			"date": "2025-12-19",
+			"dayName": "Friday",
+			"slots": [
+				{
+					"startTime": "09:00",
+					"endTime": "11:00",
+					"duration": "2H",
+					"sessions": [
+						{
+							"room": "common",
+							"type": "roundtable",
+							"title": "Roundtable on Research Challenges in the 6G, Quantum, AI, and E-Business Information Systems, etc."
+						}
+					]
+				}
+			]
+		}
+	]
+}
+

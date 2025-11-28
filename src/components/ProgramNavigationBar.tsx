@@ -82,9 +82,9 @@ const ProgramNavigationBar: React.FC<ProgramNavigationBarProps> = ({
 	const activeConference = conferences.find((conf) => conf.id === currentConf) ?? conferences[0];
 
 	return (
-		<div className={cn('w-full border-b border-border bg-background', className)}>
-			<div className="max-w-7xl mx-auto px-4 py-4">
-				<Tabs value={currentConf} onValueChange={handleConferenceChange} className="w-full">
+		<div className={cn('flex w-full border-b border-border bg-background', className)}>
+			<div className="sm:mx-0 mx-auto py-4">
+				<Tabs value={currentConf} onValueChange={handleConferenceChange}>
 					<TabsList className="inline-flex h-auto p-1 bg-muted rounded-lg">
 						{conferences.map((conference) => (
 							<TabsTrigger

@@ -85,18 +85,22 @@ const ScheduleGrid: React.FC<ScheduleGridProps> = ({
 		const isCommonSession = filteredSessions.length === 1 && filteredSessions[0].room === 'common';
 
 		return (
-			<div key={`${slot.startTime}-${slot.endTime}`} className="mb-6">
-				<div className="flex items-center gap-2 mb-4">
-					<Clock className="h-4 w-4 text-primary" />
-					<span className="text-base font-bold text-foreground">
-						{slot.startTime} - {slot.endTime}
-					</span>
-					<span className="text-sm text-muted-foreground">
-						({slot.duration})
-					</span>
+			<div key={`${slot.startTime}-${slot.endTime}`} className="mb-3">
+				<div className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80 border-b border-border pb-1.5 mb-2">
+					<div className="flex items-center gap-2">
+						<div className="flex items-center gap-2 px-2 py-1 bg-primary/10 rounded-md">
+							<Clock className="h-4 w-4 text-primary" />
+							<span className="text-sm font-bold text-foreground">
+								{slot.startTime} - {slot.endTime}
+							</span>
+							<span className="text-xs text-muted-foreground font-normal">
+								({slot.duration})
+							</span>
+						</div>
+					</div>
 				</div>
 				<div className={cn(
-					"grid gap-4",
+					"grid gap-3",
 					isCommonSession ? "grid-cols-1" : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
 				)}>
 					{filteredSessions.map((session, idx) => (
@@ -118,15 +122,15 @@ const ScheduleGrid: React.FC<ScheduleGridProps> = ({
 		if (!hasSessions) return null;
 
 		return (
-			<TabsContent key={day.date} value={day.date} className="mt-6">
-				<div className="mb-6 p-4 bg-primary/5 rounded-lg border border-border">
+			<TabsContent key={day.date} value={day.date} className="mt-3">
+				<div className="mb-4 p-3 bg-linear-to-r from-primary/5 to-primary/10 rounded-lg border border-primary/20">
 					<div className="flex items-center gap-2">
-						<Calendar className="h-5 w-5 text-primary" />
+						<Calendar className="h-4 w-4 text-primary" />
 						<div>
-							<h2 className="text-xl font-bold text-foreground">
+							<h2 className="text-lg font-bold text-foreground leading-tight">
 								{day.dayName}
 							</h2>
-							<p className="text-sm text-muted-foreground">
+							<p className="text-xs text-muted-foreground">
 								{new Date(day.date).toLocaleDateString('en-US', {
 									weekday: 'long',
 									month: 'long',
@@ -137,7 +141,7 @@ const ScheduleGrid: React.FC<ScheduleGridProps> = ({
 						</div>
 					</div>
 				</div>
-				<div className="space-y-6">
+				<div className="space-y-3">
 					{day.slots.map((slot) => renderTimeSlot(slot, schedule.days.indexOf(day)))}
 				</div>
 			</TabsContent>
@@ -157,14 +161,14 @@ const ScheduleGrid: React.FC<ScheduleGridProps> = ({
 		const day = filteredDays[0];
 		return (
 			<div>
-				<div className="mb-6 p-4 bg-primary/5 rounded-lg border border-border">
+				<div className="mb-4 p-3 bg-linear-to-r from-primary/5 to-primary/10 rounded-lg border border-primary/20">
 					<div className="flex items-center gap-2">
-						<Calendar className="h-5 w-5 text-primary" />
+						<Calendar className="h-4 w-4 text-primary" />
 						<div>
-							<h2 className="text-xl font-bold text-foreground">
+							<h2 className="text-lg font-bold text-foreground leading-tight">
 								{day.dayName}
 							</h2>
-							<p className="text-sm text-muted-foreground">
+							<p className="text-xs text-muted-foreground">
 								{new Date(day.date).toLocaleDateString('en-US', {
 									weekday: 'long',
 									month: 'long',
@@ -175,7 +179,7 @@ const ScheduleGrid: React.FC<ScheduleGridProps> = ({
 						</div>
 					</div>
 				</div>
-				<div className="space-y-6">
+				<div className="space-y-3">
 					{day.slots.map((slot) => renderTimeSlot(slot, 0))}
 				</div>
 			</div>
@@ -185,12 +189,12 @@ const ScheduleGrid: React.FC<ScheduleGridProps> = ({
 	// Multiple days - show tabs
 	return (
 		<Tabs defaultValue={filteredDays[0]?.date} className="w-full">
-			<TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 mb-6 h-auto p-1">
+			<TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 mb-5 h-auto p-1.5">
 				{filteredDays.map((day) => (
 					<TabsTrigger 
 						key={day.date} 
 						value={day.date}
-						className="py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+						className="py-2.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
 					>
 						{formatTabDate(day.date, day.dayName)}
 					</TabsTrigger>

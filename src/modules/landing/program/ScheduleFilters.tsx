@@ -10,9 +10,8 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { ConferenceSchedule, Room } from '@/types/conference-schedule';
+import { ConferenceSchedule } from '@/types/conference-schedule';
 import { Search, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 interface ScheduleFiltersProps {
 	schedule: ConferenceSchedule;
@@ -57,7 +56,7 @@ const ScheduleFilters: React.FC<ScheduleFiltersProps> = ({
 	const hasActiveFilters = selectedDay || selectedRoom || selectedType || searchQuery;
 
 	return (
-		<div className="space-y-4 p-4 bg-muted/50 rounded-lg border border-border">
+		<div className="space-y-4">
 			<div className="flex flex-col sm:flex-row gap-4">
 				{/* Search */}
 				<div className="relative flex-1">
@@ -125,7 +124,7 @@ const ScheduleFilters: React.FC<ScheduleFiltersProps> = ({
 				{/* Reset Button */}
 				{hasActiveFilters && (
 					<Button variant="outline" onClick={onReset} className="shrink-0">
-						<X className="h-4 w-4 mr-2" />
+						<X className="h-4 w-4" />
 						Reset
 					</Button>
 				)}

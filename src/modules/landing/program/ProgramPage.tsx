@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { ConferenceSchedule } from '@/types/conference-schedule';
 import ScheduleGrid from './ScheduleGrid';
 import ScheduleFilters from './ScheduleFilters';
@@ -64,13 +64,13 @@ const ProgramPage: React.FC<ProgramPageProps> = ({ schedule }) => {
 	}
 
 	return (
-		<div className="min-h-screen bg-gradient-to-b from-background to-muted/20 w-full">
-			<div className="container mx-auto px-4 py-6">
+		<div className="min-h-screen bg-linear-to-b from-background to-muted/20">
+			<div className="container mx-auto py-6">
 				{/* Header Section */}
-				<div className="mb-8">
-					<div className="flex items-start justify-between gap-4 mb-4">
+				<div className="mb-6 pb-4 border-b border-border">
+					<div className="flex sm:flex-row flex-col items-start justify-between gap-4">
 						<div className="flex-1">
-							<h1 className="text-3xl md:text-4xl font-bold mb-4 text-primary">
+							<h1 className="sm:text-2xl text-xl font-bold mb-3 bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
 								{schedule.conference.fullName}
 							</h1>
 							<div className="flex flex-col sm:flex-row gap-3 text-muted-foreground text-sm">
@@ -84,7 +84,7 @@ const ProgramPage: React.FC<ProgramPageProps> = ({ schedule }) => {
 									<span className="font-medium">{schedule.conference.location}</span>
 								</div>
 							</div>
-							<p className="text-xs text-muted-foreground mt-2">
+							<p className="text-xs text-muted-foreground mt-1.5">
 								📍 Venue: {schedule.conference.venue}
 							</p>
 						</div>
@@ -101,7 +101,7 @@ const ProgramPage: React.FC<ProgramPageProps> = ({ schedule }) => {
 				</div>
 
 				{/* Filters */}
-				<div className="mb-6 w-full">
+				<div className="mb-6">
 					<ScheduleFilters
 						schedule={schedule}
 						selectedDay={selectedDay}
@@ -117,7 +117,7 @@ const ProgramPage: React.FC<ProgramPageProps> = ({ schedule }) => {
 				</div>
 
 				{/* Schedule Grid */}
-				<div className="w-full">
+				<div>
 					<ScheduleGrid
 						schedule={schedule}
 						selectedDay={selectedDay}

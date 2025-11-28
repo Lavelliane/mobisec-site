@@ -76,7 +76,7 @@ const SessionCard: React.FC<SessionCardProps> = ({
 				{/* Header Row: Title and Badge */}
 				<div className="flex items-start justify-between gap-2">
 					<div className="flex-1 min-w-0">
-						<h3 className="text-sm font-bold leading-tight break-words">
+						<h3 className="text-sm font-bold leading-tight wrap-break-words">
 							{session.title}
 						</h3>
 						{session.sessionId && (
@@ -100,7 +100,7 @@ const SessionCard: React.FC<SessionCardProps> = ({
 
 				{/* Topic */}
 				{session.topic && (
-					<p className="text-xs text-muted-foreground leading-snug break-words">
+					<p className="text-xs text-muted-foreground leading-snug wrap-break-words">
 						{session.topic}
 					</p>
 				)}
@@ -130,8 +130,8 @@ const SessionCard: React.FC<SessionCardProps> = ({
 									)}
 									onClick={() => onSpeakerClick?.(speaker)}
 								>
-									<div className="font-semibold break-words">{speaker.name}</div>
-									<div className="text-muted-foreground break-words">{speaker.affiliation}</div>
+									<div className="font-semibold wrap-break-words">{speaker.name}</div>
+									<div className="text-muted-foreground wrap-break-words">{speaker.affiliation}</div>
 								</div>
 							))}
 						</div>
@@ -140,7 +140,7 @@ const SessionCard: React.FC<SessionCardProps> = ({
 
 				{/* Description */}
 				{session.description && (
-					<p className="text-xs text-muted-foreground leading-snug pt-1.5 border-t border-border break-words">
+					<p className="text-xs text-muted-foreground leading-snug pt-1.5 border-t border-border wrap-break-words">
 						{session.description}
 					</p>
 				)}

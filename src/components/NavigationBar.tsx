@@ -259,7 +259,7 @@ const NavigationBar = ({ session }: { session: Session }) => {
 	// }, [session, isAdmin, router]);
 
 	return (
-		<div className='flex flex-col justify-between w-full'>
+		<div className='flex flex-col justify-between w-full z-999'>
 			{/* Header Section */}
 			<div className='h-fit w-full flex items-center justify-between md:gap-4 gap-0 max-w-7xl mx-auto md:py-4 pt-4 px-4'>
 				<div

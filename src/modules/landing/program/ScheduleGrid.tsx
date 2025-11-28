@@ -97,7 +97,7 @@ const ScheduleGrid: React.FC<ScheduleGridProps> = ({
 				</div>
 				<div className={cn(
 					"grid gap-4",
-					isCommonSession ? "grid-cols-1" : "grid-cols-1 md:grid-cols-2"
+					isCommonSession ? "grid-cols-1" : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
 				)}>
 					{filteredSessions.map((session, idx) => (
 						<SessionCard
